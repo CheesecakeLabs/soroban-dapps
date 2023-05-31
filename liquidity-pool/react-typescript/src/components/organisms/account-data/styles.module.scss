@@ -1,0 +1,24 @@
+.card {
+  width: 25%;
+  border-radius: 4px;
+  background-color: white;
+  padding: 20px;
+  overflow-wrap: anywhere;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+  h3 {
+    margin-top: 0px;
+    margin-bottom: 8px;
+  }
+
+  .address {
+    color: var(--color-blackish-light);
+  }
+
+  .balances {
+    margin-top: 20px;
+    line-height: 30px;
+    font-weight: 600;
+  }
+
+}
