@@ -3,7 +3,7 @@ import { SorobanReactProvider } from '@soroban-react/core';
 import { allowedChains } from '../soroban/allowedChains';
 import { allowedConnectors } from '../soroban/connectors';
 
-export default function MySorobanReactProvider({ children }: { children: React.ReactNode }) {
+const MySorobanReactProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <SorobanReactProvider
             chains={allowedChains}
@@ -11,4 +11,5 @@ export default function MySorobanReactProvider({ children }: { children: React.R
             {children}
         </SorobanReactProvider>
     )
-} 
+}
+export default MySorobanReactProvider;

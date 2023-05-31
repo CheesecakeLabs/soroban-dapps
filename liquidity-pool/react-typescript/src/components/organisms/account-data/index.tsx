@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react'
 import styles from './styles.module.scss'
 
 import { SorobanContextType } from "@soroban-react/core";
-import { ConnectButton } from "@soroban-react/connect-button";
+import { ConnectButton } from "components/atoms"
 
 import { Constants } from '../../../shared/constants'
 import { useLoadTokenBalance } from "services/token"

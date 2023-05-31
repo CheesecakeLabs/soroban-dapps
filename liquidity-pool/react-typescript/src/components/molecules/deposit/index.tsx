@@ -95,6 +95,7 @@ const Deposit: FunctionComponent<IDeposit> = ({ sorobanContext, account, tokenA,
                             onChange={handleInputChange}
                             decimalScale={tokenA.decimals}
                             icon={TokenAIcon}
+                            text='Balance'
                         />
                     </div>
                     <div className={styles.input}>

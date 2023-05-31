@@ -32,7 +32,7 @@ const Home = (): JSX.Element => {
     <main>
       <header className={styles.header}>
         <h3>Liquidity Pool DApp</h3>
-        <NetworkData />
+        <NetworkData sorobanContext={sorobanContext} />
       </header>
 
       <div className={styles.content}>
@@ -75,7 +75,6 @@ const Home = (): JSX.Element => {
                 account={sorobanContext.address}
                 tokenA={tokenA}
                 tokenB={tokenB}
-                shareToken={shareToken}
                 reserves={reserves}
               />
             ) : (

@@ -1,21 +1,23 @@
-import React, { FunctionComponent, Component } from 'react'
+import React, { FunctionComponent } from 'react'
 
 import styles from './styles.module.scss'
 
-import { useSorobanReact } from "@soroban-react/core";
-import { Button } from '@mui/material'
+import { SorobanContextType } from "@soroban-react/core";
+import { ConnectButton } from 'components/atoms';
 
-const NetworkData: FunctionComponent = () => {
-    const {
-        activeChain,
-    } = useSorobanReact()
+interface INetworkDataProps {
+    sorobanContext: SorobanContextType;
+}
+
+const NetworkData: FunctionComponent<INetworkDataProps> = ({ sorobanContext }) => {
+    const { activeChain } = sorobanContext
 
     return (
         <>
             {activeChain ? (
                 <div className={styles.card}>{activeChain.name}</div>
             ) : (
-                <Button>Connect Wallet</Button>
+                <ConnectButton label='Connect Wallet' sorobanContext={sorobanContext} />
             )}
         </>
     )
