@@ -44,30 +44,35 @@ const Home = (): JSX.Element => {
         />
 
         <div className={styles.poolContent}>
-          <div className={styles.poolName}>
-            <div>
-              <TokenAIcon className={styles.tokenIcon} />
-              <TokenBIcon className={classNames(styles.tokenIcon, styles.tokenIconB)} />
-            </div>
-            <h1>
-              {tokenA.symbol} · {tokenB.symbol}
-            </h1>
-          </div>
-          <div className={styles.poolDescription}>
-            <div className={styles.item}>
-              <div className={styles.label}>Reserves</div>
-              <div className={styles.values}>
-                <div>{Utils.formatAmount(reserves.reservesA, tokenA.decimals)} {tokenA.symbol}</div>
-                <div>{Utils.formatAmount(reserves.reservesB, tokenB.decimals)} {tokenB.symbol}</div>
+          {sorobanContext.activeChain &&
+            (<>
+              <div className={styles.poolName}>
+                <div>
+                  <TokenAIcon className={styles.tokenIcon} />
+                  <TokenBIcon className={classNames(styles.tokenIcon, styles.tokenIconB)} />
+                </div>
+                <h1>
+                  {tokenA.symbol} · {tokenB.symbol}
+                </h1>
               </div>
-            </div>
-            <div className={styles.item}>
-              <div className={styles.label}>Pool fees</div>
-              <div className={styles.values}>
-                <div>0.3%</div>
+              <div className={styles.poolDescription}>
+                <div className={styles.item}>
+                  <div className={styles.label}>Reserves</div>
+                  <div className={styles.values}>
+                    <div>{Utils.formatAmount(reserves.reservesA, tokenA.decimals)} {tokenA.symbol}</div>
+                    <div>{Utils.formatAmount(reserves.reservesB, tokenB.decimals)} {tokenB.symbol}</div>
+                  </div>
+                </div>
+                <div className={styles.item}>
+                  <div className={styles.label}>Pool fees</div>
+                  <div className={styles.values}>
+                    <div>0.3%</div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </>)
+          }
+
           {sorobanContext.address ?
             (
               <LiquidityActions
@@ -87,7 +92,7 @@ const Home = (): JSX.Element => {
         </div>
       </div>
 
-    </main>
+    </main >
   )
 }
 
