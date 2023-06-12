@@ -116,6 +116,19 @@ echo "$REACT_SHARE_ID" > .soroban/share_id
 echo "Share ID: $REACT_SHARE_ID"
 
 
+# Collect data from .soroban folder into .env file
+ENV_FILE="react-typescript/src/config/.env.local"
+echo "Generating .env file"
+
+echo "REACT_APP_TOKEN_1_ADMIN_ADDRESS=$(cat .soroban/token_admin_address)" >> $ENV_FILE
+echo "REACT_APP_TOKEN_2_ADMIN_ADDRESS=$(cat .soroban/token_admin_address)" >> $ENV_FILE
+echo "REACT_APP_TOKEN_1_ADMIN_SECRET=$(cat .soroban/token_admin_secret)" >> $ENV_FILE
+echo "REACT_APP_TOKEN_2_ADMIN_SECRET=$(cat .soroban/token_admin_secret)" >> $ENV_FILE
+echo "REACT_APP_TOKEN_1_ID=$(cat .soroban/token_1_id)" >> $ENV_FILE
+echo "REACT_APP_TOKEN_2_ID=$(cat .soroban/token_2_id)" >> $ENV_FILE
+echo "REACT_APP_LIQUIDITY_POOL_ID=$(cat .soroban/liquidity_pool_id)" >> $ENV_FILE
+echo "REACT_APP_TOKEN_SHARE_ID=$(cat .soroban/share_id)" >> $ENV_FILE
+
 echo "Done"
 
 
