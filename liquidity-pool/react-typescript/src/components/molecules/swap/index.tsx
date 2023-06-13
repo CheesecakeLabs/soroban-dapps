@@ -61,7 +61,7 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
+        setFormValues({ ...formValues, [name]: value || 0 });
     };
 
     const handleSubmit = async (e: React.FormEvent): Promise<void> => {
