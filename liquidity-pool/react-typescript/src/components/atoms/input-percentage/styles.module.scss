@@ -8,4 +8,6 @@ input {
 .label {
   margin-bottom: 8px;
   font-size: var(--font-size-normal);
+  display: flex;
+  gap: 4px;
 }

@@ -17,9 +17,12 @@ form {
       .infoItem {
         margin-bottom: 8px;
 
+
         .label {
           font-weight: var(--font-weight-600);
           margin-bottom: 2px;
+          display: flex;
+          gap: 4px;
         }
       }
 

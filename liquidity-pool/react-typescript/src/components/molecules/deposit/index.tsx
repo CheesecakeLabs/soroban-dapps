@@ -35,7 +35,7 @@ const Deposit: FunctionComponent<IDeposit> = ({ sorobanContext, account, tokenA,
     const [formValues, setFormValues] = useState<IFormValues>({
         tokenAAmount: "0.00",
         tokenBAmount: "0.00",
-        maxSlippage: "0.00",
+        maxSlippage: "0.5",
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -115,6 +115,7 @@ const Deposit: FunctionComponent<IDeposit> = ({ sorobanContext, account, tokenA,
                         name="maxSlippage"
                         value={formValues.maxSlippage}
                         onChange={handleInputChange}
+                        helpText="The maximum variation percentage accepted for the desired deposit amounts. The higher the percentage, the greater the chance of a successful transaction, but you may not get such a good price."
                     />
                 </div>
             </div>

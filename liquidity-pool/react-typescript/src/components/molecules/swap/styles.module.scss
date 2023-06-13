@@ -29,6 +29,8 @@ form {
         .infoLabel {
           font-weight: var(--font-weight-700);
           margin-bottom: 2px;
+          display: flex;
+          gap: 4px;
         }
       }
     }

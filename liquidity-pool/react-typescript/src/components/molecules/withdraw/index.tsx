@@ -12,7 +12,7 @@ import styles from './styles.module.scss'
 import { Constants } from 'shared/constants'
 import { IToken } from "interfaces/soroban/token"
 import { IReserves } from "interfaces/soroban/liquidityPool"
-import { Icon, IconNames, InputPercentage, InputSlider } from "components/atoms"
+import { Icon, IconNames, InputPercentage, InputSlider, Tooltip } from "components/atoms"
 import { useLoadTotalShares } from "services/liquidityPool"
 import { useLoadTokenBalance } from "services/token"
 import { Utils } from 'shared/utils';
@@ -35,7 +35,7 @@ const Withdraw: FunctionComponent<IWithdraw> = ({ sorobanContext, account, token
     const [isSubmitting, setSubmitting] = useState(false)
     const [formValues, setFormValues] = useState<IFormValues>({
         sharePercent: "0",
-        maxSlippage: "5.00",
+        maxSlippage: "0.5",
     });
 
     const { sendTransaction } = useSendTransaction()
@@ -115,7 +115,10 @@ const Withdraw: FunctionComponent<IWithdraw> = ({ sorobanContext, account, token
                     <div className={styles.contentLeft}>
                         <div className={styles.infoItem}>
                             <div className={styles.label}>
-                                {tokenA.symbol} amount <Icon name={IconNames.info} alt="Info" />
+                                {tokenA.symbol} amount
+                                <Tooltip title={"Estimated price based on the last pool query. If at the time of submission the amount is lower than this, the transaction will be cancelled."} placement="top">
+                                    <div> <Icon name={IconNames.info} /></div>
+                                </Tooltip>
                             </div>
                             <div>
                                 {Utils.formatAmount(tokenATotalWithSlippage, tokenA.decimals)} {tokenA.symbol}
@@ -123,7 +126,10 @@ const Withdraw: FunctionComponent<IWithdraw> = ({ sorobanContext, account, token
                         </div>
                         <div className={styles.infoItem}>
                             <div className={styles.label}>
-                                {tokenB.symbol} amount <Icon name={IconNames.info} alt="Info" />
+                                {tokenB.symbol} amount
+                                <Tooltip title={"Estimated price based on the last pool query. If at the time of submission the amount is lower than this, the transaction will be cancelled."} placement="top">
+                                    <div> <Icon name={IconNames.info} /></div>
+                                </Tooltip>
                             </div>
                             <div>
                                 {Utils.formatAmount(tokenBTotalWithSlippage, tokenB.decimals)} {tokenB.symbol}
@@ -136,6 +142,7 @@ const Withdraw: FunctionComponent<IWithdraw> = ({ sorobanContext, account, token
                             name="maxSlippage"
                             value={formValues.maxSlippage}
                             onChange={handleInputChange}
+                            helpText="The percentage of variation accepted for the amount of each currency received."
                         />
                     </div>
                 </div>

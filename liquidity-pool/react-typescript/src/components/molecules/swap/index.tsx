@@ -14,7 +14,7 @@ import styles from './styles.module.scss'
 import { Constants } from 'shared/constants'
 import { IToken } from "interfaces/soroban/token"
 import { IReserves } from "interfaces/soroban/liquidityPool"
-import { Icon, IconNames, InputCurrency, InputPercentage } from "components/atoms"
+import { Icon, IconNames, InputCurrency, InputPercentage, Tooltip } from "components/atoms"
 import { SwapIcon, TokenAIcon, TokenBIcon } from 'components/icons';
 
 
@@ -41,7 +41,7 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
     const [formValues, setFormValues] = useState<IFormValues>({
         sellAmount: "0.00",
         buyAmount: "0.00",
-        maxSlippage: "0.05",
+        maxSlippage: "0.5",
     });
 
     const tokenAValue = reserves.reservesB.dividedBy(reserves.reservesA).toNumber()
@@ -132,11 +132,20 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
                 <div className={styles.formContentRight}>
                     <div className={styles.info}>
                         <div className={styles.infoItem}>
-                            <div className={styles.infoLabel}>Maximum sold <Icon name={IconNames.info} alt="Info" /></div>
+                            <div className={styles.infoLabel}>
+                                Maximum sold
+                                <Tooltip title={"Your transaction will revert if there is a large, unfavorable price movement before it is confirmed."} placement="top">
+                                    <div> <Icon name={IconNames.info} /></div>
+                                </Tooltip>
+                            </div>
                             <div>{maxSold} {swapTokens.sell.symbol}</div>
                         </div>
                         <div className={styles.infoItem}>
-                            <div className={styles.infoLabel}>Price <Icon name={IconNames.info} alt="Info" /></div>
+                            <div className={styles.infoLabel}>Price
+                                <Tooltip title={"Price based on the last pool query. It may vary until the transaction is confirmed."} placement="top">
+                                    <div> <Icon name={IconNames.info} /></div>
+                                </Tooltip>
+                            </div>
                             <div>1 {tokenA.symbol} = {tokenAValue.toLocaleString()} {tokenB.symbol}</div>
                             <div>1 {tokenB.symbol} = {tokenBValue.toLocaleString()} {tokenA.symbol}</div>
                         </div>
@@ -146,6 +155,7 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
                         name="maxSlippage"
                         value={formValues.maxSlippage}
                         onChange={handleInputChange}
+                        helpText="The percentage of variation accepted for the maximum amount sold."
                     />
                 </div>
             </div>
