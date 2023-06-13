@@ -34,6 +34,8 @@ const InputCurrency: React.FC<IInputCurrencyProps> = (props: IInputCurrencyProps
           placeholder={props.placeholder}
           style={props.padding ? { padding: props.padding } : undefined}
           className={styles.input}
+          allowNegative={false}
+          isNumericString={true}
         />
       </div>
       <div className={styles.rightContent}>
