@@ -16,6 +16,7 @@ import { IToken } from "interfaces/soroban/token"
 import { IReserves } from "interfaces/soroban/liquidityPool"
 import { Icon, IconNames, InputCurrency, InputPercentage, Tooltip } from "components/atoms"
 import { SwapIcon, TokenAIcon, TokenBIcon } from 'components/icons';
+import { ErrorText } from 'components/atoms/error-text';
 
 
 
@@ -36,6 +37,7 @@ interface ISwap {
 
 const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, tokenB, reserves }) => {
     const [isSubmitting, setSubmitting] = useState(false)
+    const [error, setError] = useState(false)
     const { sendTransaction } = useSendTransaction()
     const [swapTokens, setSwapTokens] = useState({ buy: tokenA, buyIcon: TokenAIcon, sell: tokenB, sellIcon: TokenBIcon });
     const [formValues, setFormValues] = useState<IFormValues>({
@@ -67,6 +69,7 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
     const handleSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
         setSubmitting(true)
+        setError(false)
 
         const buyA = swapTokens.buy == tokenA
 
@@ -98,12 +101,16 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
             // Process the result or perform any additional actions
 
         } catch (error) {
-            console.error(error);
-            // Handle error appropriately
+            console.log(error);
+            setError(true)
         }
         setSubmitting(false)
+        setFormValues({
+            ...formValues,
+            sellAmount: "0.00",
+            buyAmount: "0.00"
+        })
     };
-
     return (
         <form>
             <div className={styles.formContent}>
@@ -167,12 +174,19 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
                     disableElevation
                     fullWidth
                     loading={isSubmitting}
+                    disabled={parseFloat(formValues.buyAmount) == 0 && parseFloat(formValues.sellAmount) == 0}
                 >
                     Swap
                 </LoadingButton>
+                {error &&
+                    <div className={styles.error}>
+                        <ErrorText text="Transaction failed. Try to increase the slippage for more chances of success." />
+                    </div>
+                }
             </div>
         </form>
     )
 }
 
 export { Swap }
+

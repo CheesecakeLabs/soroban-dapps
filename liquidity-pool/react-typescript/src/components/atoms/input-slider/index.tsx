@@ -37,14 +37,14 @@ const InputSlider: React.FC<IInputSliderProps> = (props: IInputSliderProps) => {
   return (
     <div className={styles.cardInput}>
       <div className={styles.label}>{props.label}</div>
-      <div className={styles.value}>{state.x}%</div>
+      <div className={styles.value}>{props.value}%</div>
       <div className={styles.slider}>
         <Slider
           axis="x"
           xstep={5}
           xmin={0}
           xmax={100}
-          x={state.x}
+          x={parseInt(props.value)}
           onChange={handleSliderChange}
           styles={{
             track: {

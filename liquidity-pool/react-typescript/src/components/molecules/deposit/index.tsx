@@ -14,6 +14,7 @@ import { IToken } from "interfaces/soroban/token"
 import { InputCurrency, InputPercentage } from "components/atoms"
 import { TokenAIcon, TokenBIcon } from 'components/icons';
 import { LoadingButton } from '@mui/lab';
+import { ErrorText } from 'components/atoms/error-text';
 
 interface IFormValues {
     tokenAAmount: string;
@@ -31,6 +32,7 @@ interface IDeposit {
 const Deposit: FunctionComponent<IDeposit> = ({ sorobanContext, account, tokenA, tokenB }) => {
     const { sendTransaction } = useSendTransaction()
     const [isSubmitting, setSubmitting] = useState(false)
+    const [error, setError] = useState(false)
 
     const [formValues, setFormValues] = useState<IFormValues>({
         tokenAAmount: "0.00",
@@ -46,6 +48,7 @@ const Deposit: FunctionComponent<IDeposit> = ({ sorobanContext, account, tokenA,
     const handleSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
         setSubmitting(true)
+        setError(false)
 
         try {
             if (!sorobanContext.server) {
@@ -74,13 +77,17 @@ const Deposit: FunctionComponent<IDeposit> = ({ sorobanContext, account, tokenA,
 
             const result = await sendTransaction(tx, { sorobanContext });
             sorobanContext.connect()
-            // Process the result or perform any additional actions
 
         } catch (error) {
             console.error(error);
-            // Handle error appropriately
+            setError(true)
         }
         setSubmitting(false)
+        setFormValues({
+            ...formValues,
+            tokenAAmount: "0.00",
+            tokenBAmount: "0.00"
+        })
     };
 
     return (
@@ -130,6 +137,11 @@ const Deposit: FunctionComponent<IDeposit> = ({ sorobanContext, account, tokenA,
                 >
                     Deposit
                 </LoadingButton>
+                {error &&
+                    <div className={styles.error}>
+                        <ErrorText text="Transaction failed. Try to increase the slippage for more chances of success." />
+                    </div>
+                }
             </div>
         </form>
     )

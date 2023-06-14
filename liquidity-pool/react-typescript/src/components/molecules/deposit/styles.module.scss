@@ -1,24 +1,28 @@
 form {
   width: 100%;
-}
 
-.formContent {
-  display: flex;
-  width: 100%;
-
-  .formContentLeft {
-    width: 70%;
-
-    .input {
-      margin-bottom: 16px;
-    }
+  .error {
+    margin-top: 10px;
   }
 
-  .formContentRight {
-    margin-left: 20px;
+  .formContent {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    margin-bottom: 20px;
+    width: 100%;
+
+    .formContentLeft {
+      width: 70%;
+
+      .input {
+        margin-bottom: 16px;
+      }
+    }
+
+    .formContentRight {
+      margin-left: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
   }
 }

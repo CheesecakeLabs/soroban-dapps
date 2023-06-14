@@ -1,7 +1,6 @@
 export * from './icon'
 export * from './select'
 export * from './input-text'
-export * from './typography'
 export * from './input-currency'
 export * from './input-percentage'
 export * from './input-slider'

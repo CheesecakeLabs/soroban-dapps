@@ -16,6 +16,7 @@ import { Icon, IconNames, InputPercentage, InputSlider, Tooltip } from "componen
 import { useLoadTotalShares } from "services/liquidityPool"
 import { useLoadTokenBalance } from "services/token"
 import { Utils } from 'shared/utils';
+import { ErrorText } from 'components/atoms/error-text';
 
 
 interface IFormValues {
@@ -33,6 +34,7 @@ interface IWithdraw {
 
 const Withdraw: FunctionComponent<IWithdraw> = ({ sorobanContext, account, tokenA, tokenB, reserves }) => {
     const [isSubmitting, setSubmitting] = useState(false)
+    const [error, setError] = useState(false)
     const [formValues, setFormValues] = useState<IFormValues>({
         sharePercent: "0",
         maxSlippage: "0.5",
@@ -63,6 +65,7 @@ const Withdraw: FunctionComponent<IWithdraw> = ({ sorobanContext, account, token
     const handleSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
         setSubmitting(true)
+        setError(false)
 
         try {
             if (!sorobanContext.server) {
@@ -95,9 +98,13 @@ const Withdraw: FunctionComponent<IWithdraw> = ({ sorobanContext, account, token
 
         } catch (error) {
             console.error(error);
-            // Handle error appropriately
+            setError(true)
         }
         setSubmitting(false)
+        setFormValues({
+            ...formValues,
+            sharePercent: "0"
+        })
     };
 
     return (
@@ -158,6 +165,11 @@ const Withdraw: FunctionComponent<IWithdraw> = ({ sorobanContext, account, token
                 >
                     Withdraw
                 </LoadingButton>
+                {error &&
+                    <div className={styles.error}>
+                        <ErrorText text="Transaction failed. Try to increase the slippage for more chances of success." />
+                    </div>
+                }
             </div>
         </form>
     )

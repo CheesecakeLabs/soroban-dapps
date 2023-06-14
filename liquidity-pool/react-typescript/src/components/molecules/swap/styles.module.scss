@@ -1,45 +1,49 @@
 form {
   width: 100%;
-}
 
-.formContent {
-  display: flex;
-  width: 100%;
-
-  .formContentLeft {
-    width: 70%;
-    margin-bottom: 16px;
+  .error {
+    margin-top: 10px;
   }
 
-  .formContentRight {
-    margin-left: 20px;
+  .formContent {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    margin-bottom: 16px;
+    width: 100%;
 
-    .info {
-      font-size: var(--font-size-normal);
-      color: var(--color-grayish-dark);
+    .formContentLeft {
+      width: 70%;
+      margin-bottom: 16px;
+    }
+
+    .formContentRight {
+      margin-left: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
       margin-bottom: 16px;
 
-      .infoItem {
-        margin-bottom: 8px;
+      .info {
+        font-size: var(--font-size-normal);
+        color: var(--color-grayish-dark);
+        margin-bottom: 16px;
 
-        .infoLabel {
-          font-weight: var(--font-weight-700);
-          margin-bottom: 2px;
-          display: flex;
-          gap: 4px;
+        .infoItem {
+          margin-bottom: 8px;
+
+          .infoLabel {
+            font-weight: var(--font-weight-700);
+            margin-bottom: 2px;
+            display: flex;
+            gap: 4px;
+          }
         }
       }
     }
-  }
 
-  .changeOrder {
-    justify-content: center;
-    display: flex;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    .changeOrder {
+      justify-content: center;
+      display: flex;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
   }
 }
