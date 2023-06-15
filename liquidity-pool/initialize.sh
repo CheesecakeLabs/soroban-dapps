@@ -125,7 +125,7 @@ echo "Share ID: $REACT_SHARE_ID"
 
 
 # Collect data from .soroban folder into .env file
-ENV_FILE="react-typescript/src/config/.env.local"
+ENV_FILE="frontend/src/config/.env.local"
 echo "Generating .env file"
 
 echo "REACT_APP_TOKEN_A_ADMIN_ADDRESS=$(cat .soroban/token_admin_address)" >> $ENV_FILE
