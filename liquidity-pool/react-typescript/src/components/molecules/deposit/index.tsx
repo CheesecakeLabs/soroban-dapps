@@ -2,7 +2,6 @@ import React, { FunctionComponent, useState } from 'react'
 
 import { SorobanContextType } from "@soroban-react/core";
 import { useSendTransaction, contractTransaction } from '@soroban-react/contracts'
-import { bigNumberToI128 } from "@soroban-react/utils";
 import * as SorobanClient from 'soroban-client'
 
 import BigNumber from 'bignumber.js';
@@ -15,6 +14,7 @@ import { InputCurrency, InputPercentage } from "components/atoms"
 import { TokenAIcon, TokenBIcon } from 'components/icons';
 import { LoadingButton } from '@mui/lab';
 import { ErrorText } from 'components/atoms/error-text';
+import { bigNumberToI128 } from 'shared/convert';
 
 interface IFormValues {
     tokenAAmount: string;
@@ -74,6 +74,7 @@ const Deposit: FunctionComponent<IDeposit> = ({ sorobanContext, account, tokenA,
                     bigNumberToI128(minB.shiftedBy(7))
                 ]
             });
+            console.log(tx)
 
             const result = await sendTransaction(tx, { sorobanContext });
             sorobanContext.connect()

@@ -22,8 +22,8 @@ import { TokenAIcon, TokenBIcon } from "components/icons"
 const Home = (): JSX.Element => {
   const sorobanContext = useSorobanReact()
 
-  const tokenA = useLoadToken(sorobanContext, Constants.TOKEN_1_ID);
-  const tokenB = useLoadToken(sorobanContext, Constants.TOKEN_2_ID);
+  const tokenA = useLoadToken(sorobanContext, Constants.TOKEN_A_ID);
+  const tokenB = useLoadToken(sorobanContext, Constants.TOKEN_B_ID);
   const shareToken = useLoadToken(sorobanContext, Constants.SHARE_ID);
 
   const reserves = useLoadReserves(sorobanContext, Constants.LIQUIDITY_POOL_ID)

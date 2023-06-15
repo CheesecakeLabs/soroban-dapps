@@ -2,10 +2,8 @@ import React, { FunctionComponent, useState } from 'react'
 
 import { SorobanContextType } from "@soroban-react/core";
 import { useSendTransaction, contractTransaction } from '@soroban-react/contracts'
-import { bigNumberToI128 } from "@soroban-react/utils";
 import * as SorobanClient from 'soroban-client'
 
-import BigNumber from 'bignumber.js';
 import { LoadingButton } from '@mui/lab';
 
 import styles from './styles.module.scss'
@@ -17,6 +15,7 @@ import { useLoadTotalShares } from "services/liquidityPool"
 import { useLoadTokenBalance } from "services/token"
 import { Utils } from 'shared/utils';
 import { ErrorText } from 'components/atoms/error-text';
+import { bigNumberToI128 } from 'shared/convert';
 
 
 interface IFormValues {

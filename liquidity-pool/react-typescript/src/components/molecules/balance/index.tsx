@@ -35,8 +35,8 @@ const Balance: FunctionComponent<IBalance> = ({ sorobanContext, token, balance, 
                     <MintButton
                         sorobanContext={sorobanContext}
                         symbol={token.symbol}
-                        adminAddress={Constants.TOKEN_1_ADMIN}
-                        adminSecret={Constants.TOKEN_1_ADMIN_SECRET_KEY}
+                        adminAddress={Constants.TOKEN_A_ADMIN}
+                        adminSecret={Constants.TOKEN_A_ADMIN_SECRET_KEY}
                     />
                 </div>
             }

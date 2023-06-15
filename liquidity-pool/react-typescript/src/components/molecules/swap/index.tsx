@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState } from 'react'
 
 import { SorobanContextType } from "@soroban-react/core";
 import { useSendTransaction, contractTransaction } from '@soroban-react/contracts'
-import { bigNumberToI128 } from "@soroban-react/utils";
+
 import * as SorobanClient from 'soroban-client'
 
 import BigNumber from 'bignumber.js';
@@ -17,6 +17,7 @@ import { IReserves } from "interfaces/soroban/liquidityPool"
 import { Icon, IconNames, InputCurrency, InputPercentage, Tooltip } from "components/atoms"
 import { SwapIcon, TokenAIcon, TokenBIcon } from 'components/icons';
 import { ErrorText } from 'components/atoms/error-text';
+import { bigNumberToI128 } from 'shared/convert';
 
 
 

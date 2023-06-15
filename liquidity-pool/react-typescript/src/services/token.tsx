@@ -2,11 +2,11 @@
 import { useContractValue } from '@soroban-react/contracts'
 import { SorobanContextType } from "@soroban-react/core";
 import * as SorobanClient from 'soroban-client'
-import { scvalToBigNumber, scvalToString } from "@soroban-react/utils";
 
 import BigNumber from 'bignumber.js';
 
 import { IToken } from "interfaces/soroban/token"
+import { scvalToBigNumber, scvalToString } from 'shared/convert';
 
 export const useLoadToken = (
     sorobanContext: SorobanContextType,

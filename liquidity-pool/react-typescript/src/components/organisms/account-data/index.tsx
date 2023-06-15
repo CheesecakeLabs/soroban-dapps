@@ -47,8 +47,8 @@ interface IBalanceData {
 }
 
 const BalanceData: FunctionComponent<IBalanceData> = ({ sorobanContext, tokenA, tokenB, shareToken, account }) => {
-    const balanceA = useLoadTokenBalance(sorobanContext, Constants.TOKEN_1_ID, account);
-    const balanceB = useLoadTokenBalance(sorobanContext, Constants.TOKEN_2_ID, account);
+    const balanceA = useLoadTokenBalance(sorobanContext, Constants.TOKEN_A_ID, account);
+    const balanceB = useLoadTokenBalance(sorobanContext, Constants.TOKEN_B_ID, account);
     const balanceShare = useLoadTokenBalance(sorobanContext, Constants.SHARE_ID, account);
 
     return (

@@ -4,6 +4,9 @@ set -e
 
 NETWORK="$1"
 
+LIQUIDITY_POOL_WASM="contracts/target/wasm32-unknown-unknown/release/soroban_liquidity_pool_contract.wasm"
+TOKEN_WASM="contracts/token/soroban_token_contract.wasm"
+
 # If soroban-cli is called inside the soroban-preview docker containter,
 # it can call the stellar standalone container just using its name "stellar"
 if [[ "$IS_USING_DOCKER" == "true" ]]; then
@@ -59,25 +62,31 @@ ARGS="--network $NETWORK --source token-admin"
 echo Wrap the first Stellar asset 
 mkdir -p .soroban
 
-TOKEN_1_ID=$(soroban lab token wrap $ARGS --asset "USDC:$TOKEN_ADMIN_ADDRESS")
-echo "Token wrapped succesfully with TOKEN_ID: $TOKEN_1_ID"
-
-echo -n "$TOKEN_1_ID" > .soroban/token_1_id
+TOKEN_A_ID=$(soroban lab token wrap $ARGS --asset "USDC:$TOKEN_ADMIN_ADDRESS")
+echo "Token wrapped succesfully with TOKEN_ID: $TOKEN_A_ID"
 
 echo Wrap the second Stellar asset 
 mkdir -p .soroban
-TOKEN_2_ID=$(soroban lab token wrap $ARGS --asset "BTC:$TOKEN_ADMIN_ADDRESS")
-echo "Token wrapped succesfully with TOKEN_ID: $TOKEN_2_ID"
+TOKEN_B_ID=$(soroban lab token wrap $ARGS --asset "BTC:$TOKEN_ADMIN_ADDRESS")
+echo "Token wrapped succesfully with TOKEN_ID: $TOKEN_B_ID"
 
-echo -n "$TOKEN_2_ID" > .soroban/token_2_id
+
+if [[ "$TOKEN_B_ID" < "$TOKEN_A_ID" ]]; then
+  OLD_TOKEN_A_ID=$TOKEN_A_ID
+  TOKEN_A_ID=$TOKEN_B_ID
+  TOKEN_B_ID=$OLD_TOKEN_A_ID
+fi
+
+echo -n "$TOKEN_B_ID" > .soroban/token_B_id
+echo -n "$TOKEN_A_ID" > .soroban/token_A_id
+
 
 echo Build the liquidity pool contract
-
 
 echo Deploy the liquidity pool contract
 LIQUIDITY_POOL_ID="$(
   soroban contract deploy $ARGS \
-    --wasm target/wasm32-unknown-unknown/release/soroban_liquidity_pool_contract.wasm
+    --wasm $LIQUIDITY_POOL_WASM
 )"
 echo "$LIQUIDITY_POOL_ID" > .soroban/liquidity_pool_id
 
@@ -86,28 +95,27 @@ echo "Liquidity Pool contract deployed succesfully with ID: $LIQUIDITY_POOL_ID"
 echo "Installing token wasm contract"
 TOKEN_WASM_HASH="$(soroban contract install \
     $ARGS \
-    --wasm liquidity_pool/token/soroban_token_contract.wasm 
+    --wasm $TOKEN_WASM
 )"
 echo "$TOKEN_WASM_HASH" > .soroban/token_wasm_hash
 echo "Token wasm hash installed succesfully with ID: $TOKEN_WASM_HASH"
 
 echo "Initialize the liquidity pool contract"
-
 soroban contract invoke \
   $ARGS \
-  --wasm target/wasm32-unknown-unknown/release/soroban_liquidity_pool_contract.wasm \
+  --wasm $LIQUIDITY_POOL_WASM \
   --id "$LIQUIDITY_POOL_ID" \
   -- \
   initialize \
   --token_wasm_hash "$TOKEN_WASM_HASH" \
-  --token_a "$TOKEN_1_ID" \
-  --token_b "$TOKEN_2_ID"
+  --token_a "$TOKEN_A_ID" \
+  --token_b "$TOKEN_B_ID"
 
 
 echo "Getting the share id"
 REACT_SHARE_ID="$(soroban contract invoke \
   $ARGS \
-  --wasm target/wasm32-unknown-unknown/release/soroban_liquidity_pool_contract.wasm \
+  --wasm $LIQUIDITY_POOL_WASM \
   --id "$LIQUIDITY_POOL_ID" \
   -- \
   share_id
@@ -120,16 +128,13 @@ echo "Share ID: $REACT_SHARE_ID"
 ENV_FILE="react-typescript/src/config/.env.local"
 echo "Generating .env file"
 
-echo "REACT_APP_TOKEN_1_ADMIN_ADDRESS=$(cat .soroban/token_admin_address)" >> $ENV_FILE
-echo "REACT_APP_TOKEN_2_ADMIN_ADDRESS=$(cat .soroban/token_admin_address)" >> $ENV_FILE
-echo "REACT_APP_TOKEN_1_ADMIN_SECRET=$(cat .soroban/token_admin_secret)" >> $ENV_FILE
-echo "REACT_APP_TOKEN_2_ADMIN_SECRET=$(cat .soroban/token_admin_secret)" >> $ENV_FILE
-echo "REACT_APP_TOKEN_1_ID=$(cat .soroban/token_1_id)" >> $ENV_FILE
-echo "REACT_APP_TOKEN_2_ID=$(cat .soroban/token_2_id)" >> $ENV_FILE
+echo "REACT_APP_TOKEN_A_ADMIN_ADDRESS=$(cat .soroban/token_admin_address)" >> $ENV_FILE
+echo "REACT_APP_TOKEN_B_ADMIN_ADDRESS=$(cat .soroban/token_admin_address)" >> $ENV_FILE
+echo "REACT_APP_TOKEN_A_ADMIN_SECRET=$(cat .soroban/token_admin_secret)" >> $ENV_FILE
+echo "REACT_APP_TOKEN_B_ADMIN_SECRET=$(cat .soroban/token_admin_secret)" >> $ENV_FILE
+echo "REACT_APP_TOKEN_A_ID=$(cat .soroban/token_A_id)" >> $ENV_FILE
+echo "REACT_APP_TOKEN_B_ID=$(cat .soroban/token_B_id)" >> $ENV_FILE
 echo "REACT_APP_LIQUIDITY_POOL_ID=$(cat .soroban/liquidity_pool_id)" >> $ENV_FILE
 echo "REACT_APP_TOKEN_SHARE_ID=$(cat .soroban/share_id)" >> $ENV_FILE
 
 echo "Done"
-
-
-

@@ -79,7 +79,7 @@ const MintButton: FunctionComponent<IMintButton> = ({ sorobanContext, symbol, ad
       console.error(err)
     }
     try {
-      console.log("Minting the token...")
+      console.log("Minting the token... ", adminSecret)
       const paymentResult = await sendTransaction(
         new SorobanClient.TransactionBuilder(adminSource, {
           networkPassphrase: networkPassphrase,
