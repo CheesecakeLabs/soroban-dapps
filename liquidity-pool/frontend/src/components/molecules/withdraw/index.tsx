@@ -91,7 +91,7 @@ const Withdraw: FunctionComponent<IWithdraw> = ({ sorobanContext, account, token
                 ]
             });
 
-            sendTransaction(tx, { sorobanContext });
+            await sendTransaction(tx, { sorobanContext });
             sorobanContext.connect()
         } catch (error) {
             console.error(error);
