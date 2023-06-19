@@ -2,10 +2,8 @@ import React, { FunctionComponent, useState } from 'react'
 
 import { SorobanContextType } from "@soroban-react/core";
 import { useSendTransaction, contractTransaction } from '@soroban-react/contracts'
-
 import * as SorobanClient from 'soroban-client'
 
-import BigNumber from 'bignumber.js';
 import { LoadingButton } from '@mui/lab';
 import { Button } from '@mui/material';
 
@@ -17,16 +15,13 @@ import { IReserves } from "interfaces/soroban/liquidityPool"
 import { Icon, IconNames, InputCurrency, InputPercentage, Tooltip } from "components/atoms"
 import { SwapIcon, TokenAIcon, TokenBIcon } from 'components/icons';
 import { ErrorText } from 'components/atoms/error-text';
-import { bigNumberToI128 } from 'shared/convert';
-
-
+import { Utils } from 'shared/utils';
 
 interface IFormValues {
     buyAmount: string;
     sellAmount: string;
     maxSlippage: string;
 }
-
 interface ISwap {
     sorobanContext: SorobanContextType;
     account: string;
@@ -35,29 +30,34 @@ interface ISwap {
     reserves: IReserves;
 }
 
-
 const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, tokenB, reserves }) => {
+    const { sendTransaction } = useSendTransaction()
     const [isSubmitting, setSubmitting] = useState(false)
     const [error, setError] = useState(false)
-    const { sendTransaction } = useSendTransaction()
-    const [swapTokens, setSwapTokens] = useState({ buy: tokenA, buyIcon: TokenAIcon, sell: tokenB, sellIcon: TokenBIcon });
+    const [swapTokens, setSwapTokens] = useState({
+        buy: { token: tokenA, icon: TokenAIcon },
+        sell: { token: tokenB, icon: TokenBIcon },
+
+    });
+
     const [formValues, setFormValues] = useState<IFormValues>({
         sellAmount: "0.00",
         buyAmount: "0.00",
         maxSlippage: "0.5",
     });
 
-    const tokenAValue = reserves.reservesB.dividedBy(reserves.reservesA).toNumber()
-    const tokenBValue = reserves.reservesA.dividedBy(reserves.reservesB).toNumber()
-    const maxSold = parseFloat(formValues.sellAmount) + parseFloat(formValues.sellAmount) * parseFloat(formValues.maxSlippage) / 100
+    // TokenA value in terms of TokenB based on pool reserves
+    const tokenAInTokenB = reserves.reservesB.dividedBy(reserves.reservesA).toNumber();
+    // TokenB value in terms of TokenA based on pool reserves
+    const tokenBInTokenA = reserves.reservesA.dividedBy(reserves.reservesB).toNumber();
+    // Maximum amount that will be sold based on sell amount and max slippage
+    const maxSold = parseFloat(formValues.sellAmount) * (1 + parseFloat(formValues.maxSlippage) / 100);
 
     const handleChangeTokensOrder = (e: React.MouseEvent): void => {
         e.preventDefault();
         setSwapTokens({
             buy: swapTokens.sell,
-            buyIcon: swapTokens.sellIcon,
             sell: swapTokens.buy,
-            sellIcon: swapTokens.buyIcon,
         })
         setFormValues({ ...formValues, sellAmount: formValues.buyAmount, buyAmount: formValues.sellAmount });
     };
@@ -72,37 +72,33 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
         setSubmitting(true)
         setError(false)
 
-        const buyA = swapTokens.buy == tokenA
-
         try {
             if (!sorobanContext.server) {
                 throw new Error("Not connected to server");
             }
 
-            const source = await sorobanContext.server?.getAccount(account);
-            //  fn swap(e: Env, to: Address, buy_a: bool, out: i128, in_max: i128);
+            const { server, activeChain } = sorobanContext;
+            const source = await server.getAccount(account);
+
             const buyAmount = parseFloat(formValues.buyAmount)
 
             const tx = contractTransaction({
                 source,
-                networkPassphrase: sorobanContext.activeChain?.networkPassphrase || "",
+                networkPassphrase: Utils.getNetworkPassphrase(activeChain),
                 contractId: Constants.LIQUIDITY_POOL_ID,
                 method: 'swap',
                 params: [
-                    new SorobanClient.Address(account).toScVal(),
-                    SorobanClient.xdr.ScVal.scvBool(buyA),
-                    bigNumberToI128(BigNumber(buyAmount).shiftedBy(7)),
-                    bigNumberToI128(BigNumber(maxSold).shiftedBy(7)),
+                    new SorobanClient.Address(account).toScVal(), // to
+                    SorobanClient.xdr.ScVal.scvBool(swapTokens.buy.token == tokenA), // buy_a
+                    Utils.convertToShiftedI128(buyAmount, swapTokens.buy.token.decimals), // out
+                    Utils.convertToShiftedI128(maxSold, swapTokens.sell.token.decimals), // in_max
                 ]
             });
 
-            const result = await sendTransaction(tx, { sorobanContext });
-
+            await sendTransaction(tx, { sorobanContext });
             sorobanContext.connect()
-            // Process the result or perform any additional actions
-
         } catch (error) {
-            console.log(error);
+            console.error(error);
             setError(true)
         }
         setSubmitting(false)
@@ -117,23 +113,23 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
             <div className={styles.formContent}>
                 <div className={styles.formContentLeft}>
                     <InputCurrency
-                        label={swapTokens.sell.symbol}
+                        label={swapTokens.sell.token.symbol}
                         name="sellAmount"
                         value={formValues.sellAmount}
                         onChange={handleInputChange}
-                        decimalScale={swapTokens.sell.decimals}
-                        icon={swapTokens.sellIcon}
+                        decimalScale={swapTokens.sell.token.decimals}
+                        icon={swapTokens.sell.icon}
                     />
                     <div className={styles.changeOrder} >
                         <Button onClick={handleChangeTokensOrder}><SwapIcon /></Button>
                     </div>
                     <InputCurrency
-                        label={swapTokens.buy.symbol}
+                        label={swapTokens.buy.token.symbol}
                         name="buyAmount"
                         value={formValues.buyAmount}
                         onChange={handleInputChange}
-                        decimalScale={swapTokens.buy.decimals}
-                        icon={swapTokens.buyIcon}
+                        decimalScale={swapTokens.buy.token.decimals}
+                        icon={swapTokens.buy.icon}
                     />
                 </div>
 
@@ -146,7 +142,7 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
                                     <div> <Icon name={IconNames.info} /></div>
                                 </Tooltip>
                             </div>
-                            <div>{maxSold} {swapTokens.sell.symbol}</div>
+                            <div>{maxSold} {swapTokens.sell.token.symbol}</div>
                         </div>
                         <div className={styles.infoItem}>
                             <div className={styles.infoLabel}>Price
@@ -154,8 +150,8 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
                                     <div> <Icon name={IconNames.info} /></div>
                                 </Tooltip>
                             </div>
-                            <div>1 {tokenA.symbol} = {tokenAValue.toLocaleString()} {tokenB.symbol}</div>
-                            <div>1 {tokenB.symbol} = {tokenBValue.toLocaleString()} {tokenA.symbol}</div>
+                            <div>1 {tokenA.symbol} = {tokenAInTokenB.toLocaleString()} {tokenB.symbol}</div>
+                            <div>1 {tokenB.symbol} = {tokenBInTokenA.toLocaleString()} {tokenA.symbol}</div>
                         </div>
                     </div>
                     <InputPercentage
