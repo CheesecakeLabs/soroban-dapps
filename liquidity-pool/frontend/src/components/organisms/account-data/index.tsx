@@ -79,10 +79,7 @@ const BalanceData: FunctionComponent<IBalanceData> = ({ sorobanContext, tokenA, 
                     icon={TokenLPIcon}
                 />
             </div>
-
         </>
-
-
     )
 }
 
