@@ -2,45 +2,51 @@
 
 set -e
 
-NETWORK="$1"
-
 LIQUIDITY_POOL_WASM="contracts/target/wasm32-unknown-unknown/release/soroban_liquidity_pool_contract.wasm"
+
 TOKEN_WASM="contracts/token/soroban_token_contract.wasm"
 
-# If soroban-cli is called inside the soroban-preview docker containter,
-# it can call the stellar standalone container just using its name "stellar"
-if [[ "$IS_USING_DOCKER" == "true" ]]; then
-  SOROBAN_RPC_HOST="http://stellar:8000"
-else
-  SOROBAN_RPC_HOST="http://localhost:8000"
+
+NETWORK="$1"
+
+SOROBAN_RPC_HOST="$2"
+
+
+if [[ "$SOROBAN_RPC_HOST" == "" ]]; then
+  # If soroban-cli is called inside the soroban-preview docker container,
+  # it can call the stellar standalone container just using its name "stellar"
+  if [[ "$IS_USING_DOCKER" == "true" ]]; then
+    SOROBAN_RPC_HOST="http://stellar:8000"
+  elif [[ "$NETWORK" == "futurenet" ]]; then
+    SOROBAN_RPC_HOST="https://rpc-futurenet.stellar.org:443"
+  else
+    SOROBAN_RPC_HOST="http://localhost:8000"
+  fi
 fi
 
 SOROBAN_RPC_URL="$SOROBAN_RPC_HOST/soroban/rpc"
 
 case "$1" in
 standalone)
-  echo "Using standalone network"
+  echo "Using standalone network with RPC URL: $SOROBAN_RPC_URL"
   SOROBAN_NETWORK_PASSPHRASE="Standalone Network ; February 2017"
   FRIENDBOT_URL="$SOROBAN_RPC_HOST/friendbot"
   ;;
 futurenet)
-  echo "Using Futurenet network"
+  echo "Using Futurenet network with RPC URL: $SOROBAN_RPC_URL"
   SOROBAN_NETWORK_PASSPHRASE="Test SDF Future Network ; October 2022"
   FRIENDBOT_URL="https://friendbot-futurenet.stellar.org/"
   ;;
 *)
-  echo "Usage: $0 standalone|futurenet"
+  echo "Usage: $0 standalone|futurenet [rpc-host]"
   exit 1
   ;;
 esac
 
-#if !(soroban config network ls | grep "$NETWORK" 2>&1 >/dev/null); then
-# Always set a net configuration 
-  echo Add the $NETWORK network to cli client
-  soroban config network add "$NETWORK" \
-    --rpc-url "$SOROBAN_RPC_URL" \
-    --network-passphrase "$SOROBAN_NETWORK_PASSPHRASE"
-#fi
+echo Add the $NETWORK network to cli client
+soroban config network add \
+  --rpc-url "$SOROBAN_RPC_URL" \
+  --network-passphrase "$SOROBAN_NETWORK_PASSPHRASE" "$NETWORK"
 
 if !(soroban config identity ls | grep token-admin 2>&1 >/dev/null); then
   echo Create the token-admin identity
@@ -48,6 +54,8 @@ if !(soroban config identity ls | grep token-admin 2>&1 >/dev/null); then
 fi
 TOKEN_ADMIN_SECRET="$(soroban config identity show token-admin)"
 TOKEN_ADMIN_ADDRESS="$(soroban config identity address token-admin)"
+
+mkdir -p .soroban
 
 # TODO: Remove this once we can use `soroban config identity` from webpack.
 echo "$TOKEN_ADMIN_SECRET" > .soroban/token_admin_secret
@@ -60,13 +68,10 @@ curl --silent -X POST "$FRIENDBOT_URL?addr=$TOKEN_ADMIN_ADDRESS" >/dev/null
 ARGS="--network $NETWORK --source token-admin"
 
 echo Wrap the first Stellar asset 
-mkdir -p .soroban
-
 TOKEN_A_ID=$(soroban lab token wrap $ARGS --asset "USDC:$TOKEN_ADMIN_ADDRESS")
 echo "Token wrapped succesfully with TOKEN_ID: $TOKEN_A_ID"
 
 echo Wrap the second Stellar asset 
-mkdir -p .soroban
 TOKEN_B_ID=$(soroban lab token wrap $ARGS --asset "BTC:$TOKEN_ADMIN_ADDRESS")
 echo "Token wrapped succesfully with TOKEN_ID: $TOKEN_B_ID"
 
