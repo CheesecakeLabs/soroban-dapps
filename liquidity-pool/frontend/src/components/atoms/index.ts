@@ -1,4 +1,4 @@
-export * from './input-text'
+export * from './icon'
 export * from './input-currency'
 export * from './input-percentage'
 export * from './input-slider'
