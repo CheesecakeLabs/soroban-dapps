@@ -68,10 +68,10 @@ const Deposit: FunctionComponent<IDeposit> = ({ sorobanContext, account, tokenA,
                 method: 'deposit',
                 params: [
                     new SorobanClient.Address(account).toScVal(), // to
-                    Utils.convertToShiftedI128(parseFloat(tokenAAmount)), // desired_a
-                    Utils.convertToShiftedI128(minA), // min_a
-                    Utils.convertToShiftedI128(parseFloat(tokenBAmount)), // desired_b
-                    Utils.convertToShiftedI128(minB) // min_b
+                    Utils.convertToShiftedI128(parseFloat(tokenAAmount), tokenA.decimals), // desired_a
+                    Utils.convertToShiftedI128(minA, tokenA.decimals), // min_a
+                    Utils.convertToShiftedI128(parseFloat(tokenBAmount), tokenB.decimals), // desired_b
+                    Utils.convertToShiftedI128(minB, tokenB.decimals) // min_b
                 ]
             });
 
@@ -102,7 +102,6 @@ const Deposit: FunctionComponent<IDeposit> = ({ sorobanContext, account, tokenA,
                             onChange={handleInputChange}
                             decimalScale={tokenA.decimals}
                             icon={TokenAIcon}
-                            text='Balance'
                         />
                     </div>
                     <div className={styles.input}>
