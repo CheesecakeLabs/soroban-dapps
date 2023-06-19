@@ -32,6 +32,7 @@ interface IWithdraw {
 }
 
 const Withdraw: FunctionComponent<IWithdraw> = ({ sorobanContext, account, tokenA, tokenB, reserves }) => {
+    const { sendTransaction } = useSendTransaction()
     const [isSubmitting, setSubmitting] = useState(false)
     const [error, setError] = useState(false)
     const [formValues, setFormValues] = useState<IFormValues>({
@@ -39,19 +40,22 @@ const Withdraw: FunctionComponent<IWithdraw> = ({ sorobanContext, account, token
         maxSlippage: "0.5",
     });
 
-    const { sendTransaction } = useSendTransaction()
-
-    const slippageFactor = parseFloat(formValues.maxSlippage) / 100
-    const totalShares = useLoadTotalShares(sorobanContext, Constants.LIQUIDITY_POOL_ID);
+    // Total shares of the pool
+    const poolTotalShares = useLoadTotalShares(sorobanContext, Constants.LIQUIDITY_POOL_ID);
+    // Total shares of the current account
     const accBalanceShares = useLoadTokenBalance(sorobanContext, Constants.SHARE_ID, account);
-
+    // Selected slipagge
+    const slippageFactor = parseFloat(formValues.maxSlippage) / 100;
+    // Amount of shares selected
     const shareAmount = accBalanceShares.multipliedBy(parseInt(formValues.sharePercent) / 100);
+    // Amount of TokenA regarding the amount of shares and slippage selected
     const tokenATotalWithSlippage = shareAmount
-        .dividedBy(totalShares)
+        .dividedBy(poolTotalShares)
         .multipliedBy(reserves.reservesA)
         .times(1 - slippageFactor);
+    // Amount of TokenB regarding the amount of shares and slippage selected
     const tokenBTotalWithSlippage = shareAmount
-        .dividedBy(totalShares)
+        .dividedBy(poolTotalShares)
         .multipliedBy(reserves.reservesB)
         .times(1 - slippageFactor);
 
@@ -70,31 +74,25 @@ const Withdraw: FunctionComponent<IWithdraw> = ({ sorobanContext, account, token
             if (!sorobanContext.server) {
                 throw new Error("Not connected to server");
             }
-            const source = await sorobanContext.server.getAccount(account);
 
-            const networkPassphrase = sorobanContext.activeChain?.networkPassphrase
-            if (!networkPassphrase) {
-                throw new Error("Invalid network passphrase");
-            }
+            const { server, activeChain } = sorobanContext;
+            const source = await server.getAccount(account);
 
-            // Method: withdraw(e: Env, to: Address, share_amount: i128, min_a: i128, min_b: i128) -> (i128, i128);
             const tx = contractTransaction({
                 source,
-                networkPassphrase: networkPassphrase,
+                networkPassphrase: Utils.getNetworkPassphrase(activeChain),
                 contractId: Constants.LIQUIDITY_POOL_ID,
                 method: 'withdraw',
                 params: [
-                    new SorobanClient.Address(account).toScVal(),
-                    bigNumberToI128(shareAmount),
-                    bigNumberToI128(tokenATotalWithSlippage),
-                    bigNumberToI128(tokenBTotalWithSlippage),
+                    new SorobanClient.Address(account).toScVal(), // to
+                    bigNumberToI128(shareAmount), // share_amount
+                    bigNumberToI128(tokenATotalWithSlippage), // min_a
+                    bigNumberToI128(tokenBTotalWithSlippage), // min_b
                 ]
             });
 
-            const result = await sendTransaction(tx, { sorobanContext });
+            sendTransaction(tx, { sorobanContext });
             sorobanContext.connect()
-            // Process the result or perform any additional actions
-
         } catch (error) {
             console.error(error);
             setError(true)
