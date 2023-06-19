@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from 'react';
 import classNames from 'classnames'
 
 import { useSorobanReact } from "@soroban-react/core";
 
-
-import logo from 'app/core/resources/logo.svg'
 
 import styles from './styles.module.scss'
 

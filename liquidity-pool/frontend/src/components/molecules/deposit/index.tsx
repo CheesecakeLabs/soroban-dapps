@@ -3,18 +3,16 @@ import React, { FunctionComponent, useState } from 'react'
 import { SorobanContextType } from "@soroban-react/core";
 import { useSendTransaction, contractTransaction } from '@soroban-react/contracts'
 import * as SorobanClient from 'soroban-client'
-
-import BigNumber from 'bignumber.js';
-
+import { LoadingButton } from '@mui/lab';
 
 import styles from './styles.module.scss'
 import { Constants } from 'shared/constants'
 import { IToken } from "interfaces/soroban/token"
 import { InputCurrency, InputPercentage } from "components/atoms"
 import { TokenAIcon, TokenBIcon } from 'components/icons';
-import { LoadingButton } from '@mui/lab';
 import { ErrorText } from 'components/atoms/error-text';
-import { bigNumberToI128 } from 'shared/convert';
+import { Utils } from 'shared/utils';
+
 
 interface IFormValues {
     tokenAAmount: string;
@@ -54,30 +52,31 @@ const Deposit: FunctionComponent<IDeposit> = ({ sorobanContext, account, tokenA,
             if (!sorobanContext.server) {
                 throw new Error("Not connected to server");
             }
-            const source = await sorobanContext.server?.getAccount(account);
 
-            const floatAmountA = parseFloat(formValues.tokenAAmount)
-            const floatAmountB = parseFloat(formValues.tokenBAmount)
-            const floatMaxSlippage = parseFloat(formValues.maxSlippage)
-            const minA = BigNumber(floatAmountA - floatMaxSlippage * floatAmountA / 100);
-            const minB = BigNumber(floatAmountB - floatMaxSlippage * floatAmountB / 100);
+            const { server, activeChain } = sorobanContext;
+            const source = await server.getAccount(account);
+
+            const { tokenAAmount, tokenBAmount, maxSlippage } = formValues;
+
+            const minA = (parseFloat(tokenAAmount) - parseFloat(maxSlippage) * parseFloat(tokenAAmount) / 100);
+            const minB = (parseFloat(tokenBAmount) - parseFloat(maxSlippage) * parseFloat(tokenBAmount) / 100);
+
             const tx = contractTransaction({
                 source,
-                networkPassphrase: sorobanContext.activeChain?.networkPassphrase || "",
+                networkPassphrase: Utils.getNetworkPassphrase(activeChain),
                 contractId: Constants.LIQUIDITY_POOL_ID,
                 method: 'deposit',
                 params: [
-                    new SorobanClient.Address(account).toScVal(),
-                    bigNumberToI128(BigNumber(floatAmountA).shiftedBy(7)),
-                    bigNumberToI128(minA.shiftedBy(7)),
-                    bigNumberToI128(BigNumber(floatAmountB).shiftedBy(7)),
-                    bigNumberToI128(minB.shiftedBy(7))
+                    new SorobanClient.Address(account).toScVal(), // to
+                    Utils.convertToShiftedI128(parseFloat(tokenAAmount)), // desired_a
+                    Utils.convertToShiftedI128(minA), // min_a
+                    Utils.convertToShiftedI128(parseFloat(tokenBAmount)), // desired_b
+                    Utils.convertToShiftedI128(minB) // min_b
                 ]
             });
-            console.log(tx)
 
-            const result = await sendTransaction(tx, { sorobanContext });
-            sorobanContext.connect()
+            await sendTransaction(tx, { sorobanContext });
+            sorobanContext.connect();
 
         } catch (error) {
             console.error(error);
@@ -147,6 +146,5 @@ const Deposit: FunctionComponent<IDeposit> = ({ sorobanContext, account, tokenA,
         </form>
     )
 }
-
 
 export { Deposit }
