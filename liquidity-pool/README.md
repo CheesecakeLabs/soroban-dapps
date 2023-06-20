@@ -114,3 +114,38 @@ Now that you're running the backend, go to the `frontend` folder and run the dev
     make start_dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+
+
+Features
+===============
+This section provides an overview of the functionalities available in this demo.
+
+Mint the example tokens
+-----------------------
+- The demo allows users to mint the example tokens to the active account, enabling them to acquire tokens for testing the liquidity pool.
+- This operation is performed using classic Stellar operations since the tokens used are classic tokens wrapped in contracts.
+- The minting process requires admin authentication and is signed with the `token-admin` secret key.
+
+
+Deposit
+-------
+- Users have the ability to deposit a pair of tokens into the liquidity pool.
+- If the liquidity pool is empty, users can deposit any amount of each token, subject to their available balance.
+- If the liquidity pool already contains token reserves, the deposit must maintain the existing proportional balance in the pool. To accommodate variations, users can adjust the Max Slippage factor, which allows for a flexible range within which the deposited values can fluctuate. If this factor is not enough, the transaction will fail.
+- Upon completing a deposit, users receive Pool Share tokens, representing their ownership share in the liquidity pool. 
+
+
+Swap
+----
+- Users can swap an amount of a token for another based on the liquidity pool values.
+- When swapping tokens, the contract calculates the precise amount of tokens that need to be sold in order to acquire the desired output amount of the purchased token. This calculation is based on the current liquidity pool values. Users have the flexibility to adjust the maximum amount of tokens they are willing to sell by utilizing the Max Slippage factor. If the specified sell amount exceeds this limit, the transaction will fail.
+- The liquidity pool applies a fixed swap fee of 0.03% to each transaction. This fee results in a portion of the user's tokens being retained within the liquidity pool, reducing the received value during the swap. The retained tokens contribute to the overall liquidity of the pool.
+- If the amounts of the token pair being swapped are not proportional to the ratio of balances in the pool, it indicates that the swap has disrupted the balance of the pool. As a result, the transaction will fail to maintain the integrity of the pool.
+
+
+Withdraw
+--------
+- Users have the option to burn their Pool Share tokens to withdraw a specific quantity of tokens from the liquidity pool.
+- The amount of each token to be withdrawn is determined based on the proportion represented by the burned Pool Share tokens. As a result, users may receive a different amount than what they initially deposited, reflecting variations in the pool's composition.
+- Prior to confirming the transaction, users are presented with the minimum values they will receive for each token. They can customize these values using the Max Slippage factor. If the adjusted values fall below the required minimum, the transaction will fail.
