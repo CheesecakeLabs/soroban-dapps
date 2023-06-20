@@ -1,0 +1,13 @@
+.soroban
+node_modules
+
+# misc
+*.DS_Store
+*.pem
+.envrc
+
+
+*/build
+
+# Rust
+target

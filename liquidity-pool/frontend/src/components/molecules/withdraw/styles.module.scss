@@ -1,0 +1,43 @@
+form {
+  width: 100%;
+
+  .error {
+    margin-top: 10px;
+  }
+
+  .formContent {
+    width: 100%;
+    margin-bottom: 16px;
+
+    .info {
+      display: flex;
+
+      .contentLeft {
+        width: 50%;
+        color: var(--color-grayish-dark);
+        font-size: var(--font-size-normal);
+
+        .infoItem {
+          margin-bottom: 8px;
+
+
+          .label {
+            font-weight: var(--font-weight-600);
+            margin-bottom: 2px;
+            display: flex;
+            gap: 4px;
+          }
+        }
+
+      }
+
+      .contentRight {
+        width: 50%;
+        display: flex;
+        margin-bottom: 20px;
+        justify-content: flex-end;
+      }
+    }
+  }
+
+}

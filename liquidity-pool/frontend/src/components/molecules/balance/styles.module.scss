@@ -1,0 +1,24 @@
+.balance {
+  display: flex;
+  margin-bottom: 8px;
+  align-items: center;
+  gap: 4px;
+
+  svg {
+    height: 22px;
+  }
+
+  .value {
+    width: 80%;
+    display: flex;
+    font-size: var(--font-size-xl);
+    align-items: baseline;
+    gap: 4px;
+
+
+    .code {
+      font-size: var(--font-size-normal);
+      color: var(--color-blackish-light);
+    }
+  }
+}

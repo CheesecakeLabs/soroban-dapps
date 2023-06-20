@@ -1,0 +1,143 @@
+{
+  "name": "react-typescript",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@hookform/resolvers": "~2.8.0",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/lab": "^5.0.0-alpha.132",
+    "@mui/material": "^5.13.3",
+    "@sentry/react": "^6.17.9",
+    "@sentry/tracing": "^6.17.9",
+    "@soroban-react/chains": "v4.5.2",
+    "@soroban-react/contracts": "5.0.3",
+    "@soroban-react/core": "5.0.3",
+    "@soroban-react/events": "5.0.3",
+    "@soroban-react/freighter": "5.0.3",
+    "@soroban-react/types": "5.0.3",
+    "@soroban-react/utils": "5.0.3",
+    "@stellar/freighter-api": "^1.4.0",
+    "axios": "~0.21.2",
+    "bignumber": "^1.1.0",
+    "bignumber.js": "^9.1.1",
+    "classnames": "~2.3.1",
+    "env-cmd": "~10.1.0",
+    "enzyme": "~3.11.0",
+    "enzyme-adapter-react-16": "~1.15.6",
+    "install": "^0.13.0",
+    "jest-canvas-mock": "~2.3.1",
+    "lodash": "~4.17.21",
+    "npm": "^9.6.7",
+    "react": "~17.0.2",
+    "react-currency-format": "^1.1.0",
+    "react-dom": "~17.0.2",
+    "react-hook-form": "~7.11.1",
+    "react-input-slider": "^6.0.1",
+    "react-router-dom": "~5.2.0",
+    "react-scripts": "~4.0.3",
+    "react-select": "~4.3.1",
+    "sass": "~1.34.1",
+    "soroban-client": "0.8.0",
+    "typescript": "~4.3.2",
+    "web-vitals": "~2.0.1",
+    "yup": "~0.32.9"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "~6.2.9",
+    "@storybook/addon-actions": "~6.2.9",
+    "@storybook/addon-docs": "~6.2.9",
+    "@storybook/addon-essentials": "~6.2.9",
+    "@storybook/addon-links": "~6.2.9",
+    "@storybook/node-logger": "~6.2.9",
+    "@storybook/preset-create-react-app": "~3.1.7",
+    "@storybook/react": "~6.2.9",
+    "@testing-library/jest-dom": "~5.13.0",
+    "@testing-library/react": "~11.2.7",
+    "@testing-library/user-event": "~13.2.1",
+    "@trivago/prettier-plugin-sort-imports": "~3.1.1",
+    "@types/enzyme": "^3.10.9",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/jest": "~26.0.23",
+    "@types/lodash": "^4.14.175",
+    "@types/node": "~15.12.2",
+    "@types/node-sass": "^4.11.1",
+    "@types/react": "~17.0.9",
+    "@types/react-currency-format": "^1.0.0",
+    "@types/react-dom": "~17.0.6",
+    "@types/react-router-dom": "~5.1.7",
+    "@types/react-select": "~4.0.17",
+    "@types/sinon": "~10.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.14.0",
+    "@typescript-eslint/parser": "^5.14.0",
+    "eslint-import-resolver-typescript": "~2.4.0",
+    "eslint-plugin-jest": "^24.7.0",
+    "eslint-plugin-jest-dom": "^4.0.1",
+    "eslint-plugin-prettier": "~3.4.0",
+    "eslint-plugin-react": "~7.24.0",
+    "eslint-plugin-react-hooks": "~4.2.0",
+    "eslint-plugin-testing-library": "^3.10.2",
+    "lint-staged": "~11.0.0",
+    "msw": "~0.29.0",
+    "prettier": "~2.3.1",
+    "react-select-event": "~5.3.0",
+    "sinon": "~11.1.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "start:dev": "env-cmd -f ./src/config/.env.local npm start",
+    "start:staging": "env-cmd -f ./src/config/.env.staging npm start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:coverage": "npm run test -- --coverage --watchAll=false",
+    "eject": "react-scripts eject",
+    "lint:staged": "lint-staged",
+    "lint": "eslint --ext .ts,.tsx src/",
+    "prettier": "prettier --write src/**/*.{js,jsx,ts,tsx,json,css,scss,md}",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write",
+      "lint --check"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "eslintConfig": {
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/index.tsx",
+      "src/app/core/**/*.tsx",
+      "src/app/core/**/**/*.tsx",
+      "src/components/**/**/index.tsx"
+    ],
+    "coverageReporters": [
+      "json",
+      "text"
+    ]
+  }
+}
