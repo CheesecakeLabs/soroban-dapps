@@ -140,7 +140,7 @@ Swap
 ----
 - Users can swap an amount of a token for another based on the liquidity pool values.
 - When swapping tokens, the contract calculates the precise amount of tokens that need to be sold in order to acquire the desired output amount of the purchased token. This calculation is based on the current liquidity pool values. Users have the flexibility to adjust the maximum amount of tokens they are willing to sell by utilizing the Max Slippage factor. If the specified sell amount exceeds this limit, the transaction will fail.
-- The liquidity pool applies a fixed swap fee of 0.03% to each transaction. This fee results in a portion of the user's tokens being retained within the liquidity pool, reducing the received value during the swap. The retained tokens contribute to the overall liquidity of the pool.
+- The liquidity pool applies a fixed swap fee of 0.3% to each transaction. This fee results in a portion of the user's tokens being retained within the liquidity pool, reducing the received value during the swap. The retained tokens contribute to the overall liquidity of the pool.
 - If the amounts of the token pair being swapped are not proportional to the ratio of balances in the pool, it indicates that the swap has disrupted the balance of the pool. As a result, the transaction will fail to maintain the integrity of the pool.
 
 
