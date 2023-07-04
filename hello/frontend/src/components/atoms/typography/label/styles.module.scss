@@ -1,0 +1,34 @@
+.label {
+  font-weight: var(--font-weight-700);
+  line-height: var(--line-height-default);
+  color: var(--color-grayish-dark);
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--color-primary-dark);
+  }
+}
+
+.fs-xsm {
+  font-size: var(--font-size-xsm);
+}
+
+.fs-normal {
+  font-size: var(--font-size-normal);
+}
+
+.default {
+  color: var(--color-grayish-dark);
+}
+
+.error {
+  color: var(--color-danger);
+}
+
+.success {
+  color: var(--color-success);
+}
+
+.focus {
+  color: var(--color-primary);
+}
