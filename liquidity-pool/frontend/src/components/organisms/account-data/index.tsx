@@ -5,11 +5,11 @@ import styles from './styles.module.scss'
 import { SorobanContextType } from "@soroban-react/core";
 import { ConnectButton } from "components/atoms"
 
-import { Constants } from '../../../shared/constants'
-import { useLoadTokenBalance } from "services/token"
 import { Balance } from "components/molecules"
 import { IToken } from "interfaces/soroban/token"
 import { TokenAIcon, TokenBIcon, TokenLPIcon } from 'components/icons';
+import { mint as mintA } from 'token-a-contract'
+import { mint as mintB } from 'token-B-contract'
 
 interface IAccountData {
     sorobanContext: SorobanContextType;
@@ -25,7 +25,6 @@ const AccountData: FunctionComponent<IAccountData> = ({ sorobanContext, tokenA, 
             <h3>Account balance</h3>
             {account ? (
                 <BalanceData
-                    sorobanContext={sorobanContext}
                     account={account}
                     tokenA={tokenA}
                     tokenB={tokenB}
@@ -39,18 +38,13 @@ const AccountData: FunctionComponent<IAccountData> = ({ sorobanContext, tokenA, 
 }
 
 interface IBalanceData {
-    sorobanContext: SorobanContextType;
     tokenA: IToken;
     tokenB: IToken;
     shareToken: IToken;
     account: string;
 }
 
-const BalanceData: FunctionComponent<IBalanceData> = ({ sorobanContext, tokenA, tokenB, shareToken, account }) => {
-    const balanceA = useLoadTokenBalance(sorobanContext, Constants.TOKEN_A_ID, account);
-    const balanceB = useLoadTokenBalance(sorobanContext, Constants.TOKEN_B_ID, account);
-    const balanceShare = useLoadTokenBalance(sorobanContext, Constants.SHARE_ID, account);
-
+const BalanceData: FunctionComponent<IBalanceData> = ({ tokenA, tokenB, shareToken, account }) => {
     return (
         <>
             <div className={styles.address}>
@@ -58,24 +52,23 @@ const BalanceData: FunctionComponent<IBalanceData> = ({ sorobanContext, tokenA, 
             </div>
             <div className={styles.balances}>
                 <Balance
-                    sorobanContext={sorobanContext}
+                    account={account}
                     token={tokenA}
-                    balance={balanceA}
-                    allowMint={true}
+                    balance={tokenA.balance || BigInt(0)}
+                    mint={mintA}
                     icon={TokenAIcon}
                 />
                 <Balance
-                    sorobanContext={sorobanContext}
+                    account={account}
                     token={tokenB}
-                    balance={balanceB}
-                    allowMint={true}
+                    balance={tokenB.balance || BigInt(0)}
+                    mint={mintB}
                     icon={TokenBIcon}
                 />
                 <Balance
-                    sorobanContext={sorobanContext}
+                    account={account}
                     token={shareToken}
-                    balance={balanceShare}
-                    allowMint={false}
+                    balance={shareToken.balance || BigInt(0)}
                     icon={TokenLPIcon}
                 />
             </div>

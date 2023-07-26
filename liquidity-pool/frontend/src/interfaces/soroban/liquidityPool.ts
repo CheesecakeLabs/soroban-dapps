@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js';
 
 interface IReserves {
-    reservesA: BigNumber;
-    reservesB: BigNumber;
+    reservesA: bigint;
+    reservesB: bigint;
 }
 
 export type { IReserves }

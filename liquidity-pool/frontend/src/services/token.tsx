@@ -7,6 +7,7 @@ import BigNumber from 'bignumber.js';
 
 import { IToken } from "interfaces/soroban/token"
 import { scvalToBigNumber, scvalToString } from 'shared/convert';
+import { symbol as getSymbol } from 'token-a-contract'
 
 export const useLoadToken = (
     sorobanContext: SorobanContextType,

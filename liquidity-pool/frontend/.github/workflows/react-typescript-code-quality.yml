@@ -5,10 +5,10 @@ on:
       - synchronize
       - opened
     paths:
-      - react-typescript/**
+      - frontend/**
 defaults:
   run:
-    working-directory: react-typescript
+    working-directory: frontend
 jobs:
   test:
     name: 'Test'
@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-          cache-dependency-path: "./react-typescript/package-lock.json"
+          cache-dependency-path: "./frontend/package-lock.json"
       - run: npm ci
       - run: make coverage-test
       - uses: codecov/codecov-action@v2
@@ -36,8 +36,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-          cache-dependency-path: "./react-typescript/package-lock.json"
+          cache-dependency-path: "./frontend/package-lock.json"
       - uses: reviewdog/action-eslint@v1
         with:
           level: "info"
-          workdir: 'react-typescript'
+          workdir: 'frontend'

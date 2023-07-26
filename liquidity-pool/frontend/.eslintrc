@@ -74,6 +74,15 @@
         "format": ["PascalCase"],
         "prefix": ["I"]
       }
-    ]
-  }
+    ],
+    "testing-library/prefer-screen-queries": "off"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.stories.*"],
+      "rules": {
+        "import/no-anonymous-default-export": "off"
+      }
+    }
+  ]
 }

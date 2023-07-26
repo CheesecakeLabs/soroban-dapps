@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/react'
-import { ErrorBoundaryProps as SentryErrorBoundaryProps } from '@sentry/react/dist/errorboundary'
+import { ErrorBoundaryProps as SentryErrorBoundaryProps } from '@sentry/react/types/errorboundary'
 
 import styles from './styles.module.scss'
 

@@ -3,8 +3,11 @@ import BigNumber from 'bignumber.js'
 import { bigNumberToI128 } from './convert'
 import { xdr } from 'soroban-client'
 
-const formatAmount = (value: BigNumber, decimals = 7): string => {
-    return value.shiftedBy(decimals * -1).toNumber().toLocaleString()
+export function formatAmount(undivided: BigInt, decimals: number): string {
+    const n = undivided.valueOf() < BigInt(Number.MAX_SAFE_INTEGER)
+        ? Number(undivided) / (10 ** decimals)
+        : (undivided.valueOf() / (10n ** BigInt(decimals)));
+    return String(n);
 }
 
 const getNetworkPassphrase = (activeChain: WalletChain | undefined): string => {

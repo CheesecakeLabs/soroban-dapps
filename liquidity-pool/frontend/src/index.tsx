@@ -1,28 +1,30 @@
 import * as Sentry from '@sentry/react'
 import React from 'react'
-import ReactDOM from 'react-dom'
-import MySorobanReactProvider from './soroban/provider';
-import { BrowserTracing } from '@sentry/tracing'
+import { createRoot } from 'react-dom/client'
 
 import reportWebVitals from './config/reportWebVitals'
 import App from 'app/core/App'
 
+import MySorobanReactProvider from './soroban/provider';
+
 import './index.css'
 
 Sentry.init({
-  dsn: process.env.REACT_APP_SENTRY_DSN,
-  integrations: [new BrowserTracing()],
+  dsn: import.meta.env.VITE_SENTRY_DSN,
+  integrations: [new Sentry.BrowserTracing()],
   tracesSampleRate: 1.0,
-  enabled: process.env.NODE_ENV === 'production',
+  enabled: import.meta.env.PROD,
 })
 
-ReactDOM.render(
+// this is the recommendation of the React docs
+// ref: https://react.dev/blog/2022/03/08/react-18-upgrade-guide#updates-to-client-rendering-apis
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <MySorobanReactProvider>
       <App />
     </MySorobanReactProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 )
 
 // If you want to start measuring performance in your app, pass a function

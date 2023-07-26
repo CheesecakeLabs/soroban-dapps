@@ -1,8 +1,10 @@
 import { render, RenderOptions } from '@testing-library/react'
-import { FC, ReactElement } from 'react'
+import { FC, PropsWithChildren, ReactElement } from 'react'
 
 // If the application has providers, you can add them in the wrapper below
-const ApplicationProviders: FC = ({ children }) => <>{children}</>
+const ApplicationProviders: FC<PropsWithChildren> = ({ children }) => (
+  <>{children}</>
+)
 
 const customRender = (
   ui: ReactElement,
