@@ -1,17 +1,13 @@
 import React, { FunctionComponent, useState } from 'react'
 
-import { SorobanContextType } from "@soroban-react/core";
-import { useSendTransaction, contractTransaction } from '@soroban-react/contracts'
-import * as SorobanClient from 'soroban-client'
 import { LoadingButton } from '@mui/lab';
 
 import styles from './styles.module.scss'
-import { Constants } from 'shared/constants'
 import { IToken } from "interfaces/soroban/token"
 import { InputCurrency, InputPercentage } from "components/atoms"
 import { TokenAIcon, TokenBIcon } from 'components/icons';
 import { ErrorText } from 'components/atoms/error-text';
-import { Utils } from 'shared/utils';
+import { deposit } from 'liquidity-pool-contract'
 
 
 interface IFormValues {
@@ -21,14 +17,12 @@ interface IFormValues {
 }
 
 interface IDeposit {
-    sorobanContext: SorobanContextType;
     account: string;
     tokenA: IToken;
     tokenB: IToken;
 }
 
-const Deposit: FunctionComponent<IDeposit> = ({ sorobanContext, account, tokenA, tokenB }) => {
-    const { sendTransaction } = useSendTransaction()
+const Deposit: FunctionComponent<IDeposit> = ({ account, tokenA, tokenB }) => {
     const [isSubmitting, setSubmitting] = useState(false)
     const [error, setError] = useState(false)
 
@@ -49,35 +43,18 @@ const Deposit: FunctionComponent<IDeposit> = ({ sorobanContext, account, tokenA,
         setError(false)
 
         try {
-            if (!sorobanContext.server) {
-                throw new Error("Not connected to server");
-            }
-
-            const { server, activeChain } = sorobanContext;
-            const source = await server.getAccount(account);
-
             const { tokenAAmount, tokenBAmount, maxSlippage } = formValues;
-
             const minA = (parseFloat(tokenAAmount) - parseFloat(maxSlippage) * parseFloat(tokenAAmount) / 100);
             const minB = (parseFloat(tokenBAmount) - parseFloat(maxSlippage) * parseFloat(tokenBAmount) / 100);
 
-            const tx = contractTransaction({
-                source,
-                networkPassphrase: Utils.getNetworkPassphrase(activeChain),
-                contractId: Constants.LIQUIDITY_POOL_ID,
-                method: 'deposit',
-                params: [
-                    new SorobanClient.Address(account).toScVal(), // to
-                    Utils.convertToShiftedI128(parseFloat(tokenAAmount), tokenA.decimals), // desired_a
-                    Utils.convertToShiftedI128(minA, tokenA.decimals), // min_a
-                    Utils.convertToShiftedI128(parseFloat(tokenBAmount), tokenB.decimals), // desired_b
-                    Utils.convertToShiftedI128(minB, tokenB.decimals) // min_b
-                ]
-            });
+            await deposit({
+                to: account,
+                desired_a: BigInt(parseFloat(tokenAAmount) * 10 ** tokenA.decimals),
+                desired_b: BigInt(parseFloat(tokenBAmount) * 10 ** tokenB.decimals),
+                min_a: BigInt(minA * 10 ** tokenA.decimals),
+                min_b: BigInt(minB * 10 ** tokenB.decimals),
 
-            await sendTransaction(tx, { sorobanContext });
-            sorobanContext.connect();
-
+            }, { signAndSend: true, fee: 100000 })
         } catch (error) {
             console.error(error);
             setError(true)

@@ -33,7 +33,6 @@ const LiquidityActions: FunctionComponent<ILiquidityActions> = ({ sorobanContext
       <div className={styles.content}>
         {activeTab == 'Deposit' && (
           <Deposit
-            sorobanContext={sorobanContext}
             tokenA={tokenA}
             tokenB={tokenB}
             account={account}
