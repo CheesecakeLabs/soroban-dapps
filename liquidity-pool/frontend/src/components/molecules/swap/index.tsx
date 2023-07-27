@@ -16,6 +16,7 @@ import { Icon, IconNames, InputCurrency, InputPercentage, Tooltip } from "compon
 import { SwapIcon, TokenAIcon, TokenBIcon } from 'components/icons';
 import { ErrorText } from 'components/atoms/error-text';
 import { Utils } from 'shared/utils';
+import { swap } from 'liquidity-pool-contract'
 
 interface IFormValues {
     buyAmount: string;
@@ -47,11 +48,11 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
     });
 
     // TokenA value in terms of TokenB based on pool reserves
-    const tokenAInTokenB = reserves.reservesB.dividedBy(reserves.reservesA).toNumber();
+    const tokenAInTokenB = reserves.reservesB / (reserves.reservesA);
     // TokenB value in terms of TokenA based on pool reserves
-    const tokenBInTokenA = reserves.reservesA.dividedBy(reserves.reservesB).toNumber();
+    const tokenBInTokenA = reserves.reservesA / (reserves.reservesB);
     // Maximum amount that will be sold based on sell amount and max slippage
-    const maxSold = parseFloat(formValues.sellAmount) * (1 + parseFloat(formValues.maxSlippage) / 100);
+    const maxSold = Math.ceil(parseFloat(formValues.sellAmount) * (1 + parseFloat(formValues.maxSlippage) / 100));
 
     const handleChangeTokensOrder = (e: React.MouseEvent): void => {
         e.preventDefault();
@@ -73,30 +74,12 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
         setError(false)
 
         try {
-            if (!sorobanContext.server) {
-                throw new Error("Not connected to server");
-            }
-
-            const { server, activeChain } = sorobanContext;
-            const source = await server.getAccount(account);
-
-            const buyAmount = parseFloat(formValues.buyAmount)
-
-            const tx = contractTransaction({
-                source,
-                networkPassphrase: Utils.getNetworkPassphrase(activeChain),
-                contractId: Constants.LIQUIDITY_POOL_ID,
-                method: 'swap',
-                params: [
-                    new SorobanClient.Address(account).toScVal(), // to
-                    SorobanClient.xdr.ScVal.scvBool(swapTokens.buy.token == tokenA), // buy_a
-                    Utils.convertToShiftedI128(buyAmount, swapTokens.buy.token.decimals), // out
-                    Utils.convertToShiftedI128(maxSold, swapTokens.sell.token.decimals), // in_max
-                ]
-            });
-
-            await sendTransaction(tx, { sorobanContext });
-            sorobanContext.connect()
+            await swap({
+                to: account,
+                buy_a: swapTokens.buy.token == tokenA,
+                out: BigInt(parseFloat(formValues.buyAmount) * 10 ** swapTokens.buy.token.decimals),
+                in_max: BigInt(maxSold * 10 ** swapTokens.sell.token.decimals),
+            }, { signAndSend: true, fee: 100000 })
         } catch (error) {
             console.error(error);
             setError(true)
