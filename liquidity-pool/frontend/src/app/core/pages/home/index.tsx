@@ -28,6 +28,7 @@ const Home = (): JSX.Element => {
   const [tokenB, setTokenB] = React.useState<IToken>({ symbol: "", decimals: 7 })
   const [shareToken, setShareToken] = React.useState<IToken>({ symbol: "", decimals: 7 })
   const [reserves, setReserves] = React.useState<IReserves>({ reservesA: BigInt(0), reservesB: BigInt(0) })
+  const [totalShares, setTotalShares] = React.useState<bigint>(BigInt(0))
 
   React.useEffect(() => {
     Promise.all([
@@ -68,6 +69,9 @@ const Home = (): JSX.Element => {
           reservesA,
           reservesB
         });
+      }),
+      liquidityPoolContract.get_shares().then((result) => {
+        setTotalShares(result);
       })
   }, [account])
 
@@ -123,7 +127,9 @@ const Home = (): JSX.Element => {
                 account={sorobanContext.address}
                 tokenA={tokenA}
                 tokenB={tokenB}
+                shareToken={shareToken}
                 reserves={reserves}
+                totalShares={totalShares}
               />
             ) : (
               <div className={styles.card}>

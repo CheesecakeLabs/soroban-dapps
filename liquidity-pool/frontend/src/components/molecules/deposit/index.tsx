@@ -53,7 +53,6 @@ const Deposit: FunctionComponent<IDeposit> = ({ account, tokenA, tokenB }) => {
                 desired_b: BigInt(parseFloat(tokenBAmount) * 10 ** tokenB.decimals),
                 min_a: BigInt(minA * 10 ** tokenA.decimals),
                 min_b: BigInt(minB * 10 ** tokenB.decimals),
-
             }, { signAndSend: true, fee: 100000 })
         } catch (error) {
             console.error(error);

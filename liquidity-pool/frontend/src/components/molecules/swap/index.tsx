@@ -74,12 +74,13 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
         setError(false)
 
         try {
-            await swap({
+            let r = await swap({
                 to: account,
                 buy_a: swapTokens.buy.token == tokenA,
                 out: BigInt(parseFloat(formValues.buyAmount) * 10 ** swapTokens.buy.token.decimals),
                 in_max: BigInt(maxSold * 10 ** swapTokens.sell.token.decimals),
             }, { signAndSend: true, fee: 100000 })
+            console.log(r)
         } catch (error) {
             console.error(error);
             setError(true)

@@ -178,6 +178,8 @@ pub trait LiquidityPoolTrait {
     fn withdraw(e: Env, to: Address, share_amount: i128, min_a: i128, min_b: i128) -> (i128, i128);
 
     fn get_rsrvs(e: Env) -> (i128, i128);
+
+    fn get_shares(e: Env) -> i128;
 }
 
 #[contract]
@@ -340,5 +342,9 @@ impl LiquidityPoolTrait for LiquidityPool {
 
     fn get_rsrvs(e: Env) -> (i128, i128) {
         (get_reserve_a(&e), get_reserve_b(&e))
+    }
+
+    fn get_shares(e: Env) -> i128 {
+        get_total_shares(&e)
     }
 }

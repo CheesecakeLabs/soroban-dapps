@@ -160,20 +160,6 @@ SHARE_ID=${SHARE_ID//\"/}
 echo "Share ID: $SHARE_ID"
 
 
-# Collect data from .soroban folder into .env file
-ENV_FILE="frontend/src/config/.env.local"
-echo "Generating .env file"
-
-echo "REACT_APP_TOKEN_A_ADMIN_ADDRESS=$(cat .soroban/token_admin_address)" >> $ENV_FILE
-echo "REACT_APP_TOKEN_B_ADMIN_ADDRESS=$(cat .soroban/token_admin_address)" >> $ENV_FILE
-echo "REACT_APP_TOKEN_A_ADMIN_SECRET=$(cat .soroban/token_admin_secret)" >> $ENV_FILE
-echo "REACT_APP_TOKEN_B_ADMIN_SECRET=$(cat .soroban/token_admin_secret)" >> $ENV_FILE
-echo "REACT_APP_TOKEN_A_ID=$(cat .soroban/token_A_id)" >> $ENV_FILE
-echo "REACT_APP_TOKEN_B_ID=$(cat .soroban/token_B_id)" >> $ENV_FILE
-echo "REACT_APP_LIQUIDITY_POOL_ID=$(cat .soroban/liquidity_pool_id)" >> $ENV_FILE
-echo "REACT_APP_TOKEN_SHARE_ID=$(cat .soroban/share_id)" >> $ENV_FILE
-
-
 echo "Generating bindings"
 soroban contract bindings typescript --wasm contracts/abundance/target/wasm32-unknown-unknown/release/abundance_token.wasm --network $NETWORK --contract-id $ABUNDANCE_A_ID --contract-name token-a --output-dir ".soroban/contracts/token-a"
 soroban contract bindings typescript --wasm contracts/abundance/target/wasm32-unknown-unknown/release/abundance_token.wasm  --network $NETWORK --contract-id $ABUNDANCE_B_ID --contract-name token-b --output-dir ".soroban/contracts/token-b"

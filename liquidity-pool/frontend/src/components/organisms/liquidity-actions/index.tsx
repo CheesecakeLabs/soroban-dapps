@@ -13,10 +13,12 @@ interface ILiquidityActions {
   account: string;
   tokenA: IToken;
   tokenB: IToken;
+  shareToken: IToken;
   reserves: IReserves;
+  totalShares: bigint;
 }
 
-const LiquidityActions: FunctionComponent<ILiquidityActions> = ({ sorobanContext, account, tokenA, tokenB, reserves }) => {
+const LiquidityActions: FunctionComponent<ILiquidityActions> = ({ sorobanContext, account, tokenA, tokenB, shareToken, reserves, totalShares }) => {
   const [activeTab, setActiveTab] = useState("Deposit");
 
   const handleChangeActiveTab = (tab: string): void => {
@@ -52,8 +54,10 @@ const LiquidityActions: FunctionComponent<ILiquidityActions> = ({ sorobanContext
             sorobanContext={sorobanContext}
             tokenA={tokenA}
             tokenB={tokenB}
+            shareToken={shareToken}
             account={account}
             reserves={reserves}
+            poolTotalShares={totalShares}
           />
         )}
       </div>
