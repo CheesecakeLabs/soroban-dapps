@@ -64,13 +64,13 @@ const Home = (): JSX.Element => {
           balance: fetched[2]
         })
       }),
-      liquidityPoolContract.get_rsrvs().then(([reservesA, reservesB]) => {
+      liquidityPoolContract.getRsrvs().then(([reservesA, reservesB]) => {
         setReserves({
           reservesA,
           reservesB
         });
       }),
-      liquidityPoolContract.get_shares().then((result) => {
+      liquidityPoolContract.getShares().then((result) => {
         setTotalShares(result);
       })
   }, [account])

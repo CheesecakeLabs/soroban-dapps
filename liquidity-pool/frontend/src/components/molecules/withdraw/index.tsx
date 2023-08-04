@@ -59,14 +59,13 @@ const Withdraw: FunctionComponent<IWithdraw> = ({ sorobanContext, account, token
         e.preventDefault();
         setSubmitting(true)
         setError(false)
-        console.log(account, shareAmount, tokenATotalWithSlippage, tokenBTotalWithSlippage)
         try {
             await withdraw({
                 to: account,
                 share_amount: shareAmount,
                 min_a: tokenATotalWithSlippage,
                 min_b: tokenBTotalWithSlippage,
-            }, { signAndSend: true, fee: 100000000 })
+            }, { fee: 1000000 })
         } catch (error) {
             console.error(error);
             setError(true)
