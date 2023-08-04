@@ -32,7 +32,7 @@
     "yup": "^1.2.0",
     "token-a-contract": "file:../.soroban/contracts/token-a",
     "token-b-contract": "file:../.soroban/contracts/token-b",
-    "liquidity-pool-contract": "file:../.soroban/contracts/liquidity-pool-contract",
+    "liquidity-pool-contract": "file:../.soroban/contracts/liquidity-pool",
     "share-token-contract": "file:../.soroban/contracts/share-token"
   },
   "devDependencies": {

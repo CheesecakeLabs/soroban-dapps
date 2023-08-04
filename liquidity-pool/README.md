@@ -13,7 +13,7 @@ Getting Started
 Install Dependencies
 --------------------
 
-1. `soroban-cli v0.8.0`. See https://soroban.stellar.org/docs/getting-started/setup#install-the-soroban-cli
+1. `soroban-cli v0.9.4`. See https://soroban.stellar.org/docs/getting-started/setup#install-the-soroban-cli
 2. If you want to run the Soroban RPC locally: `docker` (you can run both Standalone and Futurenet backends with it)
 3. `Node.js v16`
 4. [Freighter Wallet](https://www.freighter.app/) ≥[v5.0.2](https://github.com/stellar/freighter/releases/tag/2.9.1). Or from the Firefox / Chrome extension store. Once installed, enable "Experimental Mode" in the settings (gear icon).
@@ -43,7 +43,7 @@ You have three options: 1. Deploy on [Futurenet](https://soroban.stellar.org/doc
 docker run --rm -it \
    -p 8000:8000 \
    --name stellar \
-   stellar/quickstart:soroban-dev@sha256:57e8ab498bfa14c65595fbb01cb94b1cdee9637ef2e6634e59d54f6958c05bdb \
+   stellar/quickstart:soroban-dev@sha256:8a99332f834ca82e3ac1418143736af59b5288e792d1c4278d6c547c6ed8da3b \
    --futurenet \
    --enable-soroban-rpc
 ```
@@ -60,13 +60,13 @@ docker run --rm -it \
    "Future Net" network in Freighter will not work with a local quickstart
    container, so we need to add our own):
 
-   |   |   |
-   |---|---|
-   | Name | Futurenet Local RPC|
-   | URL | http://localhost:8000/soroban/rpc |
-   | Passphrase | Test SDF Future Network ; October 2022 |
-   | Allow HTTP connection | Enabled |
-   | Switch to this network | Enabled |
+   |                        |                                        |
+   | ---------------------- | -------------------------------------- |
+   | Name                   | Futurenet Local RPC                    |
+   | URL                    | http://localhost:8000/soroban/rpc      |
+   | Passphrase             | Test SDF Future Network ; October 2022 |
+   | Allow HTTP connection  | Enabled                                |
+   | Switch to this network | Enabled                                |
 
 5. Add some Futurenet network lumens to your Freighter wallet.
 
@@ -79,7 +79,7 @@ docker run --rm -it \
 docker run --rm -it \
   -p 8000:8000 \
   --name stellar \
-  stellar/quickstart:soroban-dev@sha256:57e8ab498bfa14c65595fbb01cb94b1cdee9637ef2e6634e59d54f6958c05bdb \
+  stellar/quickstart:soroban-dev@sha256:8a99332f834ca82e3ac1418143736af59b5288e792d1c4278d6c547c6ed8da3b \
   --standalone \
   --enable-soroban-rpc
 ```
@@ -92,13 +92,13 @@ docker run --rm -it \
 
 3. Add the Standalone custom network in Freighter
 
-   |   |   |
-   |---|---|
-   | Name | Standalone |
-   | URL | http://localhost:8000/soroban/rpc |
-   | Passphrase | Standalone Network ; February 2017 |
-   | Allow HTTP connection | Enabled |
-   | Switch to this network | Enabled |
+   |                        |                                    |
+   | ---------------------- | ---------------------------------- |
+   | Name                   | Standalone                         |
+   | URL                    | http://localhost:8000/soroban/rpc  |
+   | Passphrase             | Standalone Network ; February 2017 |
+   | Allow HTTP connection  | Enabled                            |
+   | Switch to this network | Enabled                            |
 
 4. Add some Standalone network lumens to your Freighter wallet.
 
@@ -111,7 +111,7 @@ Frontend
 
 Now that you're running the backend, go to the `frontend` folder and run the development server:
 
-    make start_dev
+    make setup && make start_dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

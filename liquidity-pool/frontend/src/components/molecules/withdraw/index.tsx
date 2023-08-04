@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useState } from 'react'
 
-import { SorobanContextType } from "@soroban-react/core";
 import { LoadingButton } from '@mui/lab';
 
 import styles from './styles.module.scss'
@@ -18,7 +17,6 @@ interface IFormValues {
 }
 
 interface IWithdraw {
-    sorobanContext: SorobanContextType;
     account: string;
     tokenA: IToken;
     tokenB: IToken;
@@ -27,7 +25,7 @@ interface IWithdraw {
     poolTotalShares: bigint;
 }
 
-const Withdraw: FunctionComponent<IWithdraw> = ({ sorobanContext, account, tokenA, tokenB, shareToken, reserves, poolTotalShares }) => {
+const Withdraw: FunctionComponent<IWithdraw> = ({ account, tokenA, tokenB, shareToken, reserves, poolTotalShares }) => {
     const [isSubmitting, setSubmitting] = useState(false)
     const [error, setError] = useState(false)
     const [formValues, setFormValues] = useState<IFormValues>({
