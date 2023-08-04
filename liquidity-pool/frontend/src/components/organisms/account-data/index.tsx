@@ -16,9 +16,10 @@ interface IAccountData {
     tokenA: IToken;
     tokenB: IToken;
     shareToken: IToken;
+    onUpdate: () => void;
 }
 
-const AccountData: FunctionComponent<IAccountData> = ({ sorobanContext, tokenA, tokenB, shareToken }) => {
+const AccountData: FunctionComponent<IAccountData> = ({ sorobanContext, tokenA, tokenB, shareToken, onUpdate }) => {
     const account = sorobanContext.address
     return (
         <div className={styles.card}>
@@ -29,6 +30,7 @@ const AccountData: FunctionComponent<IAccountData> = ({ sorobanContext, tokenA, 
                     tokenA={tokenA}
                     tokenB={tokenB}
                     shareToken={shareToken}
+                    onUpdate={onUpdate}
                 />
             ) : (
                 <ConnectButton label='Connect Wallet' sorobanContext={sorobanContext} />
@@ -42,9 +44,10 @@ interface IBalanceData {
     tokenB: IToken;
     shareToken: IToken;
     account: string;
+    onUpdate: () => void;
 }
 
-const BalanceData: FunctionComponent<IBalanceData> = ({ tokenA, tokenB, shareToken, account }) => {
+const BalanceData: FunctionComponent<IBalanceData> = ({ tokenA, tokenB, shareToken, account, onUpdate }) => {
     return (
         <>
             <div className={styles.address}>
@@ -57,6 +60,7 @@ const BalanceData: FunctionComponent<IBalanceData> = ({ tokenA, tokenB, shareTok
                     balance={tokenA.balance || BigInt(0)}
                     mint={mintA}
                     icon={TokenAIcon}
+                    onUpdate={onUpdate}
                 />
                 <Balance
                     account={account}
@@ -64,12 +68,14 @@ const BalanceData: FunctionComponent<IBalanceData> = ({ tokenA, tokenB, shareTok
                     balance={tokenB.balance || BigInt(0)}
                     mint={mintB}
                     icon={TokenBIcon}
+                    onUpdate={onUpdate}
                 />
                 <Balance
                     account={account}
                     token={shareToken}
                     balance={shareToken.balance || BigInt(0)}
                     icon={TokenLPIcon}
+                    onUpdate={onUpdate}
                 />
             </div>
         </>

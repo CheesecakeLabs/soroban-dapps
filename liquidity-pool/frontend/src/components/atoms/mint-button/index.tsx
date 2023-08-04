@@ -10,9 +10,10 @@ interface IMintButton {
   account: string;
   decimals: number;
   mint: IMintFunction;
+  onUpdate: () => void;
 }
 
-const MintButton: FunctionComponent<IMintButton> = ({ account, decimals, mint }) => {
+const MintButton: FunctionComponent<IMintButton> = ({ account, decimals, mint, onUpdate }) => {
   const [isSubmitting, setSubmitting] = useState(false)
   const amount = BigInt(100 * 10 ** decimals)
 
@@ -22,6 +23,7 @@ const MintButton: FunctionComponent<IMintButton> = ({ account, decimals, mint })
         setSubmitting(true)
         await mint({ to: account, amount: amount }, { signAndSend: true })
         setSubmitting(false)
+        onUpdate()
       }}
       color="primary"
       disableElevation

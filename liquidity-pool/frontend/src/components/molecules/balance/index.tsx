@@ -14,9 +14,10 @@ interface IBalance {
     balance: bigint;
     icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     mint?: IMintFunction;
+    onUpdate: () => void;
 }
 
-const Balance: FunctionComponent<IBalance> = ({ account, token, balance, icon, mint }) => {
+const Balance: FunctionComponent<IBalance> = ({ account, token, balance, icon, mint, onUpdate }) => {
     const Icon = icon;
 
     return (
@@ -32,6 +33,7 @@ const Balance: FunctionComponent<IBalance> = ({ account, token, balance, icon, m
                         account={account}
                         decimals={token.decimals}
                         mint={mint}
+                        onUpdate={onUpdate}
                     />
                 </div>
             }

@@ -20,9 +20,10 @@ interface IDeposit {
     account: string;
     tokenA: IToken;
     tokenB: IToken;
+    onUpdate: () => void;
 }
 
-const Deposit: FunctionComponent<IDeposit> = ({ account, tokenA, tokenB }) => {
+const Deposit: FunctionComponent<IDeposit> = ({ account, tokenA, tokenB, onUpdate }) => {
     const [isSubmitting, setSubmitting] = useState(false)
     const [error, setError] = useState(false)
 
@@ -58,12 +59,13 @@ const Deposit: FunctionComponent<IDeposit> = ({ account, tokenA, tokenB }) => {
             console.error(error);
             setError(true)
         }
-        setSubmitting(false)
+        setSubmitting(false);
         setFormValues({
             ...formValues,
             tokenAAmount: "0.00",
             tokenBAmount: "0.00"
-        })
+        });
+        onUpdate();
     };
 
     return (

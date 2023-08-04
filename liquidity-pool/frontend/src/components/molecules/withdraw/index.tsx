@@ -23,9 +23,10 @@ interface IWithdraw {
     shareToken: IToken;
     reserves: IReserves;
     poolTotalShares: bigint;
+    onUpdate: () => void;
 }
 
-const Withdraw: FunctionComponent<IWithdraw> = ({ account, tokenA, tokenB, shareToken, reserves, poolTotalShares }) => {
+const Withdraw: FunctionComponent<IWithdraw> = ({ account, tokenA, tokenB, shareToken, reserves, poolTotalShares, onUpdate }) => {
     const [isSubmitting, setSubmitting] = useState(false)
     const [error, setError] = useState(false)
     const [formValues, setFormValues] = useState<IFormValues>({
@@ -68,11 +69,12 @@ const Withdraw: FunctionComponent<IWithdraw> = ({ account, tokenA, tokenB, share
             console.error(error);
             setError(true)
         }
-        setSubmitting(false)
+        setSubmitting(false);
         setFormValues({
             ...formValues,
             sharePercent: "0"
-        })
+        });
+        onUpdate();
     };
 
     return (

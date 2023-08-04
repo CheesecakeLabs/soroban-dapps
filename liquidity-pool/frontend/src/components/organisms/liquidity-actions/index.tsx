@@ -2,23 +2,21 @@ import { useState, FunctionComponent, Dispatch, SetStateAction } from 'react'
 
 import styles from './styles.module.scss'
 
-import { SorobanContextType } from "@soroban-react/core";
-
 import { Deposit, Swap, Withdraw } from "components/molecules"
 import { IToken } from "interfaces/soroban/token"
 import { IReserves } from "interfaces/soroban/liquidityPool"
 
 interface ILiquidityActions {
-  sorobanContext: SorobanContextType;
   account: string;
   tokenA: IToken;
   tokenB: IToken;
   shareToken: IToken;
   reserves: IReserves;
   totalShares: bigint;
+  onUpdate: () => void;
 }
 
-const LiquidityActions: FunctionComponent<ILiquidityActions> = ({ sorobanContext, account, tokenA, tokenB, shareToken, reserves, totalShares }) => {
+const LiquidityActions: FunctionComponent<ILiquidityActions> = ({ account, tokenA, tokenB, shareToken, reserves, totalShares, onUpdate }) => {
   const [activeTab, setActiveTab] = useState("Deposit");
 
   const handleChangeActiveTab = (tab: string): void => {
@@ -38,6 +36,7 @@ const LiquidityActions: FunctionComponent<ILiquidityActions> = ({ sorobanContext
             tokenA={tokenA}
             tokenB={tokenB}
             account={account}
+            onUpdate={onUpdate}
           />
         )}
         {activeTab == 'Swap' && (
@@ -46,6 +45,7 @@ const LiquidityActions: FunctionComponent<ILiquidityActions> = ({ sorobanContext
             tokenB={tokenB}
             account={account}
             reserves={reserves}
+            onUpdate={onUpdate}
           />
         )}
         {activeTab == 'Withdraw' && (
@@ -56,6 +56,7 @@ const LiquidityActions: FunctionComponent<ILiquidityActions> = ({ sorobanContext
             account={account}
             reserves={reserves}
             poolTotalShares={totalShares}
+            onUpdate={onUpdate}
           />
         )}
       </div>

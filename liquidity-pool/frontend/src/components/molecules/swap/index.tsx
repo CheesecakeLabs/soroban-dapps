@@ -1,9 +1,7 @@
 import React, { FunctionComponent, useState } from 'react'
 
-
 import { LoadingButton } from '@mui/lab';
 import { Button } from '@mui/material';
-
 
 import styles from './styles.module.scss'
 import { IToken } from "interfaces/soroban/token"
@@ -23,9 +21,10 @@ interface ISwap {
     tokenA: IToken;
     tokenB: IToken;
     reserves: IReserves;
+    onUpdate: () => void;
 }
 
-const Swap: FunctionComponent<ISwap> = ({ account, tokenA, tokenB, reserves }) => {
+const Swap: FunctionComponent<ISwap> = ({ account, tokenA, tokenB, reserves, onUpdate }) => {
     const [isSubmitting, setSubmitting] = useState(false)
     const [error, setError] = useState(false)
     const [swapTokens, setSwapTokens] = useState({
@@ -77,12 +76,13 @@ const Swap: FunctionComponent<ISwap> = ({ account, tokenA, tokenB, reserves }) =
             console.error(error);
             setError(true)
         }
-        setSubmitting(false)
+        setSubmitting(false);
         setFormValues({
             ...formValues,
             sellAmount: "0.00",
             buyAmount: "0.00"
-        })
+        });
+        onUpdate();
     };
     return (
         <form>

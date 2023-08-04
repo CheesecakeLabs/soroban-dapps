@@ -24,6 +24,7 @@ const Home = (): JSX.Element => {
   const sorobanContext = useSorobanReact()
   const account = sorobanContext.address || ""
 
+  const [updatedAt, setUpdatedAt] = React.useState<number>(Date.now())
   const [tokenA, setTokenA] = React.useState<IToken>({ symbol: "", decimals: 7 })
   const [tokenB, setTokenB] = React.useState<IToken>({ symbol: "", decimals: 7 })
   const [shareToken, setShareToken] = React.useState<IToken>({ symbol: "", decimals: 7 })
@@ -34,47 +35,61 @@ const Home = (): JSX.Element => {
     Promise.all([
       tokenAContract.symbol(),
       tokenAContract.decimals(),
-      tokenAContract.balance({ id: account }),
+      tokenBContract.symbol(),
+      tokenBContract.decimals(),
+      shareTokenContract.symbol(),
+      shareTokenContract.decimals()
     ]).then(fetched => {
-      setTokenA({
+      setTokenA(prevTokenA => ({
+        ...prevTokenA,
         symbol: fetched[0],
         decimals: fetched[1],
-        balance: fetched[2]
-      })
-    }),
-      Promise.all([
-        tokenBContract.symbol(),
-        tokenBContract.decimals(),
-        tokenBContract.balance({ id: account }),
-      ]).then(fetched => {
-        setTokenB({
-          symbol: fetched[0],
-          decimals: fetched[1],
-          balance: fetched[2]
-        })
-      }),
-      Promise.all([
-        shareTokenContract.symbol(),
-        shareTokenContract.decimals(),
-        shareTokenContract.balance({ id: account }),
-      ]).then(fetched => {
-        setShareToken({
-          symbol: fetched[0],
-          decimals: fetched[1],
-          balance: fetched[2]
-        })
-      }),
-      liquidityPoolContract.getRsrvs().then(([reservesA, reservesB]) => {
-        setReserves({
-          reservesA,
-          reservesB
-        });
-      }),
-      liquidityPoolContract.getShares().then((result) => {
-        setTotalShares(result);
-      })
-  }, [account])
+      }));
+      setTokenB(prevTokenB => ({
+        ...prevTokenB,
+        symbol: fetched[2],
+        decimals: fetched[3],
+      }));
+      setShareToken(prevShareToken => ({
+        ...prevShareToken,
+        symbol: fetched[4],
+        decimals: fetched[5],
+      }));
+    });
+  }, []);
 
+  React.useEffect(() => {
+    Promise.all([
+      liquidityPoolContract.getRsrvs(),
+      liquidityPoolContract.getShares()
+    ]).then(fetched => {
+      setReserves({
+        reservesA: fetched[0][0],
+        reservesB: fetched[0][1],
+      });
+      setTotalShares(fetched[1]);
+    });
+    if (account) {
+      Promise.all([
+        tokenAContract.balance({ id: account }),
+        tokenBContract.balance({ id: account }),
+        shareTokenContract.balance({ id: account })
+      ]).then(fetched => {
+        setTokenA(prevTokenA => ({
+          ...prevTokenA,
+          balance: fetched[0],
+        }));
+        setTokenB(prevTokenB => ({
+          ...prevTokenB,
+          balance: fetched[1]
+        }));
+        setShareToken(prevShareToken => ({
+          ...prevShareToken,
+          balance: fetched[2]
+        }));
+      });
+    }
+  }, [updatedAt, account]);
 
   return (
     <main>
@@ -89,6 +104,7 @@ const Home = (): JSX.Element => {
           tokenA={tokenA}
           tokenB={tokenB}
           shareToken={shareToken}
+          onUpdate={() => setUpdatedAt(Date.now())}
         />
         <div className={styles.poolContent}>
           {sorobanContext.activeChain &&
@@ -123,13 +139,13 @@ const Home = (): JSX.Element => {
           {sorobanContext.address ?
             (
               <LiquidityActions
-                sorobanContext={sorobanContext}
                 account={sorobanContext.address}
                 tokenA={tokenA}
                 tokenB={tokenB}
                 shareToken={shareToken}
                 reserves={reserves}
                 totalShares={totalShares}
+                onUpdate={() => setUpdatedAt(Date.now())}
               />
             ) : (
               <div className={styles.card}>
@@ -140,7 +156,6 @@ const Home = (): JSX.Element => {
           }
         </div>
       </div>
-
     </main >
   )
 }
