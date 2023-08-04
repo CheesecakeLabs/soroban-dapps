@@ -48,9 +48,9 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
     });
 
     // TokenA value in terms of TokenB based on pool reserves
-    const tokenAInTokenB = reserves.reservesB / (reserves.reservesA);
+    const tokenAInTokenB = reserves.reservesA ? reserves.reservesB / (reserves.reservesA) : 0;
     // TokenB value in terms of TokenA based on pool reserves
-    const tokenBInTokenA = reserves.reservesA / (reserves.reservesB);
+    const tokenBInTokenA = reserves.reservesB ? reserves.reservesA / (reserves.reservesB) : 0;
     // Maximum amount that will be sold based on sell amount and max slippage
     const maxSold = Math.ceil(parseFloat(formValues.sellAmount) * (1 + parseFloat(formValues.maxSlippage) / 100));
 
@@ -74,13 +74,12 @@ const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, token
         setError(false)
 
         try {
-            let r = await swap({
+            await swap({
                 to: account,
                 buy_a: swapTokens.buy.token == tokenA,
                 out: BigInt(parseFloat(formValues.buyAmount) * 10 ** swapTokens.buy.token.decimals),
                 in_max: BigInt(maxSold * 10 ** swapTokens.sell.token.decimals),
             }, { fee: 100000 })
-            console.log(r)
         } catch (error) {
             console.error(error);
             setError(true)
