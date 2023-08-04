@@ -1,21 +1,16 @@
 import React, { FunctionComponent, useState } from 'react'
 
-import { SorobanContextType } from "@soroban-react/core";
-import { useSendTransaction, contractTransaction } from '@soroban-react/contracts'
-import * as SorobanClient from 'soroban-client'
 
 import { LoadingButton } from '@mui/lab';
 import { Button } from '@mui/material';
 
 
 import styles from './styles.module.scss'
-import { Constants } from 'shared/constants'
 import { IToken } from "interfaces/soroban/token"
 import { IReserves } from "interfaces/soroban/liquidityPool"
 import { Icon, IconNames, InputCurrency, InputPercentage, Tooltip } from "components/atoms"
 import { SwapIcon, TokenAIcon, TokenBIcon } from 'components/icons';
 import { ErrorText } from 'components/atoms/error-text';
-import { Utils } from 'shared/utils';
 import { swap } from 'liquidity-pool-contract'
 
 interface IFormValues {
@@ -24,15 +19,13 @@ interface IFormValues {
     maxSlippage: string;
 }
 interface ISwap {
-    sorobanContext: SorobanContextType;
     account: string;
     tokenA: IToken;
     tokenB: IToken;
     reserves: IReserves;
 }
 
-const Swap: FunctionComponent<ISwap> = ({ sorobanContext, account, tokenA, tokenB, reserves }) => {
-    const { sendTransaction } = useSendTransaction()
+const Swap: FunctionComponent<ISwap> = ({ account, tokenA, tokenB, reserves }) => {
     const [isSubmitting, setSubmitting] = useState(false)
     const [error, setError] = useState(false)
     const [swapTokens, setSwapTokens] = useState({

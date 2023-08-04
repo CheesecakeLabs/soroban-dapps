@@ -42,7 +42,6 @@ const LiquidityActions: FunctionComponent<ILiquidityActions> = ({ sorobanContext
         )}
         {activeTab == 'Swap' && (
           <Swap
-            sorobanContext={sorobanContext}
             tokenA={tokenA}
             tokenB={tokenB}
             account={account}
@@ -51,7 +50,6 @@ const LiquidityActions: FunctionComponent<ILiquidityActions> = ({ sorobanContext
         )}
         {activeTab == 'Withdraw' && (
           <Withdraw
-            sorobanContext={sorobanContext}
             tokenA={tokenA}
             tokenB={tokenB}
             shareToken={shareToken}
