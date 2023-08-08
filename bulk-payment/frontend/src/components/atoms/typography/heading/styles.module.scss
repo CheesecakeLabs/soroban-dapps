@@ -1,0 +1,30 @@
+.heading {
+  font-size: var(--font-size-normal);
+  color: var(--default-font-color);
+  margin: 0;
+}
+
+.h1 {
+  font-size: var(--font-size-12xl);
+  line-height: var(--line-height-14xl);
+}
+
+.h2 {
+  font-size: var(--font-size-10xl);
+  line-height: var(--line-height-12xl);
+}
+
+.h3 {
+  font-size: var(--font-size-7xl);
+  line-height: var(--line-height-10xl);
+}
+
+.h4 {
+  font-size: var(--font-size-4xl);
+  line-height: var(--line-height-5xl);
+}
+
+.h5 {
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-5xl);
+}
