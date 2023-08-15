@@ -1,0 +1,112 @@
+body {
+  background-color: #f8f9fb;
+  color: var(--color-blackish);
+  letter-spacing: 0.01em;
+
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+  max-width: 1000px;
+
+  margin: auto;
+
+  h1 {
+    font-weight: var(--font-weight-700);
+    font-size: calc(10px + 2vmin);
+    line-height: 28px;
+    letter-spacing: -0.02em;
+  }
+
+}
+
+.content {
+  margin-top: 50px;
+  max-width: 1000px;
+  margin-inline: auto;
+  background-color: white;
+  border-radius: 4px;
+  padding: 24px;
+  display: flex;
+
+  .contentHeader {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+
+    h2 {
+      margin: unset;
+    }
+
+    button {
+      align-self: flex-end;
+    }
+  }
+
+  .poolList {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 4px;
+
+
+  }
+
+  .poolContent {
+    width: 75%;
+    margin-left: 20px;
+
+    .poolName {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+
+      h2 {
+        font-weight: var(--font-weight-800);
+        font-size: var(--font-size-7xl);
+      }
+
+      .tokenIcon {
+        height: 28px;
+      }
+
+      .tokenIconB {
+        margin-left: -10px;
+      }
+    }
+
+    .card {
+      border-radius: 4px;
+      background-color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+
+    }
+
+    .poolDescription {
+      display: flex;
+
+      .item {
+        margin-right: 30px;
+
+        .label {
+          font-weight: 700;
+          margin-bottom: 0px;
+        }
+
+        .values {
+          display: flex;
+          margin-top: 8px;
+          margin-bottom: 12px;
+          gap: 20px
+        }
+      }
+    }
+  }
+}

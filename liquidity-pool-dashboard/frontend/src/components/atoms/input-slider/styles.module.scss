@@ -1,0 +1,39 @@
+.cardInput {
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  background-color: var(--color-light-background);
+
+  .label {
+    padding: 5px;
+    font-size: var(--font-size-normal);
+    color: var(--color-grayish-dark);
+    font-weight: var(--font-weight-600);
+  }
+
+  .value {
+    font-size: var(--font-size-4xl);
+    padding: 10px;
+  }
+
+  .slider {
+    padding: 0px 10px 10px 10px;
+  }
+}
+
+.inputContainer {
+  flex: 1;
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  font-size: 28px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}

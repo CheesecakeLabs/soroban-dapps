@@ -1,0 +1,19 @@
+.poolItem {
+  display: flex;
+  padding: 16px;
+  background-color: var(--color-neutral-dark);
+  border-radius: 4px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  cursor: pointer;
+
+  div {
+    width: 100%;
+  }
+
+  .label {
+    font-size: small;
+    margin-bottom: 4px;
+    color: var(--color-grayish-dark);
+  }
+}
