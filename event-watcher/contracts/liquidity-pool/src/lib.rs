@@ -244,7 +244,7 @@ impl LiquidityPoolTrait for LiquidityPool {
         mint_shares(&e, to.clone(), new_total_shares - total_shares);
         put_reserve_a(&e, balance_a);
         put_reserve_b(&e, balance_b);
-        event::deposit(&e, to, amounts.0, amounts.1);
+        event::deposit(&e, to, amounts.0, amounts.1, balance_a, balance_b);
     }
 
     fn swap(e: Env, to: Address, buy_a: bool, out: i128, in_max: i128) {
@@ -309,10 +309,21 @@ impl LiquidityPoolTrait for LiquidityPool {
             transfer_b(&e, to.clone(), out_b);
         }
 
-        put_reserve_a(&e, balance_a - out_a);
-        put_reserve_b(&e, balance_b - out_b);
+        let new_balance_a = balance_a - out_a;
+        let new_balance_b = balance_b - out_b;
 
-        event::swap(&e, to, buy_a, sell_amount, out);
+        put_reserve_a(&e, new_balance_a);
+        put_reserve_b(&e, new_balance_b);
+
+        event::swap(
+            &e,
+            to,
+            buy_a,
+            sell_amount,
+            out,
+            new_balance_a,
+            new_balance_b,
+        );
     }
 
     fn withdraw(e: Env, to: Address, share_amount: i128, min_a: i128, min_b: i128) -> (i128, i128) {
@@ -338,10 +349,14 @@ impl LiquidityPoolTrait for LiquidityPool {
         burn_shares(&e, balance_shares);
         transfer_a(&e, to.clone(), out_a);
         transfer_b(&e, to.clone(), out_b);
-        put_reserve_a(&e, balance_a - out_a);
-        put_reserve_b(&e, balance_b - out_b);
 
-        event::withdraw(&e, to, out_a, out_b);
+        let new_balance_a = balance_a - out_a;
+        let new_balance_b = balance_b - out_b;
+
+        put_reserve_a(&e, new_balance_a);
+        put_reserve_b(&e, new_balance_b);
+
+        event::withdraw(&e, to, out_a, out_b, new_balance_a, new_balance_b);
 
         (out_a, out_b)
     }

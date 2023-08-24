@@ -1,0 +1,18 @@
+[package]
+name = "soroban-liquidity-pool-contract"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+soroban-sdk = { workspace = true }
+num-integer = { version = "0.1.45", default-features = false, features = ["i128"] }
+
+[dev_dependencies]
+soroban-sdk = { workspace = true, features = ["testutils"] }
+
+[features]
+testutils = ["soroban-sdk/testutils"]
