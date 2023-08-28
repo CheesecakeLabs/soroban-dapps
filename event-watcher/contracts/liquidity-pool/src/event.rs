@@ -35,7 +35,9 @@ pub(crate) fn swap(
     reserves_a: i128,
     reserves_b: i128,
 ) {
-    let topics = (Symbol::new(e, "swap"), to, buy_a);
-    e.events()
-        .publish(topics, (buy_amount, sell_amount, reserves_a, reserves_b));
+    let topics = (Symbol::new(e, "swap"), to);
+    e.events().publish(
+        topics,
+        (buy_amount, sell_amount, reserves_a, reserves_b, buy_a),
+    );
 }

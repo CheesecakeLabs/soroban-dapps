@@ -64,7 +64,7 @@ impl SqliteDriver {
                 amount_token_b INTEGER,
                 reserves_a INTEGER,
                 reserves_b INTEGER,
-                sell_a BOOL
+                buy_a BOOL
             )",
             (),
         )?;
@@ -268,6 +268,28 @@ impl SqliteDriver {
                 token t2 ON p.token_b_id = t2.id
             WHERE
                 e.id = (SELECT MAX(id) FROM event WHERE pool_id = p.id);
+        ",
+        )?;
+
+        let result = stmt.query_row([], |row| row.get(0))?;
+
+        Ok(result)
+    }
+
+    pub fn get_total_volume_24h(&self) -> Result<u64, rusqlite::Error> {
+        let mut stmt = self.conn.prepare(
+            "
+            SELECT COALESCE(SUM(
+                CASE
+                    WHEN e.buy_a THEN e.amount_token_a * token_a.xlm_value
+                    ELSE e.amount_token_b * token_b.xlm_value
+                END
+            ), 0) AS volume
+            FROM event e
+            JOIN pool p ON e.pool_id = p.id
+            JOIN token token_a ON p.token_a_id = token_a.id
+            JOIN token token_b ON p.token_b_id = token_b.id
+            WHERE e.type = 'SWAP';             
         ",
         )?;
 

@@ -93,6 +93,21 @@ async fn get_tvl_handler() -> Result<impl warp::Reply, warp::Rejection> {
     };
 }
 
+async fn get_total_volume_24h_handler() -> Result<impl warp::Reply, warp::Rejection> {
+    match db::get_connection() {
+        Ok(conn) => {
+            let item = conn.get_total_volume_24h();
+            match item {
+                Ok(item) => {
+                    return Ok(warp::reply::json(&item));
+                }
+                Err(e) => panic!("database error: {:?}", e),
+            };
+        }
+        Err(e) => panic!("database error: {:?}", e),
+    };
+}
+
 #[tokio::main]
 async fn main() {
     let conn = match db::get_connection() {
@@ -123,11 +138,16 @@ async fn main() {
         .and(warp::get())
         .and_then(get_tvl_handler);
 
+    let get_total_volume_24h_route = warp::path!("metrics" / "total-volume-24")
+        .and(warp::get())
+        .and_then(get_total_volume_24h_handler);
+
     let cors = warp::cors().allow_any_origin();
     let routes = get_pool_route
         .or(list_tokens_route)
         .or(list_pools_route)
         .or(get_tvl_route)
+        .or(get_total_volume_24h_route)
         .with(cors);
 
     warp::serve(routes).run(([127, 0, 0, 1], 3030)).await;

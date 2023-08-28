@@ -27,12 +27,9 @@ impl SqliteDriver {
     }
 
     pub fn create_event(&self, event: &Event) -> Result<()> {
-        // let timestamp = SystemTime::now();
-        // let amount_token_a = event.data[0].unwrap_or_default();
-        // let amount_token_b = event.data.get(1).unwrap_or(&None).unwrap_or_default();
         self.conn.execute(
-            "INSERT INTO event (pool_id, type, amount_token_a, amount_token_b, reserves_a, reserves_b)
-             VALUES (?, ?, ?, ?, ?, ?)",
+            "INSERT INTO event (pool_id, type, amount_token_a, amount_token_b, reserves_a, reserves_b, buy_a)
+             VALUES (?, ?, ?, ?, ?, ?, ?)",
             (
                 event.pool_id,
                 &event.event_type,
@@ -40,6 +37,7 @@ impl SqliteDriver {
                 event.amount_token_b,
                 event.reserves_a,
                 event.reserves_b,
+                event.buy_a
             ),
         )?;
 

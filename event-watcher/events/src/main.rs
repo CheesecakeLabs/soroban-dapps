@@ -16,6 +16,7 @@ pub struct Event {
     pub amount_token_b: u64,
     pub reserves_a: u64,
     pub reserves_b: u64,
+    pub buy_a: bool,
 }
 
 pub struct Pool {
@@ -42,6 +43,16 @@ fn extract_event_data(sc_val: &ScVal) -> (u64, u64, u64, u64) {
     }
 
     (0, 0, 0, 0)
+}
+
+fn extract_buy_a(sc_val: &ScVal) -> (bool) {
+    if let ScVal::Vec(Some(ScVec(vec_m))) = sc_val {
+        if let ScVal::Bool(buy_a) = &vec_m[4] {
+            return *buy_a;
+        }
+    }
+
+    false
 }
 
 pub fn main() {
@@ -122,6 +133,7 @@ pub fn main() {
                                                                                     data.1,
                                                                                 reserves_a: data.2,
                                                                                 reserves_b: data.3,
+                                                                                buy_a: false,
                                                                             };
                                                                             let _ = conn
                                                                                 .create_event(
@@ -130,6 +142,11 @@ pub fn main() {
                                                                         }
                                                                         "swap" => {
                                                                             print!("swap");
+                                                                            let buy_a =
+                                                                                extract_buy_a(
+                                                                                    &v0.data,
+                                                                                );
+
                                                                             let event = Event {
                                                                                 event_type:
                                                                                     String::from(
@@ -137,11 +154,20 @@ pub fn main() {
                                                                                     ),
                                                                                 pool_id: pool.id,
                                                                                 amount_token_a:
-                                                                                    data.0,
+                                                                                    if buy_a {
+                                                                                        data.0
+                                                                                    } else {
+                                                                                        data.1
+                                                                                    },
                                                                                 amount_token_b:
-                                                                                    data.1,
+                                                                                    if buy_a {
+                                                                                        data.1
+                                                                                    } else {
+                                                                                        data.0
+                                                                                    },
                                                                                 reserves_a: data.2,
                                                                                 reserves_b: data.3,
+                                                                                buy_a: buy_a,
                                                                             };
                                                                             let _ = conn
                                                                                 .create_event(
@@ -162,6 +188,7 @@ pub fn main() {
                                                                                     data.1,
                                                                                 reserves_a: data.2,
                                                                                 reserves_b: data.3,
+                                                                                buy_a: false,
                                                                             };
                                                                             let _ = conn
                                                                                 .create_event(

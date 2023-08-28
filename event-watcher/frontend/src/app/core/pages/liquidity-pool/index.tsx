@@ -16,7 +16,6 @@ import * as tokenContract from 'token-contract'
 import * as shareTokenContract from 'lp-token-contract'
 import * as liquidityPoolContract from 'liquidity-pool-contract'
 
-import { IToken } from 'interfaces/soroban/token';
 import { ILiquidityPool, IReserves } from 'interfaces/soroban/liquidityPool';
 import { http } from 'interfaces/http';
 
@@ -29,12 +28,9 @@ const LiquidityPool = (): JSX.Element => {
   const account = sorobanContext.address || ""
 
   const [updatedAt, setUpdatedAt] = React.useState<number>(Date.now())
-  const [tokenA, setTokenA] = React.useState<IToken>()
-  const [tokenB, setTokenB] = React.useState<IToken>()
-  const [shareToken, setShareToken] = React.useState<IToken>()
   const [reserves, setReserves] = React.useState<IReserves>({ reservesA: BigInt(0), reservesB: BigInt(0) })
   const [totalShares, setTotalShares] = React.useState<bigint>(BigInt(0))
-
+  console.log(pool?.contractId)
   useEffect(() => {
     async function fetchPool() {
       try {
@@ -82,42 +78,50 @@ const LiquidityPool = (): JSX.Element => {
 
   React.useEffect(() => {
     if (pool) {
-      Promise.all([
-        liquidityPoolContract.getRsrvs({ contractId: pool.contractId }),
-        liquidityPoolContract.getShares({ contractId: pool.contractId })
-      ]).then(fetched => {
-        setReserves({
-          reservesA: fetched[0][0],
-          reservesB: fetched[0][1],
-        });
-        setTotalShares(fetched[1]);
-      });
-      if (account) {
+      try {
         Promise.all([
-          tokenContract.balance({ contractId: pool.tokenA.contractId, id: account }),
-          tokenContract.balance({ contractId: pool.tokenB.contractId, id: account }),
-          shareTokenContract.balance({ contractId: pool.tokenShare.contractId, id: account })
+          liquidityPoolContract.getRsrvs({ contractId: pool.contractId }),
+          liquidityPoolContract.getShares({ contractId: pool.contractId })
         ]).then(fetched => {
-          setPool((prevPool) => ({
-            ...prevPool!,
-            tokenA: {
-              ...prevPool!.tokenA,
-              balance: fetched[0],
-            },
-            tokenB: {
-              ...prevPool!.tokenB,
-              balance: fetched[1],
-            },
-            tokenShare: {
-              ...prevPool!.tokenShare,
-              balance: fetched[2],
-            },
-          }));
+          setReserves({
+            reservesA: fetched[0][0],
+            reservesB: fetched[0][1],
+          });
+          setTotalShares(fetched[1]);
         });
+      } catch (error) {
+        console.error('Error fetching reserves/shares:', error);
+      };
+      if (account) {
+        try {
+          Promise.all([
+            tokenContract.balance({ contractId: pool.tokenA.contractId, id: account }),
+            tokenContract.balance({ contractId: pool.tokenB.contractId, id: account }),
+            shareTokenContract.balance({ contractId: pool.tokenShare.contractId, id: account })
+          ]).then(fetched => {
+            setPool((prevPool) => ({
+              ...prevPool!,
+              tokenA: {
+                ...prevPool!.tokenA,
+                balance: fetched[0],
+              },
+              tokenB: {
+                ...prevPool!.tokenB,
+                balance: fetched[1],
+              },
+              tokenShare: {
+                ...prevPool!.tokenShare,
+                balance: fetched[2],
+              },
+            }));
+          });
+        } catch (error) {
+          console.error('Error fetching reserves/shares:', error);
+        };
       }
     }
   }, [updatedAt, account, pool]);
-
+  console.log(pool)
   const history = useHistory();
 
   const handleClickBack = () => {
