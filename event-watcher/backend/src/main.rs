@@ -23,14 +23,13 @@ pub struct Pool {
     id: i32,
     contract_id: String,
     name: String,
-    liquidity: i32,
-    // volume: i32,
-    // fees: i32,
+    liquidity: i64,
+    volume: i64,
     token_a: Token,
     token_b: Token,
     token_share: Token,
-    token_a_reserves: i32,
-    token_b_reserves: i32,
+    token_a_reserves: i64,
+    token_b_reserves: i64,
 }
 
 async fn list_pools_handler() -> Result<impl warp::Reply, warp::Rejection> {

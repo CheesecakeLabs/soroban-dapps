@@ -1,3 +1,4 @@
+use chrono::{Duration, Utc};
 use rusqlite::{Connection, Result};
 
 pub struct SqliteDriver {
@@ -141,6 +142,9 @@ impl SqliteDriver {
     }
 
     pub fn list_pools(&self) -> Result<Vec<Pool>, rusqlite::Error> {
+        let twenty_four_hours_ago = Utc::now() - Duration::hours(24);
+        let formatted_time = twenty_four_hours_ago.to_rfc3339();
+
         let mut stmt = self.conn.prepare(
             "
             SELECT 
@@ -148,18 +152,29 @@ impl SqliteDriver {
                 t1.id AS token_a_id, t1.contract_id AS token_a_contract_id, t1.symbol AS token_a_symbol, t1.decimals AS token_a_decimals, t1.xlm_value AS token_a_xlm_value, t1.is_share AS token_a_is_share,
                 t2.id AS token_b_id, t2.contract_id AS token_b_contract_id, t2.symbol AS token_b_symbol, t2.decimals AS token_b_decimals, t2.xlm_value AS token_b_xlm_value, t2.is_share AS token_b_is_share,
                 t3.id AS token_share_id, t3.contract_id AS token_share_contract_id, t3.symbol AS token_share_symbol, t3.decimals AS token_share_decimals, t3.xlm_value AS token_share_xlm_value, t3.is_share AS token_share_is_share,
-                p.token_a_reserves, p.token_b_reserves, 
-                COALESCE(e.reserves_a * t1.xlm_value + e.reserves_b * t2.xlm_value, 0) AS reserves
+                p.token_a_reserves, p.token_b_reserves,
+                COALESCE(e.reserves_a * t1.xlm_value + e.reserves_b * t2.xlm_value, 0) AS reserves,
+                COALESCE(SUM(
+                    CASE
+                        WHEN event.buy_a THEN event.amount_token_b * t2.xlm_value
+                        ELSE event.amount_token_a * t1.xlm_value
+                    END
+                ), 0) AS volume
             FROM pool AS p
             INNER JOIN token AS t1 ON p.token_a_id = t1.id
             INNER JOIN token AS t2 ON p.token_b_id = t2.id
             INNER JOIN token AS t3 ON p.token_share_id = t3.id
-            LEFT JOIN event AS e ON e.pool_id = p.id AND e.id = (SELECT MAX(id) FROM event WHERE pool_id = p.id);
+            LEFT JOIN event AS e ON e.pool_id = p.id AND e.id = (SELECT MAX(id) FROM event WHERE pool_id = p.id)
+            LEFT JOIN event AS event ON event.pool_id = p.id AND event.created_at >= ? AND event.type = 'SWAP'
+            GROUP BY p.id, p.contract_id, p.name, t1.id, t1.contract_id, t1.symbol, t1.decimals, t1.xlm_value, t1.is_share,
+                     t2.id, t2.contract_id, t2.symbol, t2.decimals, t2.xlm_value, t2.is_share,
+                     t3.id, t3.contract_id, t3.symbol, t3.decimals, t3.xlm_value, t3.is_share,
+                     p.token_a_reserves, p.token_b_reserves
         ",
         )?;
 
         let pools = stmt
-            .query_map([], |row| {
+            .query_map([formatted_time], |row| {
                 Ok(Pool {
                     id: row.get(0)?,
                     contract_id: row.get(1)?,
@@ -191,6 +206,7 @@ impl SqliteDriver {
                     token_a_reserves: row.get(21)?,
                     token_b_reserves: row.get(22)?,
                     liquidity: row.get(23)?,
+                    volume: row.get(24)?,
                 })
             })?
             .collect::<Result<Vec<_>, _>>()?;
@@ -247,6 +263,7 @@ impl SqliteDriver {
                 token_a_reserves: row.get(21)?,
                 token_b_reserves: row.get(22)?,
                 liquidity: 0,
+                volume: 0,
             })
         });
 
@@ -277,23 +294,26 @@ impl SqliteDriver {
     }
 
     pub fn get_total_volume_24h(&self) -> Result<u64, rusqlite::Error> {
+        let twenty_four_hours_ago = Utc::now() - Duration::hours(24);
+        let formatted_time = twenty_four_hours_ago.to_rfc3339();
+
         let mut stmt = self.conn.prepare(
             "
-            SELECT COALESCE(SUM(
-                CASE
-                    WHEN e.buy_a THEN e.amount_token_a * token_a.xlm_value
-                    ELSE e.amount_token_b * token_b.xlm_value
-                END
-            ), 0) AS volume
-            FROM event e
-            JOIN pool p ON e.pool_id = p.id
-            JOIN token token_a ON p.token_a_id = token_a.id
-            JOIN token token_b ON p.token_b_id = token_b.id
-            WHERE e.type = 'SWAP';             
-        ",
+                SELECT COALESCE(SUM(
+                    CASE
+                        WHEN e.buy_a THEN e.amount_token_b* token_b.xlm_value
+                        ELSE e.amount_token_a * token_a.xlm_value
+                    END
+                ), 0) AS volume
+                FROM event e
+                JOIN pool p ON e.pool_id = p.id
+                JOIN token token_a ON p.token_a_id = token_a.id
+                JOIN token token_b ON p.token_b_id = token_b.id
+                WHERE e.type = 'SWAP' AND e.created_at >= ?;
+            ",
         )?;
 
-        let result = stmt.query_row([], |row| row.get(0))?;
+        let result = stmt.query_row([formatted_time], |row| row.get(0))?;
 
         Ok(result)
     }
