@@ -70,7 +70,7 @@ const Swap: FunctionComponent<ISwap> = ({ id, account, tokenA, tokenB, reserves,
             await swap({
                 contractId: id,
                 to: account,
-                buy_a: swapTokens.buy.token == tokenA,
+                buy_a: swapTokens.buy.token.id == tokenA.id,
                 out: BigInt(parseFloat(formValues.buyAmount) * 10 ** swapTokens.buy.token.decimals),
                 in_max: BigInt(maxSold * 10 ** swapTokens.sell.token.decimals),
             }, { fee: 100000 })

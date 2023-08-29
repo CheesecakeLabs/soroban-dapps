@@ -31,7 +31,7 @@ const LiquidityPoolListItem: FunctionComponent<ILiquidityPoolListItemProps> = ({
       </div>
       <div>
         <div className={styles.label}>Volume(24H)</div>
-        <div>{pool.volume} XLM</div>
+        <div>{formatAmount(BigInt(pool.volume), 7)} XLM</div>
       </div>
       <div>
         <div className={styles.label}>Fees(24H)</div>

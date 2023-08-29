@@ -30,7 +30,7 @@ const LiquidityPool = (): JSX.Element => {
   const [updatedAt, setUpdatedAt] = React.useState<number>(Date.now())
   const [reserves, setReserves] = React.useState<IReserves>({ reservesA: BigInt(0), reservesB: BigInt(0) })
   const [totalShares, setTotalShares] = React.useState<bigint>(BigInt(0))
-  console.log(pool?.contractId)
+
   useEffect(() => {
     async function fetchPool() {
       try {
@@ -121,7 +121,6 @@ const LiquidityPool = (): JSX.Element => {
       }
     }
   }, [updatedAt, account, pool]);
-  console.log(pool)
   const history = useHistory();
 
   const handleClickBack = () => {

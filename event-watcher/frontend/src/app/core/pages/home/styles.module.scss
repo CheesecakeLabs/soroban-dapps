@@ -26,84 +26,87 @@ body {
 }
 
 .content {
-  margin-top: 50px;
-  max-width: 1000px;
   margin-inline: auto;
   background-color: white;
   border-radius: 4px;
   padding: 24px;
+  max-width: 1000px;
+}
 
-  .contentHeader {
+.section {
+  margin-top: 50px;
+}
+
+
+
+.sectionHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+
+  h2 {
+    margin: unset;
+  }
+
+  button {
+    align-self: flex-end;
+  }
+}
+
+.poolList {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.poolContent {
+  width: 75%;
+  margin-left: 20px;
+
+  .poolName {
     display: flex;
-    align-items: baseline;
-    gap: 16px;
+    gap: 10px;
+    align-items: center;
 
     h2 {
-      margin: unset;
+      font-weight: var(--font-weight-800);
+      font-size: var(--font-size-7xl);
     }
 
-    button {
-      align-self: flex-end;
+    .tokenIcon {
+      height: 28px;
+    }
+
+    .tokenIconB {
+      margin-left: -10px;
     }
   }
 
-  .poolList {
-    margin-top: 16px;
-    padding: 16px;
+  .card {
     border-radius: 4px;
-
+    background-color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
 
   }
 
-  .poolContent {
-    width: 75%;
-    margin-left: 20px;
+  .poolDescription {
+    display: flex;
 
-    .poolName {
-      display: flex;
-      gap: 10px;
-      align-items: center;
+    .item {
+      margin-right: 30px;
 
-      h2 {
-        font-weight: var(--font-weight-800);
-        font-size: var(--font-size-7xl);
+      .label {
+        font-weight: 700;
+        margin-bottom: 0px;
       }
 
-      .tokenIcon {
-        height: 28px;
-      }
-
-      .tokenIconB {
-        margin-left: -10px;
-      }
-    }
-
-    .card {
-      border-radius: 4px;
-      background-color: white;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-
-    }
-
-    .poolDescription {
-      display: flex;
-
-      .item {
-        margin-right: 30px;
-
-        .label {
-          font-weight: 700;
-          margin-bottom: 0px;
-        }
-
-        .values {
-          display: flex;
-          margin-top: 8px;
-          margin-bottom: 12px;
-          gap: 20px
-        }
+      .values {
+        display: flex;
+        margin-top: 8px;
+        margin-bottom: 12px;
+        gap: 20px
       }
     }
   }
