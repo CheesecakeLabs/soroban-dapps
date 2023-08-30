@@ -27,20 +27,33 @@ impl SqliteDriver {
     }
 
     pub fn create_event(&self, event: &Event) -> Result<()> {
+        // i128 values are converted to i64 because Sqlite doesn't support
+        // this type. In a real application this should not be done as there
+        // may be a loss of information.
         self.conn.execute(
             "INSERT INTO event (pool_id, type, amount_token_a, amount_token_b, reserves_a, reserves_b, buy_a)
              VALUES (?, ?, ?, ?, ?, ?, ?)",
             (
                 event.pool_id,
                 &event.event_type,
-                event.amount_token_a,
-                event.amount_token_b,
-                event.reserves_a,
-                event.reserves_b,
+                self.i128_to_i64(event.amount_token_a),
+                self.i128_to_i64(event.amount_token_b),
+                self.i128_to_i64(event.reserves_a),
+                self.i128_to_i64(event.reserves_b),
                 event.buy_a
             ),
         )?;
 
         Ok(())
+    }
+
+    fn i128_to_i64(&self, value: i128) -> i64 {
+        if value > i64::MAX as i128 {
+            i64::MAX
+        } else if value < i64::MIN as i128 {
+            i64::MIN
+        } else {
+            value as i64
+        }
     }
 }
