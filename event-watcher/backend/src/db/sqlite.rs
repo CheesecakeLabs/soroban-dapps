@@ -65,7 +65,8 @@ impl SqliteDriver {
                 amount_token_b INTEGER,
                 reserves_a INTEGER,
                 reserves_b INTEGER,
-                buy_a BOOL
+                buy_a BOOL,
+                user INTEGER
             )",
             (),
         )?;
@@ -160,7 +161,12 @@ impl SqliteDriver {
                         ELSE event.amount_token_a * t1.xlm_value
                     END
                 ), 0) AS volume
+                users
             FROM pool AS p
+            LEFT JOIN event AS e ON e.pool_id = p.id
+            LEFT JOIN (SELECT user, count(DISTINCT user) as users
+                FROM event
+                GROUP BY pool_id) C ON e.user = C.user
             INNER JOIN token AS t1 ON p.token_a_id = t1.id
             INNER JOIN token AS t2 ON p.token_b_id = t2.id
             INNER JOIN token AS t3 ON p.token_share_id = t3.id
@@ -170,6 +176,7 @@ impl SqliteDriver {
                      t2.id, t2.contract_id, t2.symbol, t2.decimals, t2.xlm_value, t2.is_share,
                      t3.id, t3.contract_id, t3.symbol, t3.decimals, t3.xlm_value, t3.is_share,
                      p.token_a_reserves, p.token_b_reserves
+            GROUP BY  p.contract_id
         ",
         )?;
 
@@ -207,6 +214,7 @@ impl SqliteDriver {
                     token_b_reserves: row.get(22)?,
                     liquidity: row.get(23)?,
                     volume: row.get(24)?,
+                    users: row.get(25).unwrap_or(0),
                 })
             })?
             .collect::<Result<Vec<_>, _>>()?;
@@ -222,13 +230,17 @@ impl SqliteDriver {
                 t1.id AS token_a_id, t1.contract_id AS token_a_contract_id, t1.symbol AS token_a_symbol, t1.decimals AS token_a_decimals, t1.xlm_value AS token_a_xlm_value, t1.is_share AS token_a_is_share,
                 t2.id AS token_b_id, t2.contract_id AS token_b_contract_id, t2.symbol AS token_b_symbol, t2.decimals AS token_b_decimals, t2.xlm_value AS token_b_xlm_value, t2.is_share AS token_b_is_share,
                 t3.id AS token_share_id, t3.contract_id AS token_share_contract_id, t3.symbol AS token_share_symbol, t3.decimals AS token_share_decimals, t3.xlm_value AS token_share_xlm_value, t3.is_share AS token_share_is_share,
-                p.token_a_reserves, p.token_b_reserves
+                p.token_a_reserves, p.token_b_reserves,
+                users
             FROM pool AS p
+            LEFT JOIN event AS e ON e.pool_id = p.id
+            LEFT JOIN (SELECT user, count(DISTINCT user) as users
+                FROM event
+                GROUP BY pool_id) C ON e.user = C.user
             INNER JOIN token AS t1 ON p.token_a_id = t1.id
             INNER JOIN token AS t2 ON p.token_b_id = t2.id
             INNER JOIN token AS t3 ON p.token_share_id = t3.id
-            WHERE p.id = ?
-        ",
+            WHERE p.id = ?",
         )?;
 
         let pool = stmt.query_row([id], |row| {
@@ -264,6 +276,7 @@ impl SqliteDriver {
                 token_b_reserves: row.get(22)?,
                 liquidity: 0,
                 volume: 0,
+                users: row.get(23).unwrap_or(0),
             })
         });
 

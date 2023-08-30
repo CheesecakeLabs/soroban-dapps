@@ -30,6 +30,7 @@ pub struct Pool {
     token_share: Token,
     token_a_reserves: i64,
     token_b_reserves: i64,
+    users: i32,
 }
 
 async fn list_pools_handler() -> Result<impl warp::Reply, warp::Rejection> {
