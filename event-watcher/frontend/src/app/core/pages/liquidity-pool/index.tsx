@@ -19,6 +19,8 @@ import * as liquidityPoolContract from 'liquidity-pool-contract'
 import { ILiquidityPool, IReserves } from 'interfaces/soroban/liquidityPool';
 import { http } from 'interfaces/http';
 
+import { Button, IconButton } from '@mui/material'
+
 
 const LiquidityPool = (): JSX.Element => {
   const { id } = useParams<{ id: string }>();
@@ -130,8 +132,7 @@ const LiquidityPool = (): JSX.Element => {
   return (
     <main>
       <header className={styles.header}>
-        <button onClick={handleClickBack}>Back</button>
-        <h3>Liquidity Pool DApp</h3>
+        <Button onClick={handleClickBack}>Back</Button>
         <NetworkData sorobanContext={sorobanContext} />
       </header>
       {pool &&

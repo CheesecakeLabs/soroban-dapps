@@ -8,7 +8,7 @@ pub struct SqliteDriver {
     conn: Connection,
 }
 
-use crate::{Pool, Token};
+use crate::{Pool, SwapEventInfo, Token};
 
 pub fn get_connection() -> Result<SqliteDriver> {
     let conn = Connection::open("./database.db").expect("error opening sqlite database file");
@@ -262,76 +262,51 @@ impl SqliteDriver {
         Ok(result)
     }
 
-    pub fn get_volume_chart_data(&self) -> Result<serde_json::Value, rusqlite::Error> {
-        let now = Utc::now();
-        let six_hours_ago = now - Duration::hours(6);
+    pub fn get_recent_swap_events(&self) -> Result<Vec<SwapEventInfo>, rusqlite::Error> {
+        let twelve_hours_ago = Utc::now() - Duration::hours(12);
 
         let mut stmt = self.conn.prepare(
             "
-            SELECT p.id, COALESCE(SUM(
+            SELECT
                 CASE
-                    WHEN e.buy_a THEN e.amount_token_b * token_b.xlm_value
-                    ELSE e.amount_token_a * token_a.xlm_value
-                END
-            ), 0) AS volume
-            FROM event e
-            JOIN pool p ON e.pool_id = p.id
-            JOIN token token_a ON p.token_a_id = token_a.id
-            JOIN token token_b ON p.token_b_id = token_b.id
-            WHERE e.type = 'SWAP' AND e.created_at >= ?;
-    ",
+                    WHEN e.buy_a THEN e.amount_token_b * t2.xlm_value
+                    ELSE e.amount_token_a * t1.xlm_value
+                END AS volume,
+                e.pool_id,
+                p.name,
+                strftime('%H', e.created_at) AS event_hour
+            FROM
+                event e
+            JOIN
+                pool p ON e.pool_id = p.id
+            JOIN
+                token t1 ON p.token_a_id = t1.id
+            JOIN
+                token t2 ON p.token_b_id = t2.id
+            WHERE
+                e.type = 'SWAP'
+                AND e.created_at >= datetime(?, 'utc')
+            ORDER BY
+                e.created_at DESC;
+        ",
         )?;
-        println!("{:?}", six_hours_ago.hour());
-        println!("{:?}", now.hour());
-        let rows = stmt.query_map([six_hours_ago.to_rfc3339()], |row| {
-            println!("{:?}", row);
-            Ok((
-                row.get::<_, i32>(0)?,
-                row.get::<_, String>(1)?,
-                row.get::<_, f64>(2)?,
-            ))
+
+        let formatted_time = twelve_hours_ago.format("%Y-%m-%d %H:%M:%S");
+
+        let rows = stmt.query_map([formatted_time.to_string()], |row| {
+            Ok(SwapEventInfo {
+                volume: row.get(0)?,
+                pool_id: row.get(1)?,
+                pool_name: row.get(2)?,
+                event_hour: row.get(3)?,
+            })
         })?;
 
-        let mut grouped_data: HashMap<i32, Vec<f64>> = HashMap::new();
-
-        let pool_ids = vec![1, 2, 3];
-
-        for hour in six_hours_ago.hour()..=now.hour() {
-            for pool_id in pool_ids.clone() {
-                grouped_data.entry(pool_id).or_insert(vec![0.0; 6]);
-            }
+        let mut event_infos = Vec::new();
+        for event_info in rows {
+            event_infos.push(event_info?);
         }
 
-        println!("{:?}", grouped_data);
-
-        for row in rows {
-            println!("{:?}", row);
-            let hour = 1;
-            let (pool_id, volume) = row.unwrap();
-            let parsed_hour: i32 = hour.parse().unwrap_or(0);
-
-            if parsed_hour >= six_hours_ago.hour() as i32 && parsed_hour <= now.hour() as i32 {
-                let interval_index = (parsed_hour - six_hours_ago.hour() as i32) as usize;
-                let pool_volumes = grouped_data.entry(pool_id).or_default();
-                pool_volumes[interval_index] += volume;
-            }
-        }
-
-        // Create the response data in the desired format
-        let response_data = pool_ids
-            .iter()
-            .map(|&pool_id| {
-                let pool_volumes = grouped_data.get(&pool_id).unwrap();
-                json!({
-                    "pool_id": pool_id,
-                    "volume": pool_volumes.to_vec(),
-                })
-            })
-            .collect::<Vec<Value>>();
-
-        Ok(json!({
-            "intervals": ((six_hours_ago.hour() as i32)..=(now.hour() as i32)).collect::<Vec<i32>>(),
-            "data": response_data,
-        }))
+        Ok(event_infos)
     }
 }

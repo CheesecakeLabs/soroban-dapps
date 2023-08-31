@@ -96,43 +96,46 @@ const Home = (): JSX.Element => {
       <header className={styles.header}>
         <h1>Liquidity Pool Dashboard</h1>
       </header>
-      <div className={classNames(styles.content, styles.mainContent, styles.card)}>
-        <div className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <div><h2>Pools</h2></div>
-            <div className={styles.headerInfo}>
-              <div className={styles.headerLabel}>TVL:</div>
-              <div className={styles.headerValue}>
-                {Utils.formatAmount(TVL, 7)} XLM
+      <div className={classNames(styles.content)}>
+        <div className={classNames(styles.card)}>
+          <div className={styles.section}>
+            <div className={styles.sectionHeader}>
+              <div><h2>Pools</h2></div>
+              <div className={styles.headerInfo}>
+                <div className={styles.headerLabel}>TVL:</div>
+                <div className={styles.headerValue}>
+                  {Utils.formatAmount(TVL, 7)} XLM
+                </div>
               </div>
-            </div>
-            <div className={styles.headerInfo}>
-              <div className={styles.headerLabel}>Volume24h:</div>
-              <div className={styles.headerValue}>
-                {Utils.formatAmount(totalVolume, 7)} XLM
+              <div className={styles.headerInfo}>
+                <div className={styles.headerLabel}>Volume24h:</div>
+                <div className={styles.headerValue}>
+                  {Utils.formatAmount(totalVolume, 7)} XLM
+                </div>
               </div>
+              {/* <Button label="Create Pool" onClick={createPool}></Button> */}
             </div>
-            {/* <Button label="Create Pool" onClick={createPool}></Button> */}
-          </div>
-          <div className={styles.poolList}>
-            {pools.map(item => (
-              <LiquidityPoolListItem
-                pool={item}
-              />
-            ))}
+            <div className={styles.poolList}>
+              {pools.map(item => (
+                <LiquidityPoolListItem
+                  pool={item}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
-      <div className={classNames(styles.content, styles.tokensContent)}>
-        <div className={classNames(styles.card)}>
+      <div className={classNames(styles.content, styles.dflex)}>
+        <div className={classNames(styles.card, styles.tokensCard)}>
           <div className={styles.section}>
             <TokenCard tokens={tokens} />
           </div>
         </div>
+        <div className={classNames(styles.card, styles.chartCard)}>
+          <BarChart />
+        </div>
       </div>
-      {/* <div className={classNames(styles.chartContent, styles.card)}>
-        <BarChart />
-      </div> */}
+
     </main >
   )
 }
