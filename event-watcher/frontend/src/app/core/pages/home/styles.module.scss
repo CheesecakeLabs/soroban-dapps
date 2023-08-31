@@ -27,17 +27,33 @@ body {
 
 .content {
   margin-inline: auto;
-  background-color: white;
-  border-radius: 4px;
-  padding: 24px;
+  margin-top: 30px;
+}
+
+
+.mainContent {
   max-width: 1000px;
 }
 
-.section {
-  margin-top: 50px;
+.tokensContent {
+  max-width: 400px;
 }
 
+.chartContent {
+  max-width: 600px;
+}
 
+.section {
+  margin-top: 10px;
+  padding-inline: 10px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 4px;
+  padding: 24px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
 
 .sectionHeader {
   display: flex;
@@ -46,16 +62,36 @@ body {
 
   h2 {
     margin: unset;
+    margin-right: 20px;
   }
 
   button {
     align-self: flex-end;
   }
+
+  .headerInfo {
+    display: flex;
+    gap: 3px;
+
+
+    .headerLabel {
+      color: var(--color-grayish-dark);
+      font-size: var(--font-size-normal);
+      font-weight: 500;
+    }
+
+    .headerValue {
+      font-weight: 600;
+    }
+
+  }
+
+
 }
+
 
 .poolList {
   margin-top: 16px;
-  padding: 16px;
   border-radius: 4px;
 }
 
@@ -82,14 +118,7 @@ body {
     }
   }
 
-  .card {
-    border-radius: 4px;
-    background-color: white;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
 
-  }
 
   .poolDescription {
     display: flex;
@@ -109,5 +138,19 @@ body {
         gap: 20px
       }
     }
+  }
+}
+
+
+.tsection {
+  display: flex;
+
+  .tokens {
+    flex: 0 0 30%;
+  }
+
+  .chart {
+    flex: 0 0 70%;
+    margin-left: 30px;
   }
 }

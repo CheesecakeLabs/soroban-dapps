@@ -12,18 +12,22 @@ export interface ITokenCardProps {
 
 const TokenCard: FunctionComponent<ITokenCardProps> = ({ tokens }) => {
   return (
-    <div className={styles.list}>
-      <div className={styles.header}>
-        <div className={styles.column}>Token</div>
-        <div className={styles.column}>Price</div>
-      </div>
-      {tokens.map((token, index) => (
-        <div className={styles.row} key={index}>
-          <div className={styles.column}>{token.symbol}</div>
-          <div className={styles.column}>{token.xlmValue} XLM</div>
+    <div>
+      <div className={styles.title}>Pool tokens</div>
+      <div className={styles.list}>
+        <div className={styles.header}>
+          <div className={styles.column}>Token</div>
+          <div className={styles.column}>Price</div>
         </div>
-      ))}
+        {tokens.map((token, index) => (
+          <div className={styles.row} key={index}>
+            <div className={styles.column}>{token.symbol}</div>
+            <div className={styles.column}>{token.xlmValue} XLM</div>
+          </div>
+        ))}
+      </div>
     </div>
+
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
+import classNames from 'classnames'
 import styles from './styles.module.scss'
 import { LiquidityPoolListItem } from 'components/molecules'
 import { http } from 'interfaces/http'
@@ -8,6 +8,9 @@ import { ILiquidityPool } from 'interfaces/soroban/liquidityPool'
 import { Utils } from 'shared/utils'
 import { TokenCard } from 'components/molecules/token-list'
 import { IToken } from 'interfaces/soroban/token'
+import { BarChart } from 'components/atoms/bar-chart'
+
+
 
 const Home = (): JSX.Element => {
   const [pools, setPools] = useState<ILiquidityPool[]>([]);
@@ -26,7 +29,7 @@ const Home = (): JSX.Element => {
             name: item.name,
             liquidity: item.liquidity,
             volume: item.volume,
-            fees: item.fees,
+            fees: Math.floor(item.volume * 0.003),
             tokenA: {
               id: item.token_a.id,
               contractId: item.token_a.contract_id,
@@ -93,12 +96,22 @@ const Home = (): JSX.Element => {
       <header className={styles.header}>
         <h1>Liquidity Pool Dashboard</h1>
       </header>
-      <div className={styles.content}>
+      <div className={classNames(styles.content, styles.mainContent, styles.card)}>
         <div className={styles.section}>
           <div className={styles.sectionHeader}>
             <div><h2>Pools</h2></div>
-            <div>TVL: {Utils.formatAmount(TVL, 7)} XLM</div>
-            <div>Volume24h: {Utils.formatAmount(totalVolume, 7)} XLM</div>
+            <div className={styles.headerInfo}>
+              <div className={styles.headerLabel}>TVL:</div>
+              <div className={styles.headerValue}>
+                {Utils.formatAmount(TVL, 7)} XLM
+              </div>
+            </div>
+            <div className={styles.headerInfo}>
+              <div className={styles.headerLabel}>Volume24h:</div>
+              <div className={styles.headerValue}>
+                {Utils.formatAmount(totalVolume, 7)} XLM
+              </div>
+            </div>
             {/* <Button label="Create Pool" onClick={createPool}></Button> */}
           </div>
           <div className={styles.poolList}>
@@ -109,14 +122,18 @@ const Home = (): JSX.Element => {
             ))}
           </div>
         </div>
-        <div className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <div><h2>Tokens</h2></div>
+      </div>
+      <div className={classNames(styles.content, styles.tokensContent)}>
+        <div className={classNames(styles.card)}>
+          <div className={styles.section}>
+            <TokenCard tokens={tokens} />
           </div>
-          <TokenCard tokens={tokens} />
         </div>
       </div>
-    </main>
+      {/* <div className={classNames(styles.chartContent, styles.card)}>
+        <BarChart />
+      </div> */}
+    </main >
   )
 }
 

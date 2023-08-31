@@ -1,5 +1,8 @@
-use chrono::{Duration, Utc};
+use std::collections::{HashMap, VecDeque};
+
+use chrono::{Duration, Timelike, Utc};
 use rusqlite::{Connection, Result};
+use serde_json::{json, Value};
 
 pub struct SqliteDriver {
     conn: Connection,
@@ -257,5 +260,78 @@ impl SqliteDriver {
         let result = stmt.query_row([formatted_time], |row| row.get(0))?;
 
         Ok(result)
+    }
+
+    pub fn get_volume_chart_data(&self) -> Result<serde_json::Value, rusqlite::Error> {
+        let now = Utc::now();
+        let six_hours_ago = now - Duration::hours(6);
+
+        let mut stmt = self.conn.prepare(
+            "
+            SELECT p.id, COALESCE(SUM(
+                CASE
+                    WHEN e.buy_a THEN e.amount_token_b * token_b.xlm_value
+                    ELSE e.amount_token_a * token_a.xlm_value
+                END
+            ), 0) AS volume
+            FROM event e
+            JOIN pool p ON e.pool_id = p.id
+            JOIN token token_a ON p.token_a_id = token_a.id
+            JOIN token token_b ON p.token_b_id = token_b.id
+            WHERE e.type = 'SWAP' AND e.created_at >= ?;
+    ",
+        )?;
+        println!("{:?}", six_hours_ago.hour());
+        println!("{:?}", now.hour());
+        let rows = stmt.query_map([six_hours_ago.to_rfc3339()], |row| {
+            println!("{:?}", row);
+            Ok((
+                row.get::<_, i32>(0)?,
+                row.get::<_, String>(1)?,
+                row.get::<_, f64>(2)?,
+            ))
+        })?;
+
+        let mut grouped_data: HashMap<i32, Vec<f64>> = HashMap::new();
+
+        let pool_ids = vec![1, 2, 3];
+
+        for hour in six_hours_ago.hour()..=now.hour() {
+            for pool_id in pool_ids.clone() {
+                grouped_data.entry(pool_id).or_insert(vec![0.0; 6]);
+            }
+        }
+
+        println!("{:?}", grouped_data);
+
+        for row in rows {
+            println!("{:?}", row);
+            let hour = 1;
+            let (pool_id, volume) = row.unwrap();
+            let parsed_hour: i32 = hour.parse().unwrap_or(0);
+
+            if parsed_hour >= six_hours_ago.hour() as i32 && parsed_hour <= now.hour() as i32 {
+                let interval_index = (parsed_hour - six_hours_ago.hour() as i32) as usize;
+                let pool_volumes = grouped_data.entry(pool_id).or_default();
+                pool_volumes[interval_index] += volume;
+            }
+        }
+
+        // Create the response data in the desired format
+        let response_data = pool_ids
+            .iter()
+            .map(|&pool_id| {
+                let pool_volumes = grouped_data.get(&pool_id).unwrap();
+                json!({
+                    "pool_id": pool_id,
+                    "volume": pool_volumes.to_vec(),
+                })
+            })
+            .collect::<Vec<Value>>();
+
+        Ok(json!({
+            "intervals": ((six_hours_ago.hour() as i32)..=(now.hour() as i32)).collect::<Vec<i32>>(),
+            "data": response_data,
+        }))
     }
 }
