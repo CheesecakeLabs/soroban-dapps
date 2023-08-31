@@ -160,7 +160,7 @@ impl SqliteDriver {
                         WHEN event.buy_a THEN event.amount_token_b * t2.xlm_value
                         ELSE event.amount_token_a * t1.xlm_value
                     END
-                ), 0) AS volume
+                ), 0) AS volume,
                 users
             FROM pool AS p
             LEFT JOIN event AS e ON e.pool_id = p.id
@@ -170,13 +170,11 @@ impl SqliteDriver {
             INNER JOIN token AS t1 ON p.token_a_id = t1.id
             INNER JOIN token AS t2 ON p.token_b_id = t2.id
             INNER JOIN token AS t3 ON p.token_share_id = t3.id
-            LEFT JOIN event AS e ON e.pool_id = p.id AND e.id = (SELECT MAX(id) FROM event WHERE pool_id = p.id)
             LEFT JOIN event AS event ON event.pool_id = p.id AND event.created_at >= ? AND event.type = 'SWAP'
             GROUP BY p.id, p.contract_id, p.name, t1.id, t1.contract_id, t1.symbol, t1.decimals, t1.xlm_value, t1.is_share,
                      t2.id, t2.contract_id, t2.symbol, t2.decimals, t2.xlm_value, t2.is_share,
                      t3.id, t3.contract_id, t3.symbol, t3.decimals, t3.xlm_value, t3.is_share,
                      p.token_a_reserves, p.token_b_reserves
-            GROUP BY  p.contract_id
         ",
         )?;
 
