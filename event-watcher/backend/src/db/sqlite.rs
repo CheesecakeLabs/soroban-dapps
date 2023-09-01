@@ -98,23 +98,21 @@ impl SqliteDriver {
                 t2.id AS token_b_id, t2.contract_id AS token_b_contract_id, t2.symbol AS token_b_symbol, t2.decimals AS token_b_decimals, t2.xlm_value AS token_b_xlm_value, t2.is_share AS token_b_is_share,
                 t3.id AS token_share_id, t3.contract_id AS token_share_contract_id, t3.symbol AS token_share_symbol, t3.decimals AS token_share_decimals, t3.xlm_value AS token_share_xlm_value, t3.is_share AS token_share_is_share,
                 p.token_a_reserves, p.token_b_reserves,
-                COALESCE(e.reserves_a * t1.xlm_value + e.reserves_b * t2.xlm_value, 0) AS reserves,
+                COALESCE(last_event.reserves_a * t1.xlm_value + last_event.reserves_b * t2.xlm_value, 0) AS reserves,
                 COALESCE(SUM(
                     CASE
-                        WHEN event.buy_a THEN event.amount_token_b * t2.xlm_value
-                        ELSE event.amount_token_a * t1.xlm_value
+                        WHEN swap_event.buy_a THEN swap_event.amount_token_b * t2.xlm_value
+                        ELSE swap_event.amount_token_a * t1.xlm_value
                     END
                 ), 0) AS volume,
-                users
+                COALESCE(user_count, 0) AS users
             FROM pool AS p
-            LEFT JOIN event AS e ON e.pool_id = p.id
-            LEFT JOIN (SELECT user, count(DISTINCT user) as users
-                FROM event
-                GROUP BY pool_id) C ON e.user = C.user
             INNER JOIN token AS t1 ON p.token_a_id = t1.id
             INNER JOIN token AS t2 ON p.token_b_id = t2.id
             INNER JOIN token AS t3 ON p.token_share_id = t3.id
-            LEFT JOIN event AS event ON event.pool_id = p.id AND event.created_at >= ? AND event.type = 'SWAP'
+            LEFT JOIN event AS last_event ON last_event.pool_id = p.id AND last_event.id = (SELECT MAX(id) FROM event WHERE pool_id = p.id)
+            LEFT JOIN event AS swap_event ON swap_event.pool_id = p.id AND swap_event.created_at >= ? AND swap_event.type = 'SWAP'
+            LEFT JOIN (SELECT pool_id, COUNT(DISTINCT user) AS user_count FROM event WHERE type IN ('DEPOSIT', 'SWAP') GROUP BY pool_id) AS user_counts ON user_counts.pool_id = p.id
             GROUP BY p.id, p.contract_id, p.name, t1.id, t1.contract_id, t1.symbol, t1.decimals, t1.xlm_value, t1.is_share,
                      t2.id, t2.contract_id, t2.symbol, t2.decimals, t2.xlm_value, t2.is_share,
                      t3.id, t3.contract_id, t3.symbol, t3.decimals, t3.xlm_value, t3.is_share,
@@ -154,8 +152,8 @@ impl SqliteDriver {
                     },
                     token_a_reserves: row.get(21)?,
                     token_b_reserves: row.get(22)?,
-                    liquidity: row.get(23)?,
-                    volume: row.get(24)?,
+                    liquidity: row.get(23).unwrap_or(0),
+                    volume: row.get(24).unwrap_or(0),
                     users: row.get(25).unwrap_or(0),
                 })
             })?
