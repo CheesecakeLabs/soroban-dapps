@@ -12,6 +12,7 @@ interface ILiquidityPool {
     tokenShare: IToken;
     tokenAReserves: number;
     tokenBReserves: number;
+    users: number;
 }
 interface IReserves {
     reservesA: bigint;

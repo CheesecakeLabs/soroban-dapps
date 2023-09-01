@@ -26,13 +26,16 @@ impl EventProcessor {
     pub fn deserialize_event(&self, event: &ContractEvent, pool: Pool) -> Option<Event> {
         let ContractEventBody::V0(v0) = &event.body;
         let event_type = self.extract_event_type(&v0);
+        let user = self.extract_user(&v0);
         let data = self.extract_event_data(&v0.data);
 
         match event_type.as_str() {
-            "DEPOSIT" | "WITHDRAW" => Some(self.create_event(event_type, pool.id, data, false)),
+            "DEPOSIT" | "WITHDRAW" => {
+                Some(self.create_event(event_type, pool.id, data, false, user))
+            }
             "SWAP" => {
                 let buy_a = self.extract_buy_a(&v0.data);
-                Some(self.create_event(event_type, pool.id, data, buy_a))
+                Some(self.create_event(event_type, pool.id, data, buy_a, user))
             }
             _ => None,
         }
@@ -44,6 +47,7 @@ impl EventProcessor {
         pool_id: u32,
         data: (i128, i128, i128, i128),
         buy_a: bool,
+        user: String,
     ) -> Event {
         let (amount_token_a, amount_token_b) = if buy_a {
             (data.0, data.1)
@@ -58,6 +62,7 @@ impl EventProcessor {
             reserves_a: data.2,
             reserves_b: data.3,
             buy_a,
+            user,
         }
     }
 
@@ -66,6 +71,13 @@ impl EventProcessor {
             .and_then(|topic| topic.string_value())
             .map(|value| value.to_uppercase())
             .unwrap_or("OTHER".to_string())
+    }
+
+    fn extract_user(&self, v0: &ContractEventV0) -> String {
+        EventDeserializer::extract_topic(v0, 1)
+            .and_then(|topic| topic.string_value())
+            .map(|value| value.to_uppercase())
+            .unwrap_or("".to_string())
     }
 
     fn extract_event_data(&self, sc_val: &ScVal) -> (i128, i128, i128, i128) {

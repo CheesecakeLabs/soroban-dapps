@@ -29,6 +29,7 @@ const Home = (): JSX.Element => {
             name: item.name,
             liquidity: item.liquidity,
             volume: item.volume,
+            users: item.users,
             fees: Math.floor(item.volume * 0.003),
             tokenA: {
               id: item.token_a.id,

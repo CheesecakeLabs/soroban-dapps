@@ -16,6 +16,7 @@ pub struct Event {
     pub reserves_a: i128,
     pub reserves_b: i128,
     pub buy_a: bool,
+    pub user: String,
 }
 #[derive(Clone)]
 pub struct Pool {
@@ -73,8 +74,8 @@ pub fn main() {
                                             if let Some(event_data) =
                                                 event_processor.deserialize_event(event, pool)
                                             {
-                                                let _ = conn.create_event(&event_data);
-                                                println!("Event saved!\n");
+                                                let result = conn.create_event(&event_data);
+                                                println!("Saving event result: {:?}\n", result);
                                             }
                                         }
                                     }

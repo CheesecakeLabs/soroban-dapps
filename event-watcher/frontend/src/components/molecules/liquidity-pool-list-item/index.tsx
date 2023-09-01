@@ -39,7 +39,7 @@ const LiquidityPoolListItem: FunctionComponent<ILiquidityPoolListItemProps> = ({
       </div>
       <div>
         <div className={styles.label}>User accounts</div>
-        <div>0</div>
+        <div>{pool.users}</div>
       </div>
     </div>
   )

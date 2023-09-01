@@ -31,8 +31,8 @@ impl SqliteDriver {
         // this type. In a real application this should not be done as there
         // may be a loss of information.
         self.conn.execute(
-            "INSERT INTO event (pool_id, type, amount_token_a, amount_token_b, reserves_a, reserves_b, buy_a)
-             VALUES (?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO event (pool_id, type, amount_token_a, amount_token_b, reserves_a, reserves_b, buy_a, user)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
             (
                 event.pool_id,
                 &event.event_type,
@@ -40,7 +40,8 @@ impl SqliteDriver {
                 self.i128_to_i64(event.amount_token_b),
                 self.i128_to_i64(event.reserves_a),
                 self.i128_to_i64(event.reserves_b),
-                event.buy_a
+                event.buy_a,
+                &event.user
             ),
         )?;
 
