@@ -31,6 +31,7 @@ pub struct Pool {
     token_share: Token,
     token_a_reserves: i64,
     token_b_reserves: i64,
+    users: i32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
