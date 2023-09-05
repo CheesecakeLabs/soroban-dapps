@@ -2,71 +2,38 @@
 
 set -e
 
-NETWORK="$1"
-
-SOROBAN_RPC_HOST="$2"
-
 WASM_PATH="target/wasm32-unknown-unknown/release/"
 LIQUIDITY_POOL_WASM=$WASM_PATH"soroban_liquidity_pool_contract.optimized.wasm"
 ABUNDANCE_WASM=$WASM_PATH"abundance_token.optimized.wasm"
 TOKEN_WASM="contracts/liquidity-pool/token/soroban_token_contract.wasm"
 
+NETWORK="futurenet"
+SOROBAN_RPC_HOST="https://rpc-futurenet.stellar.org:443"
+SOROBAN_RPC_URL="$SOROBAN_RPC_HOST"
+echo "Using Futurenet network with RPC URL: $SOROBAN_RPC_URL"
+SOROBAN_NETWORK_PASSPHRASE="Test SDF Future Network ; October 2022"
+FRIENDBOT_URL="https://friendbot-futurenet.stellar.org/"
 
-if [[ "$SOROBAN_RPC_HOST" == "" ]]; then
-  # If soroban-cli is called inside the soroban-preview docker container,
-  # it can call the stellar standalone container just using its name "stellar"
-  if [[ "$IS_USING_DOCKER" == "true" ]]; then
-    SOROBAN_RPC_HOST="http://stellar:8000"
-    SOROBAN_RPC_URL="$SOROBAN_RPC_HOST"
-  elif [[ "$NETWORK" == "futurenet" ]]; then
-    SOROBAN_RPC_HOST="https://rpc-futurenet.stellar.org:443"
-    SOROBAN_RPC_URL="$SOROBAN_RPC_HOST"
-  else
-     # assumes standalone on quickstart, which has the soroban/rpc path
-    SOROBAN_RPC_HOST="http://localhost:8000"
-    SOROBAN_RPC_URL="$SOROBAN_RPC_HOST/soroban/rpc"
-  fi
-else 
-  SOROBAN_RPC_URL="$SOROBAN_RPC_HOST"  
-fi
-
-
-case "$1" in
-standalone)
-  echo "Using standalone network with RPC URL: $SOROBAN_RPC_URL"
-  SOROBAN_NETWORK_PASSPHRASE="Standalone Network ; February 2017"
-  FRIENDBOT_URL="$SOROBAN_RPC_HOST/friendbot"
-  ;;
-futurenet)
-  echo "Using Futurenet network with RPC URL: $SOROBAN_RPC_URL"
-  SOROBAN_NETWORK_PASSPHRASE="Test SDF Future Network ; October 2022"
-  FRIENDBOT_URL="https://friendbot-futurenet.stellar.org/"
-  ;;
-*)
-  echo "Usage: $0 standalone|futurenet [rpc-host]"
-  exit 1
-  ;;
-esac
 
 echo Add the $NETWORK network to cli client
 soroban config network add \
   --rpc-url "$SOROBAN_RPC_URL" \
   --network-passphrase "$SOROBAN_NETWORK_PASSPHRASE" "$NETWORK"
 
-if !(soroban config identity ls | grep token-admin 2>&1 >/dev/null); then
-  echo Create the token-admin identity
-  soroban config identity generate token-admin
+if !(soroban config identity ls | grep event-watcher-admin 2>&1 >/dev/null); then
+  echo Create the event-watcher-admin identity
+  soroban config identity generate event-watcher-admin
 fi
-TOKEN_ADMIN_SECRET="$(soroban config identity show token-admin)"
-TOKEN_ADMIN_ADDRESS="$(soroban config identity address token-admin)"
+ADMIN_SECRET="$(soroban config identity show event-watcher-admin)"
+ADMIN_ADDRESS="$(soroban config identity address event-watcher-admin)"
 
 mkdir -p .soroban
 
 # This will fail if the account already exists, but it'll still be fine.
-echo Fund token-admin account from friendbot
-curl --silent -X POST "$FRIENDBOT_URL?addr=$TOKEN_ADMIN_ADDRESS" >/dev/null
+echo Fund event-watcher-admin account from friendbot
+curl --silent -X POST "$FRIENDBOT_URL?addr=$ADMIN_ADDRESS" >/dev/null
 
-ARGS="--network $NETWORK --source token-admin"
+ARGS="--network $NETWORK --source event-watcher-admin"
 
 
 echo "Building contracts"
@@ -171,7 +138,7 @@ soroban contract invoke \
   --symbol $TOKEN_1_A_SYMBOL \
   --decimal 7 \
   --name USDCoin \
-  --admin "$TOKEN_ADMIN_ADDRESS"
+  --admin "$ADMIN_ADDRESS"
 
 
 echo "Initialize the abundance token B 1 contract"
@@ -184,7 +151,7 @@ soroban contract invoke \
   --symbol $TOKEN_1_B_SYMBOL \
   --decimal 7 \
   --name Bitcoin \
-  --admin "$TOKEN_ADMIN_ADDRESS"
+  --admin "$ADMIN_ADDRESS"
 
 echo "Initialize the abundance token A 2 contract"
 TOKEN_2_A_SYMBOL=DAI
@@ -196,7 +163,7 @@ soroban contract invoke \
   --symbol $TOKEN_2_A_SYMBOL \
   --decimal 7 \
   --name Dai \
-  --admin "$TOKEN_ADMIN_ADDRESS"
+  --admin "$ADMIN_ADDRESS"
 
 
 echo "Initialize the abundance token B 2 contract"
@@ -209,7 +176,7 @@ soroban contract invoke \
   --symbol $TOKEN_2_B_SYMBOL \
   --decimal 7 \
   --name BinanceCoin \
-  --admin "$TOKEN_ADMIN_ADDRESS"
+  --admin "$ADMIN_ADDRESS"
 
 
 echo "Initialize the abundance token A 3 contract"
@@ -222,7 +189,7 @@ soroban contract invoke \
   --symbol $TOKEN_3_A_SYMBOL \
   --decimal 7 \
   --name LiteCoin \
-  --admin "$TOKEN_ADMIN_ADDRESS"
+  --admin "$ADMIN_ADDRESS"
 
 
 echo "Initialize the abundance token B 3"
@@ -235,7 +202,7 @@ soroban contract invoke \
   --symbol $TOKEN_3_B_SYMBOL \
   --decimal 7 \
   --name EuroCoin \
-  --admin "$TOKEN_ADMIN_ADDRESS"
+  --admin "$ADMIN_ADDRESS"
 
 
 
