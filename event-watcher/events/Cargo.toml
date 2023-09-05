@@ -1,0 +1,14 @@
+[package]
+name = "events"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ingest = "0.0.2"
+stellar-xdr = { version = "0.0.17", default-features = true, features = [] }
+serde_json = "1.0"
+rusqlite = { version = "0.29.0", features = ["bundled"] }
+bs58 = "0.2"
+hex = "0.4"

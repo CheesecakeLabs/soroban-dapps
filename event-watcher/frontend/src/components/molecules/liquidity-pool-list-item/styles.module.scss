@@ -1,0 +1,28 @@
+.poolItem {
+  display: flex;
+  padding: 16px;
+  border: 2px solid #e8eaee;
+  background-color: #f6f7f8;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  div {
+    width: 100%;
+  }
+
+  .label {
+    font-size: small;
+    margin-bottom: 4px;
+    color: var(--color-grayish-dark);
+    font-weight: 700;
+  }
+}
+
+.poolItem:hover,
+.poolItem:active {
+  background-color: rgba(25, 118, 210, 0.1215686275);
+  border: 2px solid rgba(25, 118, 210, 0.3);
+}
