@@ -2,6 +2,9 @@
 
 This is a demo project showcasing a Soroban Dapp that utilizes an event watcher service to update contract data in a database. The Dapp serves as a liquidity pool dashboard, enabling users to access metrics and interact with liquidity pools.
 
+![event-watcher-preview](https://github.com/CheesecakeLabs/soroban-dapps/assets/31604209/f70a1ac7-aa6a-43c5-89ea-4d7313c95cd2)
+
+
 Getting Started
 ===============
 
