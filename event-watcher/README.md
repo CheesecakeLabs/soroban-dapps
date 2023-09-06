@@ -30,7 +30,7 @@ Initialize
 -----------
 From the root folder, run:
 
-       ./initialize
+       ./initialize.sh
 
 This command will create example liquidity pools and tokens, saving them in the database. There are a total of three liquidity pools with different token pairs.
 
