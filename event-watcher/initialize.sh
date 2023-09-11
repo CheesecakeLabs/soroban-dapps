@@ -280,9 +280,56 @@ SHARE_ID_3="$(soroban contract invoke \
 SHARE_ID_3=${SHARE_ID_3//\"/}
 echo "Share ID 3: $SHARE_ID_3"
 
+echo Creating envioriment to frontend
+cp frontend/src/config/.env.example frontend/src/config/.env
+
+echo Creating database
+DB_FILE="backend/database.db"
+
+sqlite3 "$DB_FILE" "CREATE TABLE IF NOT EXISTS token (
+              id          INTEGER PRIMARY KEY,
+              contract_id VARCHAR(60),
+              symbol      VARCHAR(12),
+              decimals    INTEGER,
+              xlm_value   INTEGER,
+              is_share    INTEGER DEFAULT 0
+          );"
+
+sqlite3 "$DB_FILE" "CREATE TABLE IF NOT EXISTS pool (
+              id          INTEGER PRIMARY KEY,
+              contract_id VARCHAR(60),
+              contract_hash_id VARCHAR(64),
+              name        VARCHAR(100),
+              liquidity   INTEGER,
+              volume      INTEGER,
+              fees        INTEGER,
+              token_a_id  INTEGER REFERENCES token(id),
+              token_b_id  INTEGER REFERENCES token(id),
+              token_share_id  INTEGER REFERENCES token(id),
+              token_a_reserves INTEGER,
+              token_b_reserves INTEGER
+          );"
+
+sqlite3 "$DB_FILE" "CREATE TABLE IF NOT EXISTS event (
+                id INTEGER PRIMARY KEY,
+                pool_id  INTEGER REFERENCES pool(id),
+                type TEXT CHECK(type IN ('SWAP', 'WITHDRAW', 'DEPOSIT')),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                amount_token_a INTEGER,
+                amount_token_b INTEGER,
+                reserves_a INTEGER,
+                reserves_b INTEGER,
+                buy_a BOOL,
+                user INTEGER
+            );"              
+
+echo Cleaning data in database if exist
+
+sqlite3 "$DB_FILE" "DELETE from event;"
+sqlite3 "$DB_FILE" "DELETE from pool;"
+sqlite3 "$DB_FILE" "DELETE from token;"
 
 echo Creating data on database
-DB_FILE="backend/database.db"
 
 # Insert data into the token table and get the inserted IDs
 echo First pool

@@ -7,10 +7,10 @@ export type RouteProps = {
   location?: H.Location
   component: // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   | React.ComponentType<RouteComponentProps<any>>
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    | React.ComponentType<any>
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    | React.FunctionComponent<any>
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  | React.ComponentType<any>
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  | React.FunctionComponent<any>
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   render?: (props: RouteComponentProps<any>) => React.ReactNode
   children?: // eslint-disable-next-line  @typescript-eslint/no-explicit-any
@@ -24,10 +24,10 @@ export type RouteProps = {
 export interface IAppRoute {
   component: // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   | React.ComponentType<RouteComponentProps<any>>
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    | React.ComponentType<any>
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    | React.FunctionComponent<any>
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  | React.ComponentType<any>
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  | React.FunctionComponent<any>
   path: string
   exact?: boolean
   isPrivate?: boolean

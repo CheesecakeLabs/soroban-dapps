@@ -17,15 +17,6 @@ Install Dependencies
 4. [Freighter Wallet](https://www.freighter.app/) ≥[v5.0.2](https://github.com/stellar/freighter/releases/tag/2.9.1). Or from the Firefox / Chrome extension store. Once installed, enable "Experimental Mode" in the settings (gear icon).
 
 
-Run Backend
------------
-Go to the `backend` folder and run the following command::
-
-       cargo run
-
-This command will start the backend, which creates a new SQLite database and provides APIs to query the database data. Keep it running.
-
-
 Initialize
 -----------
 From the root folder, run:
@@ -34,6 +25,35 @@ From the root folder, run:
 
 This command will create example liquidity pools and tokens, saving them in the database. There are a total of three liquidity pools with different token pairs.
 
+Build Application
+-----------
+Run the following command:
+
+       make build
+
+This command will build the frontend, backend and events. Will download and install dependencies.
+
+Run Application
+-----------
+To run application execute the following command:
+
+       make run -j3
+
+This command will start the three services needed to run the application:
+- **Backend**: Connects to the SQLite database and provides APIs to query the data.
+- **Event watcher**: Responsible for ingesting the pool events and updating the database located in the backend folder with the latest data.
+- **Frontend**: User interface.
+
+Open [http://localhost:5173](http://localhost:5173) with your browser to see the result.
+
+## Run application separately
+Run Backend
+-----------
+Go to the `backend` folder and run the following command::
+
+       cargo run
+
+This command will start the backend. Keep it running.
 
 Run Event Watcher
 -----------
@@ -41,21 +61,17 @@ Go to the `events` folder and run:
 
        cargo run
 
-This command will launch the service responsible for ingesting the pool events and updating the database located in the backend folder with the latest data. Keep it running.
+This command will launch the event service. Keep it running.
 
 
 Run Frontend
 -----------
-Go to the `frontend` folder and set up the `.env` file:
-
-       cp src/config/.env.example src/config/.env
-
-Now, start the frontend:
+Go to the `frontend` folder and start the frontend:
 
        make start
 
 
-Open [http://localhost:5173](http://localhost:5173) with your browser to see the result. 
+The frontend can be accessed at [http://localhost:5173](http://localhost:5173). 
 
 
 Overview
