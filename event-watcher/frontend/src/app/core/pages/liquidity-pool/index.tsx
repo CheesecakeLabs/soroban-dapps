@@ -67,6 +67,7 @@ const LiquidityPool = (): JSX.Element => {
           },
           tokenAReserves: response.data.token_a_reserves,
           tokenBReserves: response.data.token_b_reserves,
+          users: response.data.users,
         };
 
         setPool(data);
