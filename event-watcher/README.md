@@ -39,7 +39,10 @@ To run application execute the following command:
 
        make run -j3
 
-This command will start the backend, which creates a new SQLite database and provides APIs to query the database data. Then will launch the service responsible for ingesting the pool events and updating the database located in the backend folder with the latest data. Finally, starts the frontend, keeping it all running.
+This command will start the three services needed to run the application:
+- **Backend**: Connects to the SQLite database and provides APIs to query the data.
+- **Event watcher**: Responsible for ingesting the pool events and updating the database located in the backend folder with the latest data.
+- **Frontend**: User interface.
 
 Open [http://localhost:5173](http://localhost:5173) with your browser to see the result.
 
@@ -50,7 +53,7 @@ Go to the `backend` folder and run the following command::
 
        cargo run
 
-This command will start the backend separately.
+This command will start the backend. Keep it running.
 
 Run Event Watcher
 -----------
@@ -58,7 +61,7 @@ Go to the `events` folder and run:
 
        cargo run
 
-This command will launch the event service and keep it running.
+This command will launch the event service. Keep it running.
 
 
 Run Frontend
@@ -68,7 +71,7 @@ Go to the `frontend` folder and start the frontend:
        make start
 
 
-The frontend is created in [http://localhost:5173](http://localhost:5173). 
+The frontend can be accessed at [http://localhost:5173](http://localhost:5173). 
 
 
 Overview
