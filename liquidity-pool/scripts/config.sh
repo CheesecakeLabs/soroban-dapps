@@ -58,6 +58,8 @@ export USER_C_SK="SCOMBFLTEGYE7JRIGVJHYWU5AAT7H2IRSJACWPY5BAQV5K7W7UTKR4Z3"   #T
 
 
 # OTHER
+export INVOKE_LOG_OUTPUT_FILE="invoke-log.csv"
+export WRITE_TO_LOG_FILE=true
 export LOG_TIME=true                             # enable invoke to log the execution time
 export DEFAULT_FEE=1000000                       # Base fee in stroops(1 XLM * 10**-7)
 export LOAD_AMOUNT=$((10000000 * 10**A_DECIMAL)) # Amount initially loaded in each user account

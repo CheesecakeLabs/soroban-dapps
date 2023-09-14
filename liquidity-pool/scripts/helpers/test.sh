@@ -4,45 +4,35 @@ echo -e "\n ${STYLE} DEPOSITING LIQUIDITY...${NS}"
 INVOKER_SK=""
 CONTRACT_ID=${AMM_CONTRACT_ID}
 
-
 echo -e "\n Depositing ${DEPOSIT_AMOUNT} units of from user A"
-FUNCTION_NAME="deposit"
-INVOKER_SK=${USER_A_SK}
-ARGS="--to ${USER_A_PK} --desired_a ${DEPOSIT_AMOUNT} --min_a ${DEPOSIT_AMOUNT} --desired_b ${DEPOSIT_AMOUNT} --min_b ${DEPOSIT_AMOUNT}"
 
-./helpers/invoke.sh \
-    ${CONTRACT_ID} \
-    ${FUNCTION_NAME} \
-    ${INVOKER_SK} \
-    $ARGS &
-
-
+./helpers/amm/deposit.sh ${USER_A_SK} \
+    ${USER_A_PK} \
+    ${DEPOSIT_AMOUNT} \
+    1 \
+    ${DEPOSIT_AMOUNT} \
+    1 &
 
 echo -e "\n Depositing ${DEPOSIT_AMOUNT} units of from user B"
-FUNCTION_NAME="deposit"
-INVOKER_SK=${USER_B_SK}
-ARGS="--to ${USER_B_PK} --desired_a ${DEPOSIT_AMOUNT} --min_a ${DEPOSIT_AMOUNT} --desired_b ${DEPOSIT_AMOUNT} --min_b ${DEPOSIT_AMOUNT}"
 
-./helpers/invoke.sh \
-    ${CONTRACT_ID} \
-    ${FUNCTION_NAME} \
-    ${INVOKER_SK} \
-    $ARGS &
-
+./helpers/amm/deposit.sh ${USER_B_SK} \
+    ${USER_B_PK} \
+    ${DEPOSIT_AMOUNT} \
+    1 \
+    ${DEPOSIT_AMOUNT} \
+    1 &
 
 
 echo -e "\n Depositing ${DEPOSIT_AMOUNT} units of from user C"
-FUNCTION_NAME="deposit"
-INVOKER_SK=${USER_C_SK}
-ARGS="--to ${USER_C_PK} --desired_a ${DEPOSIT_AMOUNT} --min_a ${DEPOSIT_AMOUNT} --desired_b ${DEPOSIT_AMOUNT} --min_b ${DEPOSIT_AMOUNT}"
-
-./helpers/invoke.sh \
-    ${CONTRACT_ID} \
-    ${FUNCTION_NAME} \
-    ${INVOKER_SK} \
-    $ARGS &
+./helpers/amm/deposit.sh ${USER_C_SK} \
+    ${USER_C_PK} \
+    ${DEPOSIT_AMOUNT} \
+    1 \
+    ${DEPOSIT_AMOUNT} \
+    1 &
 
 wait
+
 
 echo -e "\n ${STYLE} TRIGGERING SWAPS...${NS}"
 
