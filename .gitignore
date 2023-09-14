@@ -11,3 +11,7 @@ node_modules
 
 # Rust
 target
+
+amm-deploy-out
+asset-a-deploy-out
+asset-b-deploy-out

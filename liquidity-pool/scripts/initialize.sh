@@ -1,6 +1,8 @@
+#!/bin/bash
+
 source ./config.sh
 
-STYLE='\033[1;37;44m' 
+STYLE='\033[1;37;44m'
 NS='\033[0m' # No Color
 
 
