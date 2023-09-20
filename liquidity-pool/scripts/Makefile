@@ -10,13 +10,16 @@ help:
 default: run
 
 run:
-	$(MAKE) run-test-one $(MAKE) run-test-two $(MAKE) run-test-three
+	for number in 1 2 3 4 5; do \
+    $(MAKE) run-test-one $(MAKE) run-test-two $(MAKE) run-test-three; \
+	done
+	
 
 run-test-one:
-	./run.sh test | tee -a test-one
+	./run.sh test
 
 run-test-two:
-	./run.sh test | tee -a test-two
+	./run.sh test
 
 run-test-three:
-	./run.sh test | tee -a test-three		
+	./run.sh test

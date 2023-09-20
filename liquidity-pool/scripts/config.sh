@@ -4,8 +4,8 @@ export FRIENDBOT_URL="https://friendbot-futurenet.stellar.org/"
 export DATA_DIR="./data"
 
 # Accounts
-export ADMIN_PK="GCAWEG7O3XCZA5APVSBEJUUZJEQZHA2RU6IE5JW6FMNEY7ZMVUS3ZUHP"  #The Public key of the Admin account
-export ADMIN_SK="SA4EV3IG7JNKCVAHSTFHSEFMMGG2LZKPNUOBIEEHU3F2JQWXOA4RJMAZ"  #The Secret key of the Admin account
+export ADMIN_PK="GCSDNKNXKYYSBR4XXB5YL23MNEOSN5FWTBVEY6HAQO2XW344D2CKUHOM"  #The Public key of the Admin account
+export ADMIN_SK="SBBARYTESWDLKU62HIGEQMUFFPLXUN73B42DXRFAM6LLN4B2Q5KS6UUG"  #The Secret key of the Admin account
 
 # Assets
 export ASSET_WASM="../target/wasm32-unknown-unknown/release/abundance_token.optimized.wasm"
