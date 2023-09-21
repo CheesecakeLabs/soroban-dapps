@@ -6,10 +6,11 @@ import styles from './styles.module.scss'
 import { Utils } from 'shared/utils'
 import { IMintFunction, IToken } from "interfaces/soroban/token"
 import { MintButton } from 'components/atoms';
+import { Address } from 'token-a-contract';
 
 
 interface IBalance {
-    account: string;
+    account: Address;
     token: IToken;
     balance: bigint;
     icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;

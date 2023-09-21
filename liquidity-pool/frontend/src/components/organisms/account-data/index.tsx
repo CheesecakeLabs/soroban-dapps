@@ -8,8 +8,8 @@ import { ConnectButton } from "components/atoms"
 import { Balance } from "components/molecules"
 import { IToken } from "interfaces/soroban/token"
 import { TokenAIcon, TokenBIcon, TokenLPIcon } from 'components/icons';
-import { mint as mintA } from 'token-a-contract'
-import { mint as mintB } from 'token-B-contract'
+import { contractTokenA, contractTokenB } from 'shared/contracts';
+import { Address } from 'token-a-contract';
 
 interface IAccountData {
     sorobanContext: SorobanContextType;
@@ -26,7 +26,7 @@ const AccountData: FunctionComponent<IAccountData> = ({ sorobanContext, tokenA, 
             <h3>Account balance</h3>
             {account ? (
                 <BalanceData
-                    account={account}
+                    account={new Address(account)}
                     tokenA={tokenA}
                     tokenB={tokenB}
                     shareToken={shareToken}
@@ -43,7 +43,7 @@ interface IBalanceData {
     tokenA: IToken;
     tokenB: IToken;
     shareToken: IToken;
-    account: string;
+    account: Address;
     onUpdate: () => void;
 }
 
@@ -51,14 +51,14 @@ const BalanceData: FunctionComponent<IBalanceData> = ({ tokenA, tokenB, shareTok
     return (
         <>
             <div className={styles.address}>
-                {`${account.substring(0, 10)}...${account.substring(account.length - 10)}`}
+                {`${account.toString().substring(0, 10)}...${account.toString().substring(account.toString().length - 10)}`}
             </div>
             <div className={styles.balances}>
                 <Balance
                     account={account}
                     token={tokenA}
                     balance={tokenA.balance || BigInt(0)}
-                    mint={mintA}
+                    mint={contractTokenA.mint}
                     icon={TokenAIcon}
                     onUpdate={onUpdate}
                 />
@@ -66,7 +66,7 @@ const BalanceData: FunctionComponent<IBalanceData> = ({ tokenA, tokenB, shareTok
                     account={account}
                     token={tokenB}
                     balance={tokenB.balance || BigInt(0)}
-                    mint={mintB}
+                    mint={contractTokenB.mint}
                     icon={TokenBIcon}
                     onUpdate={onUpdate}
                 />

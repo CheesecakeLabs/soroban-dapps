@@ -42,10 +42,11 @@ declare -i total_swaps=${TOTAL_SWAPS}
 
 while [ ${swaps_executed} -le ${total_swaps} ]
 do
+    echo -e "\n  while [ {}\n"
 
     for ((i = 1; i <= ${PARALLEL_SWAPS}; i++))
     do
-
+        echo -e "\n  PARALLEL for\n"
         swap_amount=$(( RANDOM % (SWAP_MAX_AMOUNT - SWAP_MIN_AMOUNT + 1) + SWAP_MIN_AMOUNT ))
         INVOKER_SK=""
         USER_PK=""

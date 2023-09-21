@@ -10,7 +10,7 @@ help:
 default: run
 
 run:
-	for number in 1 2 3 4 5; do \
+	for number in 1; do \
     $(MAKE) run-test-one $(MAKE) run-test-two $(MAKE) run-test-three; \
 	done
 	
