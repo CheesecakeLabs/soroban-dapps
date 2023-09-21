@@ -4,7 +4,7 @@ import styles from './styles.module.scss'
 
 
 import { Utils } from 'shared/utils'
-import { IMintFunction, IToken } from "interfaces/soroban/token"
+import { IToken } from "interfaces/soroban/token"
 import { MintButton } from 'components/atoms';
 import { Address } from 'token-a-contract';
 
@@ -14,11 +14,12 @@ interface IBalance {
     token: IToken;
     balance: bigint;
     icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
-    mint?: IMintFunction;
+    tokenA?: boolean;
+    mint: boolean;
     onUpdate: () => void;
 }
 
-const Balance: FunctionComponent<IBalance> = ({ account, token, balance, icon, mint, onUpdate }) => {
+const Balance: FunctionComponent<IBalance> = ({ account, tokenA, balance, mint, icon, token, onUpdate }) => {
     const Icon = icon;
 
     return (
@@ -33,7 +34,7 @@ const Balance: FunctionComponent<IBalance> = ({ account, token, balance, icon, m
                     <MintButton
                         account={account}
                         decimals={token.decimals}
-                        mint={mint}
+                        tokenA={tokenA}
                         onUpdate={onUpdate}
                     />
                 </div>

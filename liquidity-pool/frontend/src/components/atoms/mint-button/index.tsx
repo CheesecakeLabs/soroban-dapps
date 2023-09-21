@@ -11,11 +11,11 @@ import { Address } from 'token-a-contract';
 interface IMintButton {
   account: Address;
   decimals: number;
-  mint: IMintFunction;
+  tokenA?: boolean;
   onUpdate: () => void;
 }
 
-const MintButton: FunctionComponent<IMintButton> = ({ account, decimals, mint, onUpdate }) => {
+const MintButton: FunctionComponent<IMintButton> = ({ account, decimals, tokenA, onUpdate }) => {
   const [isSubmitting, setSubmitting] = useState(false)
   const amount = BigInt(100 * 10 ** decimals)
 
@@ -23,11 +23,11 @@ const MintButton: FunctionComponent<IMintButton> = ({ account, decimals, mint, o
     <LoadingButton
       onClick={async () => {
         setSubmitting(true)
-        console.log("account", account)
-        console.log("amount", amount)
-        // contractTokenB.mint({ to: account, amount: amount })
-        await mint({ to: account, amount: amount })
-        // console.log("mint")
+        if (tokenA) {
+          await contractTokenA.mint({ to: account, amount: amount })
+        } else {
+          await contractTokenB.mint({ to: account, amount: amount })
+        }
         setSubmitting(false)
         onUpdate()
       }}

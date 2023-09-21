@@ -8,7 +8,6 @@ import { ConnectButton } from "components/atoms"
 import { Balance } from "components/molecules"
 import { IToken } from "interfaces/soroban/token"
 import { TokenAIcon, TokenBIcon, TokenLPIcon } from 'components/icons';
-import { contractTokenA, contractTokenB } from 'shared/contracts';
 import { Address } from 'token-a-contract';
 
 interface IAccountData {
@@ -58,7 +57,8 @@ const BalanceData: FunctionComponent<IBalanceData> = ({ tokenA, tokenB, shareTok
                     account={account}
                     token={tokenA}
                     balance={tokenA.balance || BigInt(0)}
-                    mint={contractTokenA.mint}
+                    tokenA={true}
+                    mint={true}
                     icon={TokenAIcon}
                     onUpdate={onUpdate}
                 />
@@ -66,7 +66,8 @@ const BalanceData: FunctionComponent<IBalanceData> = ({ tokenA, tokenB, shareTok
                     account={account}
                     token={tokenB}
                     balance={tokenB.balance || BigInt(0)}
-                    mint={contractTokenB.mint}
+                    tokenA={false}
+                    mint={true}
                     icon={TokenBIcon}
                     onUpdate={onUpdate}
                 />
@@ -74,6 +75,7 @@ const BalanceData: FunctionComponent<IBalanceData> = ({ tokenA, tokenB, shareTok
                     account={account}
                     token={shareToken}
                     balance={shareToken.balance || BigInt(0)}
+                    mint={false}
                     icon={TokenLPIcon}
                     onUpdate={onUpdate}
                 />
