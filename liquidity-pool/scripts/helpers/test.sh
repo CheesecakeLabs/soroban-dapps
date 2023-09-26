@@ -11,7 +11,7 @@ echo -e "\n Depositing ${DEPOSIT_AMOUNT} units of from user A"
     ${DEPOSIT_AMOUNT} \
     1 \
     ${DEPOSIT_AMOUNT} \
-    1 &
+    1 
 
 echo -e "\n Depositing ${DEPOSIT_AMOUNT} units of from user B"
 
@@ -20,7 +20,7 @@ echo -e "\n Depositing ${DEPOSIT_AMOUNT} units of from user B"
     ${DEPOSIT_AMOUNT} \
     1 \
     ${DEPOSIT_AMOUNT} \
-    1 &
+    1 
 
 
 echo -e "\n Depositing ${DEPOSIT_AMOUNT} units of from user C"
@@ -29,7 +29,7 @@ echo -e "\n Depositing ${DEPOSIT_AMOUNT} units of from user C"
     ${DEPOSIT_AMOUNT} \
     1 \
     ${DEPOSIT_AMOUNT} \
-    1 &
+    1 
 
 wait
 
@@ -42,7 +42,6 @@ declare -i total_swaps=${TOTAL_SWAPS}
 
 while [ ${swaps_executed} -le ${total_swaps} ]
 do
-    echo -e "\n  while [ {}\n"
 
     for ((i = 1; i <= ${PARALLEL_SWAPS}; i++))
     do
