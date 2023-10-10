@@ -1,20 +1,14 @@
 
 USER_PK="$1"
 USER_SK="$2"
-AMOUNT="$3"
-BUY_A="$4"
-IN_MAX="$5"
-
-buy_a_arg=""
-
-if [ "$BUY_A" ]; then
-    buy_a_arg="--buy_a "
-fi
+SHARE_AMOUNT="$3"
+MIN_A="$4"
+MIN_B="$5"
 
 CONTRACT_ID=${AMM_CONTRACT_ID}
-FUNCTION_NAME="swap"
+FUNCTION_NAME="withdraw"
 INVOKER_SK=${USER_SK}
-ARGS="--to ${USER_PK} ${buy_a_arg} --out ${AMOUNT} --in_max ${IN_MAX}"
+ARGS="--to ${USER_PK} --share_amount ${SHARE_AMOUNT} --min_a ${MIN_A} --min_b ${MIN_B}"
 
 
 ./helpers/invoke.sh \

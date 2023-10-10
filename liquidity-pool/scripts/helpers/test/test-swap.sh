@@ -32,8 +32,6 @@ source helpers/amm/deposit.sh ${USER_C_SK} \
     ${DEPOSIT_AMOUNT} \
     1 &
 
-wait
-
 
 echo -e "\n ${STYLE} TRIGGERING SWAPS...${NS}"
 
@@ -73,22 +71,11 @@ do
         echo -e "\n  Swap n-${swaps_executed} -> ${USER_PK} is swapping ${swap_amount} units... \n"
         
         source helpers/swap.sh "$USER_PK" "$INVOKER_SK" "$swap_amount" true 9999999999999999 true &
-
-        source helpers/withdraw.sh "$USER_PK" "$INVOKER_SK" "$SHARE_AMOUNT" 10000000 10000000 &
         ((swaps_executed++))
         ((random_user++))
     done
     wait
 done
 
-
-echo -e "\n ${STYLE} CHECKING POOL RESERVES...${NS}"
-
-INVOKER_SK=${ADMIN_SK}
-FUNCTION_NAME="get_rsrvs"
-source helpers/invoke.sh \
-    ${CONTRACT_ID} \
-    ${FUNCTION_NAME} \
-    ${INVOKER_SK}
 
 echo -e "\n Finished"

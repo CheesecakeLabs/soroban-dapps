@@ -10,16 +10,21 @@ help:
 default: run
 
 run:
-	for number in 1 2 3 4 5; do \
-    $(MAKE) run-test-one $(MAKE) run-test-two $(MAKE) run-test-three; \
+	for number in {1..50}; do \
+    	./run.sh test;\
 	done
-	
 
-run-test-one:
-	./run.sh test
+run-deposit:
+	for number in {1..50}; do \
+    	./run.sh deposit; \
+	done
 
-run-test-two:
-	./run.sh test
+run-swap:
+	for number in {1..100}; do \
+    	./run.sh swap; \
+	done
 
-run-test-three:
-	./run.sh test
+run-withdraw:
+	for number in {1..50}; do \
+    	./run.sh withdraw;\
+	done	

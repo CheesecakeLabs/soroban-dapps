@@ -5,7 +5,6 @@ INVOKER_SK=${AMM_ADMIN_SK}
 FUNCTION_NAME="initialize"
 
 
-
 # Important to reload it here in case it was previously 
 # deployed in the same script execution otherwise, the 
 # value would've been loaded from config.sh at the very 

@@ -45,7 +45,7 @@ output=$(soroban contract invoke \
   ${ARGS})
 
 if [ $? -eq 1 ]; then
-  echo "Contract: ${FUNCTION_NAME} faillll"
+  echo "Contract: ${FUNCTION_NAME} fail"
   OUTPUT="ERROR"
 fi
 

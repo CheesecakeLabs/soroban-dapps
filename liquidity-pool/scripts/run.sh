@@ -22,10 +22,21 @@ case "$ACTION" in
   load)
     ./helpers/load-accounts.sh "$@"
     ;;
-  test)
-    ./helpers/test.sh
+  withdraw)
+    source helpers/test-withdraw.sh
     shift
-    # ./helpers/admin-actions.sh "$@"
+    ;;       
+  swap)
+    source helpers/test-swap.sh
+    shift
+    ;;    
+  deposit)
+    source helpers/test-deposit.sh
+    shift
+    ;;    
+  test)
+    source helpers/test.sh
+    shift
     ;;
   
   *)
