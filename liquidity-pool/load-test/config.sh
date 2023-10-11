@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Environment Variables
 export NETWORK_NAME="futurenet" # Name of the Stellar network to deploy the contract (e.g., public, testnet, futurenet)
 export FRIENDBOT_URL="https://friendbot-futurenet.stellar.org/"
@@ -12,13 +14,11 @@ export ASSET_WASM="../target/wasm32-unknown-unknown/release/abundance_token.opti
 export AMM_WASM="../target/wasm32-unknown-unknown/release/soroban_liquidity_pool_contract.optimized.wasm"
 export ASSET_WASM_RAW="../target/wasm32-unknown-unknown/release/abundance_token.wasm"
 export AMM_WASM_RAW="../target/wasm32-unknown-unknown/release/soroban_liquidity_pool_contract.wasm"
-# export STC_WASM="../contracts/liquidity-pool/token/soroban_token_contract.wasm"
 
 
 # Asset A
 export A_DEPLOYER_ACCOUNT_SK=${ADMIN_SK}
 export A_DEPLOY_OUTPUT_FILE="asset-a-deploy"
-export A_CONTRACT_ID=$(<"${DATA_DIR}/${A_DEPLOY_OUTPUT_FILE}-out")
 export A_ADMIN_PK=${ADMIN_PK}
 export A_ADMIN_SK=${ADMIN_SK}
 export A_DECIMAL=7
@@ -29,7 +29,6 @@ export A_SYMBOL="FIFO"
 # Asset B
 export B_DEPLOYER_ACCOUNT_SK=${ADMIN_SK}
 export B_DEPLOY_OUTPUT_FILE="asset-b-deploy"
-export B_CONTRACT_ID=$(<"${DATA_DIR}/${B_DEPLOY_OUTPUT_FILE}-out")
 export B_ADMIN_PK=${ADMIN_PK}
 export B_ADMIN_SK=${ADMIN_SK}
 export B_DECIMAL=7

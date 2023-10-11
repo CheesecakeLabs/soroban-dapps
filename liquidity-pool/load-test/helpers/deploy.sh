@@ -12,8 +12,6 @@ CONTRACT_ID=$(soroban contract deploy \
   --source ${DEPLOYER_SK} \
   --network ${NETWORK_NAME})
 
-# Check if the directory exists and create it if it doesn't
-mkdir -p ${DATA_DIR}
 # Store Contract ID
 echo ${CONTRACT_ID} > ${DATA_DIR}/${DEPLOY_OUTPUT_FILE}-out
 

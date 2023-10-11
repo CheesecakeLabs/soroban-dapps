@@ -9,11 +9,15 @@ NS='\033[0m' # No Color
 echo -e "\n ${STYLE}BUILDING CONTRACTS...${NS}"
 cd ..
 soroban contract build
-cd scripts
+cd load-test
 
 echo -e "\n ${STYLE}OPTIMIZING CONTRACTS...${NS}"
 soroban contract optimize --wasm ${AMM_WASM_RAW}
 soroban contract optimize --wasm ${ASSET_WASM_RAW}
+
+# Check if the directory exists and create it if it doesn't
+echo "creating DATA_DIR: ${DATA_DIR}"
+mkdir -p ${DATA_DIR}
 
 echo -e "\n ${STYLE}DEPLOYING ASSET A CONTRACT...${NS}"
 ./helpers/deploy.sh ${ASSET_WASM} ${A_DEPLOYER_ACCOUNT_SK} ${A_DEPLOY_OUTPUT_FILE}
@@ -35,4 +39,6 @@ echo -e "\n ${STYLE}DEPLOYING AMM CONTRACT...${NS}"
 echo -e "\n ${STYLE}INITIALIZING AMM CONTRACT...${NS}"
 ./helpers/initialize-amm.sh
 
+echo -e "\n ${STYLE}LOADING USER ACCOUNTS WITH TOKENS...${NS}"
+source helpers/load-accounts.sh
 

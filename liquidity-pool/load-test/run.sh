@@ -12,30 +12,22 @@ export STYLE='\033[1;37;44m'
 export NS='\033[0m' # No Color
 
 
-# if [ "$WRITE_TO_LOG_FILE" ]; then
-#   echo "CONTRACT ID,FUNCTION NAME,INVOKER SK,ELAPSED TIME(seconds),ARGS,OUTPUT" > ${DATA_DIR}/${INVOKE_LOG_OUTPUT_FILE}
-# fi
-
-
 ACTION=$1
 case "$ACTION" in
-  load)
-    ./helpers/load-accounts.sh "$@"
-    ;;
   withdraw)
-    source helpers/test-withdraw.sh
+    source tests/withdraw.sh
     shift
     ;;       
   swap)
-    source helpers/test-swap.sh
+    source tests/swap.sh
     shift
     ;;    
   deposit)
-    source helpers/test-deposit.sh
+    source tests/deposit.sh
     shift
     ;;    
   test)
-    source helpers/test.sh
+    source tests/liquidity-pool.sh
     shift
     ;;
   

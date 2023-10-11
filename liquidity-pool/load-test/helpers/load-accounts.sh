@@ -4,9 +4,8 @@ AMOUNT=${LOAD_AMOUNT}
 N_OF_USERS=3
 
 
-echo -e "\n ${STYLE}LOADING USER ACCOUNTS WITH TOKENS...${NS}"
 INVOKER_SK=${A_ADMIN_SK}
-CONTRACT_ID=${A_CONTRACT_ID}
+CONTRACT_ID=$(<"${DATA_DIR}/${A_DEPLOY_OUTPUT_FILE}-out")
 
 echo -e "\n Minting $((AMOUNT * N_OF_USERS)) units of Token A"
 FUNCTION_NAME="mint"
@@ -36,7 +35,7 @@ done
 
 
 INVOKER_SK=${B_ADMIN_SK}
-CONTRACT_ID=${B_CONTRACT_ID}
+CONTRACT_ID=$(<"${DATA_DIR}/${B_DEPLOY_OUTPUT_FILE}-out")
 
 echo -e "\n Minting $((AMOUNT * N_OF_USERS)) units of Token B"
 FUNCTION_NAME="mint"
@@ -64,9 +63,6 @@ do
 
 done
 
-
-# echo -e "\n Processing..."
-# wait  
 echo -e "\n Finished!"
 
 
