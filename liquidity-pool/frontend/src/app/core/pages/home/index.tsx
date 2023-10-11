@@ -11,18 +11,16 @@ import { LiquidityActions, AccountData } from 'components/organisms'
 
 import { Utils } from 'shared/utils'
 import { TokenAIcon, TokenBIcon } from "components/icons"
-import * as tokenAContract from 'token-a-contract'
-import * as tokenBContract from 'token-B-contract'
-import * as shareTokenContract from 'share-token-contract'
-import * as liquidityPoolContract from 'liquidity-pool-contract'
+import { Address } from 'token-a-contract'
 
 import { IToken } from 'interfaces/soroban/token';
 import { IReserves } from 'interfaces/soroban/liquidityPool';
+import { contractLiquidityPool, contractShareToken, contractTokenA, contractTokenB } from 'shared/contracts';
 
 
 const Home = (): JSX.Element => {
   const sorobanContext = useSorobanReact()
-  const account = sorobanContext.address || ""
+  const account = sorobanContext.address ? new Address(sorobanContext.address) : ""
 
   const [updatedAt, setUpdatedAt] = React.useState<number>(Date.now())
   const [tokenA, setTokenA] = React.useState<IToken>({ symbol: "", decimals: 7 })
@@ -33,12 +31,12 @@ const Home = (): JSX.Element => {
 
   React.useEffect(() => {
     Promise.all([
-      tokenAContract.symbol(),
-      tokenAContract.decimals(),
-      tokenBContract.symbol(),
-      tokenBContract.decimals(),
-      shareTokenContract.symbol(),
-      shareTokenContract.decimals()
+      contractTokenA.symbol(),
+      contractTokenA.decimals(),
+      contractTokenB.symbol(),
+      contractTokenB.decimals(),
+      contractShareToken.symbol(),
+      contractShareToken.decimals()
     ]).then(fetched => {
       setTokenA(prevTokenA => ({
         ...prevTokenA,
@@ -60,8 +58,8 @@ const Home = (): JSX.Element => {
 
   React.useEffect(() => {
     Promise.all([
-      liquidityPoolContract.getRsrvs(),
-      liquidityPoolContract.getShares()
+      contractLiquidityPool.getRsrvs(),
+      contractLiquidityPool.getShares()
     ]).then(fetched => {
       setReserves({
         reservesA: fetched[0][0],
@@ -71,9 +69,9 @@ const Home = (): JSX.Element => {
     });
     if (account) {
       Promise.all([
-        tokenAContract.balance({ id: account }),
-        tokenBContract.balance({ id: account }),
-        shareTokenContract.balance({ id: account })
+        contractTokenA.balance({ id: account }),
+        contractTokenB.balance({ id: account }),
+        contractShareToken.balance({ id: account })
       ]).then(fetched => {
         setTokenA(prevTokenA => ({
           ...prevTokenA,
@@ -136,10 +134,10 @@ const Home = (): JSX.Element => {
             </>)
           }
 
-          {sorobanContext.address ?
+          {account ?
             (
               <LiquidityActions
-                account={sorobanContext.address}
+                account={account}
                 tokenA={tokenA}
                 tokenB={tokenB}
                 shareToken={shareToken}
