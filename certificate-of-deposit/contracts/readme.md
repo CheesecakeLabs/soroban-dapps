@@ -1,0 +1,3 @@
+- Deploy contract
+- initialize
+- issuer trigger asset contract to allow the CoD contract to perform payments
