@@ -77,6 +77,16 @@ do
     wait
 done
 
+echo -e "\n Withdraw ${SHARE_AMOUNT} units of from user A"
+source helpers/withdraw.sh "$USER_A_PK" "$USER_A_SK" "$SHARE_AMOUNT" 10000000 10000000 &
+
+echo -e "\n Withdraw ${SHARE_AMOUNT} units of from user B"
+source helpers/withdraw.sh "$USER_B_PK" "$USER_B_SK" "$SHARE_AMOUNT" 10000000 10000000 &
+
+echo -e "\n Withdraw ${SHARE_AMOUNT} units of from user C"
+source helpers/withdraw.sh "$USER_C_PK" "$USER_C_SK" "$SHARE_AMOUNT" 10000000 10000000 &
+
+wait
 
 echo -e "\n ${STYLE} CHECKING POOL RESERVES...${NS}"
 
@@ -87,12 +97,15 @@ source helpers/invoke.sh \
     ${FUNCTION_NAME} \
     ${INVOKER_SK}
 
-INVOKER_SK=${ADMIN_SK}
-FUNCTION_NAME="get_rsrvs"
 source helpers/invoke.sh \
     ${CONTRACT_ID} \
     ${FUNCTION_NAME} \
     ${INVOKER_SK}
+
+source helpers/invoke.sh \
+    ${CONTRACT_ID} \
+    ${FUNCTION_NAME} \
+    ${INVOKER_SK}    
 
 
 echo -e "\n Finished"

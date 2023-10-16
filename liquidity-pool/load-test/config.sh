@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Environment Variables
-export NETWORK_NAME="futurenet" # Name of the Stellar network to deploy the contract (e.g., public, testnet, futurenet)
-export FRIENDBOT_URL="https://friendbot-futurenet.stellar.org/"
+export NETWORK_NAME="testnet" # Name of the Stellar network to deploy the contract (e.g., public, testnet, futurenet)
+export FRIENDBOT_URL="https://friendbot.stellar.org/" # Testnet: https://friendbot.stellar.org; Futurenet: https://friendbot-futurenet.stellar.org/
 export DATA_DIR="./data"
 
 # Accounts
