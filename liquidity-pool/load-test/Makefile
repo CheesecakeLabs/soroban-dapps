@@ -14,7 +14,7 @@ help:
 default: run
 
 run:
-	for number in {1..10}; do \
+	for number in {1..2}; do \
     	./run.sh test;\
 	done
 

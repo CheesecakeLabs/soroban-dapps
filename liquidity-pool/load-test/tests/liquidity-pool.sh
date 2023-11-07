@@ -42,6 +42,18 @@ do
         
         source helpers/swap.sh "$USER_PK" "$INVOKER_SK" "$swap_amount" true 9999999999999999 true &
         ((swaps_executed++))
+        if [[ ${swaps_executed} == ${total_swaps} ]]
+        then
+            wait
+            echo -e "\n  swaps_executed: ${swaps_executed} -> total_swaps ${total_swaps} \n"
+            INVOKER_SK=${ADMIN_SK}
+            FUNCTION_NAME="get_rsrvs"
+            source helpers/invoke.sh \
+                ${CONTRACT_ID} \
+                ${FUNCTION_NAME} \
+                ${INVOKER_SK}
+            break
+        fi
     done
     wait
     INVOKER_SK=${ADMIN_SK}
