@@ -1,0 +1,702 @@
+
+ [1;37;44m DEPOSITING LIQUIDITY...[0m
+
+ Depositing 100000000000 units of from account GCEHYLZFR4GG4N257COAHNSR7QMNJDBIAY4IJG7OV7STTNCS74EQKDX4
+
+ Depositing 100000000000 units of from account GAQAMXWFIJZBSS4PUCAVIUPNUN6WZ6N47MOZXS4VLHTZ2NWUK752PANU
+
+ Depositing 100000000000 units of from account GCHMM5M7TEZREKUMBEDV2F673VDJJRPFD7ILK22N4EB2BO7KTULAXCL5
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SB3GGMAP5U7JN3GSSVFITSRQYPAYFF2J7KJFX5HKYSP5WKUNIZFFFVSQ
+FUNCTION_NAME: deposit
+NETWORK: testnet
+ARGS: --to GCEHYLZFR4GG4N257COAHNSR7QMNJDBIAY4IJG7OV7STTNCS74EQKDX4 --desired_a 100000000000 --min_a 1 --desired_b 100000000000 --min_b 1
+---------------------------------------
+
+ Depositing 100000000000 units of from account GABCV5BWU57ZZPTQCMOBFDJJPBRMVN6VST32JZ75GRERS2SVJ3TYSR67
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SAKMNRSOPWOUOIMQX7HRX3A6YTD65QFVBCJQMQKBLDJCMJSOQHKJRUEL
+FUNCTION_NAME: deposit
+NETWORK: testnet
+ARGS: --to GAQAMXWFIJZBSS4PUCAVIUPNUN6WZ6N47MOZXS4VLHTZ2NWUK752PANU --desired_a 100000000000 --min_a 1 --desired_b 100000000000 --min_b 1
+---------------------------------------
+
+ Depositing 100000000000 units of from account GBHIK7NUZO55T5GHGDTFDMJBNA3KYN5RPPO4JMWZ2KNQ27EOOYYP7Q5O
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SDMS77MKFHAW7VQXQZO4P45KY2U3S6AGIHWI5KMB3V2XN7F6IRC6RIYI
+FUNCTION_NAME: deposit
+NETWORK: testnet
+ARGS: --to GCHMM5M7TEZREKUMBEDV2F673VDJJRPFD7ILK22N4EB2BO7KTULAXCL5 --desired_a 100000000000 --min_a 1 --desired_b 100000000000 --min_b 1
+---------------------------------------
+
+ Depositing 100000000000 units of from account GAJOXWPTKFJMBKR65L66MHEFJINF5WRTKQCRRBSUAPHR7SPMSYX3PA2T
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SAEX3XGYWIQO3DSG4PZCOG2PQVXOWJDJJSPQIBPCWVTDKCIDMXGUUMG4
+FUNCTION_NAME: deposit
+NETWORK: testnet
+ARGS: --to GABCV5BWU57ZZPTQCMOBFDJJPBRMVN6VST32JZ75GRERS2SVJ3TYSR67 --desired_a 100000000000 --min_a 1 --desired_b 100000000000 --min_b 1
+---------------------------------------
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+
+ Depositing 100000000000 units of from account GCQHOSEXSIZQ774XZ2P3NOQ4PDJK5BZDG3LKNKXL42QX74TOG6E3DO2J
+INVOKER_SK: SA7E5FAXBVCJLU3ROJIN2HWG5RBWGDB4UHQOHZR445A3UCRLZDDPQQFS
+FUNCTION_NAME: deposit
+NETWORK: testnet
+ARGS: --to GBHIK7NUZO55T5GHGDTFDMJBNA3KYN5RPPO4JMWZ2KNQ27EOOYYP7Q5O --desired_a 100000000000 --min_a 1 --desired_b 100000000000 --min_b 1
+---------------------------------------
+
+ Depositing 100000000000 units of from account GCWQV55HG73RQH5U55SPDR2NPIJKVZN7UAQ3YJ7BOCWEWYDH7LCXFCF5
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SBNHOAFHRA4KQY7JZT5WW4TMUUJSM5J75JTVBKTWWKUMBNOXPFPJBRTJ
+FUNCTION_NAME: deposit
+NETWORK: testnet
+ARGS: --to GAJOXWPTKFJMBKR65L66MHEFJINF5WRTKQCRRBSUAPHR7SPMSYX3PA2T --desired_a 100000000000 --min_a 1 --desired_b 100000000000 --min_b 1
+---------------------------------------
+
+ Depositing 100000000000 units of from account GACCRRSFDQPJ3HPJDOHCNNZYVE4SMWJK56X3PPIMDLPNY5HSDY3CB7IK
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SDBXFGNAZB6WRLATOS2CFYHKAZSZNX2732CF4ILYFXRBQ4AE24ICSPYI
+FUNCTION_NAME: deposit
+NETWORK: testnet
+ARGS: --to GCQHOSEXSIZQ774XZ2P3NOQ4PDJK5BZDG3LKNKXL42QX74TOG6E3DO2J --desired_a 100000000000 --min_a 1 --desired_b 100000000000 --min_b 1
+---------------------------------------
+
+ Depositing 100000000000 units of from account GDYCUKJODCKUAKAJO7KSLEM44IQZOVOEXO422VYZQ7H4Q6QPHWIVZMOU
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SC7O3W2QPFITVYQ2W4PS23DITMDRAZK3ED6ZCTSSIE5NYDX67TOPXMMT
+FUNCTION_NAME: deposit
+NETWORK: testnet
+ARGS: --to GCWQV55HG73RQH5U55SPDR2NPIJKVZN7UAQ3YJ7BOCWEWYDH7LCXFCF5 --desired_a 100000000000 --min_a 1 --desired_b 100000000000 --min_b 1
+---------------------------------------
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SATODONKF552ZHTLYGZRMTEA42XUBDW7QIT56RB4O4CTDVEPJ5GDJDSR
+FUNCTION_NAME: deposit
+NETWORK: testnet
+ARGS: --to GACCRRSFDQPJ3HPJDOHCNNZYVE4SMWJK56X3PPIMDLPNY5HSDY3CB7IK --desired_a 100000000000 --min_a 1 --desired_b 100000000000 --min_b 1
+---------------------------------------
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SAJSUQVQXKHAFY4BYPU4EMPLL7F2OG4GVBH6X27OFHEP3LTUSMPT6CAJ
+FUNCTION_NAME: deposit
+NETWORK: testnet
+ARGS: --to GDYCUKJODCKUAKAJO7KSLEM44IQZOVOEXO422VYZQ7H4Q6QPHWIVZMOU --desired_a 100000000000 --min_a 1 --desired_b 100000000000 --min_b 1
+---------------------------------------
+Contract: deposit fail
+Results: error: transaction submission failed: TxInsufficientFee
+Contract: deposit invocation completed.
+Elapsed Time 5 seconds 
+
+Contract: deposit fail
+Results: error: transaction submission failed: TxInsufficientFee
+Contract: deposit invocation completed.
+Elapsed Time 5 seconds 
+
+Contract: deposit fail
+Results: error: transaction submission failed: TxInsufficientFee
+Contract: deposit invocation completed.
+Elapsed Time 5 seconds 
+
+Contract: deposit fail
+Results: error: transaction submission failed: TxInsufficientFee
+Contract: deposit invocation completed.
+Elapsed Time 5 seconds 
+
+Contract: deposit fail
+Results: error: transaction submission failed: TxInsufficientFee
+Contract: deposit invocation completed.
+Elapsed Time 8 seconds 
+
+Results: 
+Contract: deposit invocation completed.
+Elapsed Time 10 seconds 
+
+Results: 
+Contract: deposit invocation completed.
+Elapsed Time 10 seconds 
+
+Results: 
+Contract: deposit invocation completed.
+Elapsed Time 14 seconds 
+
+Results: 
+Contract: deposit invocation completed.
+Elapsed Time 14 seconds 
+
+Contract: deposit fail
+Results: error: transaction submission timeout
+Contract: deposit invocation completed.
+Elapsed Time 16 seconds 
+
+
+ [1;37;44m TRIGGERING SWAPS...[0m
+
+  PARALLEL for
+
+
+  Swap n-1 -> GCEHYLZFR4GG4N257COAHNSR7QMNJDBIAY4IJG7OV7STTNCS74EQKDX4 is swapping 99 units... 
+
+
+  PARALLEL for
+
+
+  Swap n-2 -> GAQAMXWFIJZBSS4PUCAVIUPNUN6WZ6N47MOZXS4VLHTZ2NWUK752PANU is swapping 27 units... 
+
+
+  PARALLEL for
+
+
+  Swap n-3 -> GCHMM5M7TEZREKUMBEDV2F673VDJJRPFD7ILK22N4EB2BO7KTULAXCL5 is swapping 30 units... 
+
+
+  PARALLEL for
+
+
+  Swap n-4 -> GABCV5BWU57ZZPTQCMOBFDJJPBRMVN6VST32JZ75GRERS2SVJ3TYSR67 is swapping 14 units... 
+
+
+  PARALLEL for
+
+
+  Swap n-5 -> GBHIK7NUZO55T5GHGDTFDMJBNA3KYN5RPPO4JMWZ2KNQ27EOOYYP7Q5O is swapping 88 units... 
+
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SB3GGMAP5U7JN3GSSVFITSRQYPAYFF2J7KJFX5HKYSP5WKUNIZFFFVSQ
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GCEHYLZFR4GG4N257COAHNSR7QMNJDBIAY4IJG7OV7STTNCS74EQKDX4 --buy_a --out 99 --in_max 9999999999999999
+---------------------------------------
+
+  PARALLEL for
+
+
+  Swap n-6 -> GAJOXWPTKFJMBKR65L66MHEFJINF5WRTKQCRRBSUAPHR7SPMSYX3PA2T is swapping 85 units... 
+
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SAKMNRSOPWOUOIMQX7HRX3A6YTD65QFVBCJQMQKBLDJCMJSOQHKJRUEL
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GAQAMXWFIJZBSS4PUCAVIUPNUN6WZ6N47MOZXS4VLHTZ2NWUK752PANU --buy_a --out 27 --in_max 9999999999999999
+---------------------------------------
+
+  PARALLEL for
+
+
+  Swap n-7 -> GCQHOSEXSIZQ774XZ2P3NOQ4PDJK5BZDG3LKNKXL42QX74TOG6E3DO2J is swapping 47 units... 
+
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SDMS77MKFHAW7VQXQZO4P45KY2U3S6AGIHWI5KMB3V2XN7F6IRC6RIYI
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GCHMM5M7TEZREKUMBEDV2F673VDJJRPFD7ILK22N4EB2BO7KTULAXCL5 --buy_a --out 30 --in_max 9999999999999999
+---------------------------------------
+
+  PARALLEL for
+
+
+  Swap n-8 -> GCWQV55HG73RQH5U55SPDR2NPIJKVZN7UAQ3YJ7BOCWEWYDH7LCXFCF5 is swapping 57 units... 
+
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SAEX3XGYWIQO3DSG4PZCOG2PQVXOWJDJJSPQIBPCWVTDKCIDMXGUUMG4
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GABCV5BWU57ZZPTQCMOBFDJJPBRMVN6VST32JZ75GRERS2SVJ3TYSR67 --buy_a --out 14 --in_max 9999999999999999
+---------------------------------------
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SA7E5FAXBVCJLU3ROJIN2HWG5RBWGDB4UHQOHZR445A3UCRLZDDPQQFS
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GBHIK7NUZO55T5GHGDTFDMJBNA3KYN5RPPO4JMWZ2KNQ27EOOYYP7Q5O --buy_a --out 88 --in_max 9999999999999999
+---------------------------------------
+
+  PARALLEL for
+
+
+  Swap n-9 -> GACCRRSFDQPJ3HPJDOHCNNZYVE4SMWJK56X3PPIMDLPNY5HSDY3CB7IK is swapping 39 units... 
+
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SBNHOAFHRA4KQY7JZT5WW4TMUUJSM5J75JTVBKTWWKUMBNOXPFPJBRTJ
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GAJOXWPTKFJMBKR65L66MHEFJINF5WRTKQCRRBSUAPHR7SPMSYX3PA2T --buy_a --out 85 --in_max 9999999999999999
+---------------------------------------
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SDBXFGNAZB6WRLATOS2CFYHKAZSZNX2732CF4ILYFXRBQ4AE24ICSPYI
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GCQHOSEXSIZQ774XZ2P3NOQ4PDJK5BZDG3LKNKXL42QX74TOG6E3DO2J --buy_a --out 47 --in_max 9999999999999999
+---------------------------------------
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SC7O3W2QPFITVYQ2W4PS23DITMDRAZK3ED6ZCTSSIE5NYDX67TOPXMMT
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GCWQV55HG73RQH5U55SPDR2NPIJKVZN7UAQ3YJ7BOCWEWYDH7LCXFCF5 --buy_a --out 57 --in_max 9999999999999999
+---------------------------------------
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SATODONKF552ZHTLYGZRMTEA42XUBDW7QIT56RB4O4CTDVEPJ5GDJDSR
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GACCRRSFDQPJ3HPJDOHCNNZYVE4SMWJK56X3PPIMDLPNY5HSDY3CB7IK --buy_a --out 39 --in_max 9999999999999999
+---------------------------------------
+Contract: swap fail
+Results: error: transaction submission failed: TxInsufficientFee
+Contract: swap invocation completed.
+Elapsed Time 5 seconds 
+
+Contract: swap fail
+Results: error: transaction submission failed: TxInsufficientFee
+Contract: swap invocation completed.
+Elapsed Time 5 seconds 
+
+Contract: swap fail
+Results: error: transaction submission failed: TxInsufficientFee
+Contract: swap invocation completed.
+Elapsed Time 5 seconds 
+
+Results: 
+Contract: swap invocation completed.
+Elapsed Time 8 seconds 
+
+Results: 
+Contract: swap invocation completed.
+Elapsed Time 9 seconds 
+
+Results: 
+Contract: swap invocation completed.
+Elapsed Time 13 seconds 
+
+Results: 
+Contract: swap invocation completed.
+Elapsed Time 14 seconds 
+
+Results: 
+Contract: swap invocation completed.
+Elapsed Time 15 seconds 
+
+Contract: swap fail
+Results: error: transaction submission timeout
+Contract: swap invocation completed.
+Elapsed Time 16 seconds 
+
+
+  swaps_executed: 10 -> total_swaps 10 
+
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SBBARYTESWDLKU62HIGEQMUFFPLXUN73B42DXRFAM6LLN4B2Q5KS6UUG
+FUNCTION_NAME: get_rsrvs
+NETWORK: testnet
+ARGS: 
+---------------------------------------
+Results: ["28777999361634","28778000037670"]
+Contract: get_rsrvs invocation completed.
+Elapsed Time 9 seconds 
+
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SBBARYTESWDLKU62HIGEQMUFFPLXUN73B42DXRFAM6LLN4B2Q5KS6UUG
+FUNCTION_NAME: get_rsrvs
+NETWORK: testnet
+ARGS: 
+---------------------------------------
+Results: ["28777999361634","28778000037670"]
+Contract: get_rsrvs invocation completed.
+Elapsed Time 10 seconds 
+
+
+  PARALLEL for
+
+
+  Swap n-10 -> GCEHYLZFR4GG4N257COAHNSR7QMNJDBIAY4IJG7OV7STTNCS74EQKDX4 is swapping 23 units... 
+
+
+  PARALLEL for
+
+
+  Swap n-11 -> GAQAMXWFIJZBSS4PUCAVIUPNUN6WZ6N47MOZXS4VLHTZ2NWUK752PANU is swapping 96 units... 
+
+
+  PARALLEL for
+
+
+  Swap n-12 -> GCHMM5M7TEZREKUMBEDV2F673VDJJRPFD7ILK22N4EB2BO7KTULAXCL5 is swapping 86 units... 
+
+
+  PARALLEL for
+
+
+  Swap n-13 -> GABCV5BWU57ZZPTQCMOBFDJJPBRMVN6VST32JZ75GRERS2SVJ3TYSR67 is swapping 30 units... 
+
+
+  PARALLEL for
+
+
+  Swap n-14 -> GBHIK7NUZO55T5GHGDTFDMJBNA3KYN5RPPO4JMWZ2KNQ27EOOYYP7Q5O is swapping 59 units... 
+
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SB3GGMAP5U7JN3GSSVFITSRQYPAYFF2J7KJFX5HKYSP5WKUNIZFFFVSQ
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GCEHYLZFR4GG4N257COAHNSR7QMNJDBIAY4IJG7OV7STTNCS74EQKDX4 --buy_a --out 23 --in_max 9999999999999999
+---------------------------------------
+
+  PARALLEL for
+
+
+  Swap n-15 -> GAJOXWPTKFJMBKR65L66MHEFJINF5WRTKQCRRBSUAPHR7SPMSYX3PA2T is swapping 99 units... 
+
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SAKMNRSOPWOUOIMQX7HRX3A6YTD65QFVBCJQMQKBLDJCMJSOQHKJRUEL
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GAQAMXWFIJZBSS4PUCAVIUPNUN6WZ6N47MOZXS4VLHTZ2NWUK752PANU --buy_a --out 96 --in_max 9999999999999999
+---------------------------------------
+
+  PARALLEL for
+
+
+  Swap n-16 -> GCQHOSEXSIZQ774XZ2P3NOQ4PDJK5BZDG3LKNKXL42QX74TOG6E3DO2J is swapping 59 units... 
+
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SDMS77MKFHAW7VQXQZO4P45KY2U3S6AGIHWI5KMB3V2XN7F6IRC6RIYI
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GCHMM5M7TEZREKUMBEDV2F673VDJJRPFD7ILK22N4EB2BO7KTULAXCL5 --buy_a --out 86 --in_max 9999999999999999
+---------------------------------------
+
+  PARALLEL for
+
+
+  Swap n-17 -> GCWQV55HG73RQH5U55SPDR2NPIJKVZN7UAQ3YJ7BOCWEWYDH7LCXFCF5 is swapping 87 units... 
+
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SAEX3XGYWIQO3DSG4PZCOG2PQVXOWJDJJSPQIBPCWVTDKCIDMXGUUMG4
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GABCV5BWU57ZZPTQCMOBFDJJPBRMVN6VST32JZ75GRERS2SVJ3TYSR67 --buy_a --out 30 --in_max 9999999999999999
+---------------------------------------
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SA7E5FAXBVCJLU3ROJIN2HWG5RBWGDB4UHQOHZR445A3UCRLZDDPQQFS
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GBHIK7NUZO55T5GHGDTFDMJBNA3KYN5RPPO4JMWZ2KNQ27EOOYYP7Q5O --buy_a --out 59 --in_max 9999999999999999
+---------------------------------------
+
+  PARALLEL for
+
+
+  Swap n-18 -> GACCRRSFDQPJ3HPJDOHCNNZYVE4SMWJK56X3PPIMDLPNY5HSDY3CB7IK is swapping 79 units... 
+
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SBNHOAFHRA4KQY7JZT5WW4TMUUJSM5J75JTVBKTWWKUMBNOXPFPJBRTJ
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GAJOXWPTKFJMBKR65L66MHEFJINF5WRTKQCRRBSUAPHR7SPMSYX3PA2T --buy_a --out 99 --in_max 9999999999999999
+---------------------------------------
+
+  PARALLEL for
+
+
+  Swap n-19 -> GDYCUKJODCKUAKAJO7KSLEM44IQZOVOEXO422VYZQ7H4Q6QPHWIVZMOU is swapping 41 units... 
+
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SDBXFGNAZB6WRLATOS2CFYHKAZSZNX2732CF4ILYFXRBQ4AE24ICSPYI
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GCQHOSEXSIZQ774XZ2P3NOQ4PDJK5BZDG3LKNKXL42QX74TOG6E3DO2J --buy_a --out 59 --in_max 9999999999999999
+---------------------------------------
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SC7O3W2QPFITVYQ2W4PS23DITMDRAZK3ED6ZCTSSIE5NYDX67TOPXMMT
+FUNCTION_NAME: swap
+NETWORK: testnet
+ARGS: --to GCWQV55HG73RQH5U55SPDR2NPIJKVZN7UAQ3YJ7BOCWEWYDH7LCXFCF5 --buy_a --out 87 --in_max 9999999999999999
+---------------------------------------
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SATODONKF552ZHTLYGZRMTEA42XUBDW7QIT56RB4O4CTDVEPJ5GDJDSR
+FUNCTION_NAME: swap
+NETWORK: testnet
+---------------------------------------
+Invoking Contract with following Params
+ARGS: --to GACCRRSFDQPJ3HPJDOHCNNZYVE4SMWJK56X3PPIMDLPNY5HSDY3CB7IK --buy_a --out 79 --in_max 9999999999999999
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SAJSUQVQXKHAFY4BYPU4EMPLL7F2OG4GVBH6X27OFHEP3LTUSMPT6CAJ
+FUNCTION_NAME: swap
+---------------------------------------
+NETWORK: testnet
+ARGS: --to GDYCUKJODCKUAKAJO7KSLEM44IQZOVOEXO422VYZQ7H4Q6QPHWIVZMOU --buy_a --out 41 --in_max 9999999999999999
+---------------------------------------
+Contract: swap fail
+Contract: swap fail
+Results: error: transaction submission failed: TxInsufficientFee
+Contract: swap invocation completed.
+Results: error: transaction submission failed: TxInsufficientFee
+Contract: swap invocation completed.
+Elapsed Time 5 seconds 
+
+Elapsed Time 5 seconds 
+
+Contract: swap fail
+Contract: swap fail
+Results: error: transaction submission failed: TxInsufficientFee
+Results: error: transaction submission failed: TxInsufficientFee
+Contract: swap invocation completed.
+Contract: swap invocation completed.
+Elapsed Time 6 seconds 
+Elapsed Time 6 seconds 
+
+
+Results: 
+Contract: swap invocation completed.
+Elapsed Time 10 seconds 
+
+Results: 
+Contract: swap invocation completed.
+Elapsed Time 10 seconds 
+
+Results: 
+Contract: swap invocation completed.
+Elapsed Time 10 seconds 
+
+Results: 
+Contract: swap invocation completed.
+Elapsed Time 14 seconds 
+
+Results: 
+Contract: swap invocation completed.
+Elapsed Time 14 seconds 
+
+Results: 
+Contract: swap invocation completed.
+Elapsed Time 15 seconds 
+
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SBBARYTESWDLKU62HIGEQMUFFPLXUN73B42DXRFAM6LLN4B2Q5KS6UUG
+FUNCTION_NAME: get_rsrvs
+NETWORK: testnet
+ARGS: 
+---------------------------------------
+Results: ["28777999361253","28778000038057"]
+Contract: get_rsrvs invocation completed.
+Elapsed Time 11 seconds 
+
+
+ Withdraw 100000000 units of from user A
+
+ Withdraw 100000000 units of from user A
+
+ Withdraw 100000000 units of from user A
+
+ Withdraw 100000000 units of from user A
+
+ Withdraw 100000000 units of from user A
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SB3GGMAP5U7JN3GSSVFITSRQYPAYFF2J7KJFX5HKYSP5WKUNIZFFFVSQ
+FUNCTION_NAME: withdraw
+NETWORK: testnet
+ARGS: --to GCEHYLZFR4GG4N257COAHNSR7QMNJDBIAY4IJG7OV7STTNCS74EQKDX4 --share_amount 100000000 --min_a 10000000 --min_b 10000000
+---------------------------------------
+
+ Withdraw 100000000 units of from user A
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SAKMNRSOPWOUOIMQX7HRX3A6YTD65QFVBCJQMQKBLDJCMJSOQHKJRUEL
+FUNCTION_NAME: withdraw
+NETWORK: testnet
+ARGS: --to GAQAMXWFIJZBSS4PUCAVIUPNUN6WZ6N47MOZXS4VLHTZ2NWUK752PANU --share_amount 100000000 --min_a 10000000 --min_b 10000000
+---------------------------------------
+
+ Withdraw 100000000 units of from user A
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SDMS77MKFHAW7VQXQZO4P45KY2U3S6AGIHWI5KMB3V2XN7F6IRC6RIYI
+FUNCTION_NAME: withdraw
+NETWORK: testnet
+ARGS: --to GCHMM5M7TEZREKUMBEDV2F673VDJJRPFD7ILK22N4EB2BO7KTULAXCL5 --share_amount 100000000 --min_a 10000000 --min_b 10000000
+---------------------------------------
+
+ Withdraw 100000000 units of from user A
+
+ Withdraw 100000000 units of from user A
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SAEX3XGYWIQO3DSG4PZCOG2PQVXOWJDJJSPQIBPCWVTDKCIDMXGUUMG4
+FUNCTION_NAME: withdraw
+NETWORK: testnet
+ARGS: --to GABCV5BWU57ZZPTQCMOBFDJJPBRMVN6VST32JZ75GRERS2SVJ3TYSR67 --share_amount 100000000 --min_a 10000000 --min_b 10000000
+---------------------------------------
+
+ Withdraw 100000000 units of from user A
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SA7E5FAXBVCJLU3ROJIN2HWG5RBWGDB4UHQOHZR445A3UCRLZDDPQQFS
+FUNCTION_NAME: withdraw
+NETWORK: testnet
+ARGS: --to GBHIK7NUZO55T5GHGDTFDMJBNA3KYN5RPPO4JMWZ2KNQ27EOOYYP7Q5O --share_amount 100000000 --min_a 10000000 --min_b 10000000
+---------------------------------------
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SBNHOAFHRA4KQY7JZT5WW4TMUUJSM5J75JTVBKTWWKUMBNOXPFPJBRTJ
+FUNCTION_NAME: withdraw
+NETWORK: testnet
+ARGS: --to GAJOXWPTKFJMBKR65L66MHEFJINF5WRTKQCRRBSUAPHR7SPMSYX3PA2T --share_amount 100000000 --min_a 10000000 --min_b 10000000
+---------------------------------------
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SDBXFGNAZB6WRLATOS2CFYHKAZSZNX2732CF4ILYFXRBQ4AE24ICSPYI
+FUNCTION_NAME: withdraw
+NETWORK: testnet
+ARGS: --to GCQHOSEXSIZQ774XZ2P3NOQ4PDJK5BZDG3LKNKXL42QX74TOG6E3DO2J --share_amount 100000000 --min_a 10000000 --min_b 10000000
+---------------------------------------
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SC7O3W2QPFITVYQ2W4PS23DITMDRAZK3ED6ZCTSSIE5NYDX67TOPXMMT
+FUNCTION_NAME: withdraw
+NETWORK: testnet
+ARGS: --to GCWQV55HG73RQH5U55SPDR2NPIJKVZN7UAQ3YJ7BOCWEWYDH7LCXFCF5 --share_amount 100000000 --min_a 10000000 --min_b 10000000
+---------------------------------------
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SATODONKF552ZHTLYGZRMTEA42XUBDW7QIT56RB4O4CTDVEPJ5GDJDSR
+FUNCTION_NAME: withdraw
+NETWORK: testnet
+ARGS: --to GACCRRSFDQPJ3HPJDOHCNNZYVE4SMWJK56X3PPIMDLPNY5HSDY3CB7IK --share_amount 100000000 --min_a 10000000 --min_b 10000000
+---------------------------------------
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SAJSUQVQXKHAFY4BYPU4EMPLL7F2OG4GVBH6X27OFHEP3LTUSMPT6CAJ
+FUNCTION_NAME: withdraw
+NETWORK: testnet
+ARGS: --to GDYCUKJODCKUAKAJO7KSLEM44IQZOVOEXO422VYZQ7H4Q6QPHWIVZMOU --share_amount 100000000 --min_a 10000000 --min_b 10000000
+---------------------------------------
+Contract: withdraw fail
+Results: error: transaction simulation failed: host invocation failed
+Contract: withdraw invocation completed.
+Elapsed Time 4 seconds 
+
+Contract: withdraw fail
+Results: error: transaction simulation failed: host invocation failed
+Contract: withdraw invocation completed.
+Elapsed Time 4 seconds 
+
+Contract: withdraw fail
+Results: error: transaction submission failed: TxInsufficientFee
+Contract: withdraw invocation completed.
+Elapsed Time 5 seconds 
+
+Contract: withdraw fail
+Results: error: transaction submission failed: TxInsufficientFee
+Contract: withdraw invocation completed.
+Elapsed Time 5 seconds 
+
+Contract: withdraw fail
+Contract: withdraw fail
+Results: error: transaction submission failed: TxInsufficientFee
+Results: error: transaction submission failed: TxInsufficientFee
+Contract: withdraw invocation completed.
+Contract: withdraw invocation completed.
+Elapsed Time 5 seconds 
+
+Elapsed Time 5 seconds 
+
+Results: ["99999998","100000001"]
+Contract: withdraw invocation completed.
+Elapsed Time 9 seconds 
+
+Contract: withdraw fail
+Results: error: transaction submission timeout
+Contract: withdraw invocation completed.
+Elapsed Time 16 seconds 
+
+Results: ["99999998","100000001"]
+Contract: withdraw invocation completed.
+Elapsed Time 16 seconds 
+
+Results: ["99999998","100000001"]
+Contract: withdraw invocation completed.
+Elapsed Time 16 seconds 
+
+
+ [1;37;44m CHECKING POOL RESERVES...[0m
+---------------------------------------
+Invoking Contract with following Params
+CONTRACT_ID: CBJ66DO6PPWRF327ZNMXINE3YN7EEMRJ6R43VE5E4UV2HYGGGXAW4M3I
+INVOKER_SK: SBBARYTESWDLKU62HIGEQMUFFPLXUN73B42DXRFAM6LLN4B2Q5KS6UUG
+FUNCTION_NAME: get_rsrvs
+NETWORK: testnet
+ARGS: 
+---------------------------------------
+Results: ["28777599361261","28777600038053"]
+Contract: get_rsrvs invocation completed.
+Elapsed Time 11 seconds 
+
+
+ Finished

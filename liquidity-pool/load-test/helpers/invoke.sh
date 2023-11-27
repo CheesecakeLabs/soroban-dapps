@@ -34,6 +34,8 @@ echo "---------------------------------------"
 start_time=$(date +%s)
 start_time_formated=$(date +%H:%M:%S)
 OUTPUT="SUCCESS"
+INVOKE_LOG_ERROR_FILE="error-log"
+OUTPUT_ERROR_MSG=""
 
 # Invoke the Contract  
 result=$(soroban contract invoke \
@@ -43,10 +45,13 @@ result=$(soroban contract invoke \
   --fee ${DEFAULT_FEE} \
   -- \
   "${FUNCTION_NAME}" \
-  ${ARGS})
+  ${ARGS} 2> >(cat))
 
 if [ $? -eq 1 ]; then
   echo "Contract: ${FUNCTION_NAME} fail"
+  # if [[ $result =~ "error: transaction" ]]; then
+  #   result=$(echo "$result" | grep -o "error: transaction.*")
+  # fi
   OUTPUT="ERROR"
 fi
 
@@ -64,5 +69,5 @@ fi
 
 if [ "$WRITE_TO_LOG_FILE" ]; then
   end_time_formated=$(date +%H:%M:%S)
-  echo "${CONTRACT_ID},${FUNCTION_NAME},${INVOKER_SK},${elapsed_time},${ARGS},${OUTPUT},${result},${start_time_formated},${end_time_formated}" >> ${DATA_DIR}/${INVOKE_LOG_OUTPUT_FILE}
+  echo "${CONTRACT_ID},${FUNCTION_NAME},${INVOKER_SK},${elapsed_time},${ARGS},${OUTPUT},${result},${start_time_formated},${end_time_formated},${OUTPUT_ERROR_MSG}" >> ${DATA_DIR}/${INVOKE_LOG_OUTPUT_FILE}
 fi
