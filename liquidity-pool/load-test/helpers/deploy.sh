@@ -5,7 +5,6 @@ CONTRACT_WASM=$1
 DEPLOYER_SK=$2
 DEPLOY_OUTPUT_FILE=$3
 
-
 # Deploy Contract
 CONTRACT_ID=$(soroban contract deploy \
   --wasm ${CONTRACT_WASM} \

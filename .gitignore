@@ -1,4 +1,5 @@
 .soroban
+.accounts
 node_modules
 
 # misc

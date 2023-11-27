@@ -2,7 +2,13 @@
 
 # Environment Variables
 export NETWORK_NAME="futurenet" # Name of the Stellar network to deploy the contract (e.g., public, testnet, futurenet)
-export FRIENDBOT_URL="https://friendbot-futurenet.stellar.org/"
+
+if [ "$NETWORK_NAME" == "testnet" ]; then
+    export FRIENDBOT_URL="https://friendbot.stellar.org/" 
+else
+    export FRIENDBOT_URL="https://friendbot-futurenet.stellar.org/"
+fi
+
 export DATA_DIR="./data"
 
 # Accounts
@@ -63,11 +69,12 @@ export LOG_TIME=true                             # enable invoke to log the exec
 export DEFAULT_FEE=1000000                       # Base fee in stroops(1 XLM * 10**-7)
 export LOAD_AMOUNT=$((10000000 * 10**A_DECIMAL)) # Amount initially loaded in each user account
 export DEPOSIT_AMOUNT=$((10000 * 10**A_DECIMAL)) # Initial position deposited by users
-export TOTAL_SWAPS=10                            # Total number os swaps to be executed 
-export PARALLEL_SWAPS=3                          # Number os swaps to be executed in parallel
-export TOTAL_DEPOSIT=5                           # Number os swaps to be executed in parallel
+export TOTAL_SWAPS=100                            # Total number of swaps to be executed 
+export PARALLEL_SWAPS=3                          # Number of swaps to be executed in parallel
+export TOTAL_DEPOSIT=5                           # Number of swaps to be executed in parallel
 export SLIPPAGE=10                               # Slippage for each swap
 export SWAP_MIN_AMOUNT=10                        # Min. value for a swap
 export SWAP_MAX_AMOUNT=100  	                 # Max. value for a swap
-export TIME_INTERVAL=1                          # Time interval for each execution
+export TIME_INTERVAL=1                           # Time interval for each execution
 export SHARE_AMOUNT=$((10 * 10**A_DECIMAL))      # Initial position deposited by users
+export TOTAL_ACCOUNTS=5                          # Number of accounts to be created
