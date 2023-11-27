@@ -7,12 +7,16 @@ source ./config.sh
 STYLE='\033[1;37;44m'
 NS='\033[0m' # No Color
 
-if [ "$NETWORK_NAME" == "futurenet" ]; then
-    SOROBAN_RPC_HOST="https://rpc-futurenet.stellar.org:443"
-    SOROBAN_RPC_URL="$SOROBAN_RPC_HOST"
-else # testnet
+if [ $LOCAL == false ]; then
+  if [ "$NETWORK_NAME" == "testnet" ]; then
     SOROBAN_RPC_HOST="https://soroban-testnet.stellar.org:443"
     SOROBAN_RPC_URL="$SOROBAN_RPC_HOST"
+  elif [ "$NETWORK_NAME" == "futurenet" ]; then
+    SOROBAN_RPC_HOST="https://rpc-futurenet.stellar.org:443"
+    SOROBAN_RPC_URL="$SOROBAN_RPC_HOST"
+  fi
+else 
+  SOROBAN_RPC_URL="http://localhost:8000/soroban/rpc" 
 fi
 
 case "$NETWORK_NAME" in

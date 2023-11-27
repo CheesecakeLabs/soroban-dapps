@@ -1,12 +1,17 @@
 #!/bin/bash
 
 # Environment Variables
-export NETWORK_NAME="futurenet" # Name of the Stellar network to deploy the contract (e.g., public, testnet, futurenet)
+export NETWORK_NAME="testnet" # Name of the Stellar network to deploy the contract (testnet, futurenet)
+export LOCAL=false
 
-if [ "$NETWORK_NAME" == "testnet" ]; then
-    export FRIENDBOT_URL="https://friendbot.stellar.org/" 
+if [ "$LOCAL" == true ]; then
+    export FRIENDBOT_URL="http://localhost:8000/friendbot" 
 else
-    export FRIENDBOT_URL="https://friendbot-futurenet.stellar.org/"
+    if [ "$NETWORK_NAME" == "testnet" ]; then
+        export FRIENDBOT_URL="https://friendbot.stellar.org/"
+    else
+        export FRIENDBOT_URL="https://friendbot-futurenet.stellar.org/"
+    fi
 fi
 
 export DATA_DIR="./data"
@@ -66,15 +71,17 @@ export USER_C_SK="SCOMBFLTEGYE7JRIGVJHYWU5AAT7H2IRSJACWPY5BAQV5K7W7UTKR4Z3"   #T
 export INVOKE_LOG_OUTPUT_FILE="invoke-log.csv"
 export WRITE_TO_LOG_FILE=true
 export LOG_TIME=true                             # enable invoke to log the execution time
-export DEFAULT_FEE=1000000                       # Base fee in stroops(1 XLM * 10**-7)
+# 400 0000000 is not in 0..=4294967295
+# 40000 000 000 is not in 0..=4294 967 295
+# export DEFAULT_FEE=$((400 * 10**A_DECIMAL))    # Base fee in stroops(1 XLM * 10**-7)
+export DEFAULT_FEE=1                    # Base fee in stroops(1 XLM * 10**-7)
 export LOAD_AMOUNT=$((10000000 * 10**A_DECIMAL)) # Amount initially loaded in each user account
 export DEPOSIT_AMOUNT=$((10000 * 10**A_DECIMAL)) # Initial position deposited by users
-export TOTAL_SWAPS=100                            # Total number of swaps to be executed 
+export TOTAL_SWAPS=10                            # Total number of swaps to be executed
 export PARALLEL_SWAPS=3                          # Number of swaps to be executed in parallel
-export TOTAL_DEPOSIT=5                           # Number of swaps to be executed in parallel
 export SLIPPAGE=10                               # Slippage for each swap
 export SWAP_MIN_AMOUNT=10                        # Min. value for a swap
 export SWAP_MAX_AMOUNT=100  	                 # Max. value for a swap
 export TIME_INTERVAL=1                           # Time interval for each execution
 export SHARE_AMOUNT=$((10 * 10**A_DECIMAL))      # Initial position deposited by users
-export TOTAL_ACCOUNTS=5                          # Number of accounts to be created
+export TOTAL_ACCOUNTS=10                         # Number of accounts to be created

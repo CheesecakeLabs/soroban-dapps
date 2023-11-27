@@ -19,6 +19,7 @@ TOKEN_WASM_HASH="$(soroban contract install \
     --wasm ${ASSET_WASM}  
 )"
 
+echo "TOKEN_WASM_HASH: $TOKEN_WASM_HASH"
 
 if [[ "$B_CONTRACT_ID_UPDT" < "$A_CONTRACT_ID_UPDT" ]]; then
   echo "Asset B Id < Asset A Id"
@@ -36,3 +37,22 @@ fi
     --token_wasm_hash ${TOKEN_WASM_HASH} \
     --token_a "$A_CONTRACT_ID_UPDT" \
     --token_b "$B_CONTRACT_ID_UPDT"
+
+# fail=true
+# while [ $fail ]; 
+# do
+#   echo "Running invoke"
+#   result=$(soroban contract invoke \
+#     --id ${CONTRACT_ID} \
+#     --source ${INVOKER_SK} \
+#     --network ${NETWORK_NAME} \
+#     --fee ${DEFAULT_FEE} \
+#     -- \
+#     "${FUNCTION_NAME}" \
+#     --token_wasm_hash ${TOKEN_WASM_HASH} \
+#     --token_a "$A_CONTRACT_ID_UPDT" \
+#     --token_b "$B_CONTRACT_ID_UPDT")
+#   if [ $? -eq 0 ]; then
+#     fail=false
+#   fi
+# done    

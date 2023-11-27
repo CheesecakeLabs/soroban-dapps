@@ -10,6 +10,8 @@ ARGS="${*:4}"
 # Check if the directory exists and create it if it doesn't
 mkdir -p ${DATA_DIR}
 
+RANDOM_FEE=$((RANDOM % (10 * 10**A_DECIMAL) + 10**A_DECIMAL))
+
 # Debug statements
 echo "---------------------------------------"
 echo "Invoking Contract with following Params"
@@ -17,6 +19,7 @@ echo "CONTRACT_ID: ${CONTRACT_ID}"
 echo "INVOKER_SK: ${INVOKER_SK}"
 echo "FUNCTION_NAME: ${FUNCTION_NAME}"
 echo "NETWORK: ${NETWORK_NAME}"
+echo "FEE: ${RANDOM_FEE}"
 echo "ARGS: ${ARGS}"
 echo "---------------------------------------"
 # echo "Calculated Cost:"
@@ -34,19 +37,34 @@ echo "---------------------------------------"
 start_time=$(date +%s)
 start_time_formated=$(date +%H:%M:%S)
 OUTPUT="SUCCESS"
+INVOKE_LOG_ERROR_FILE="error-log"
+OUTPUT_ERROR_MSG=""
 
 # Invoke the Contract  
 result=$(soroban contract invoke \
   --id ${CONTRACT_ID} \
   --source ${INVOKER_SK} \
   --network ${NETWORK_NAME} \
-  --fee ${DEFAULT_FEE} \
+  --fee ${RANDOM_FEE} \
   -- \
   "${FUNCTION_NAME}" \
-  ${ARGS})
+  ${ARGS} 2> >(cat))
+
+
+# echo soroban contract invoke \
+#   --id ${CONTRACT_ID} \
+#   --source ${INVOKER_SK} \
+#   --network ${NETWORK_NAME} \
+#   --fee ${DEFAULT_FEE} \
+#   -- \
+#   "${FUNCTION_NAME}" \
+#   ${ARGS}
 
 if [ $? -eq 1 ]; then
   echo "Contract: ${FUNCTION_NAME} fail"
+  if [[ $result =~ "error: transaction" ]]; then
+    result=$(echo "$result" | grep -o "error: transaction.*")
+  fi
   OUTPUT="ERROR"
 fi
 
@@ -64,5 +82,5 @@ fi
 
 if [ "$WRITE_TO_LOG_FILE" ]; then
   end_time_formated=$(date +%H:%M:%S)
-  echo "${CONTRACT_ID},${FUNCTION_NAME},${INVOKER_SK},${elapsed_time},${ARGS},${OUTPUT},${result},${start_time_formated},${end_time_formated}" >> ${DATA_DIR}/${INVOKE_LOG_OUTPUT_FILE}
+  echo "${CONTRACT_ID},${FUNCTION_NAME},${INVOKER_SK},${elapsed_time},${ARGS},${OUTPUT},${result},${start_time_formated},${end_time_formated},${RANDOM_FEE}" >> ${DATA_DIR}/${INVOKE_LOG_OUTPUT_FILE}
 fi
