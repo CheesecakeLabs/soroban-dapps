@@ -8,7 +8,7 @@ export async function swap(sourceSecretKey: string, contractId: string, buyA: bo
     const account = await server.getAccount(sourcePublicKey);
 
     // Right now, this is just the default fee for this example.
-    const fee = 100;
+    const fee = Math.floor(Math.random() * 10000) + 1;
 
     const to = new Address(sourcePublicKey).toScVal()
     const buyAScVal = nativeToScVal(Boolean(buyA))

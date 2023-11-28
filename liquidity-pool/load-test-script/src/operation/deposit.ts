@@ -8,7 +8,7 @@ export async function deposit(sourceSecretKey: string, contractId: string, desir
     const account = await server.getAccount(sourcePublicKey);
 
     // Right now, this is just the default fee for this example.
-    const fee = 100;
+    const fee = Math.floor(Math.random() * 10000) + 1;
 
     const to = new Address(sourcePublicKey).toScVal()
     const desiredAScVal = nativeToScVal(Number(desiredA), { type: 'i128' })

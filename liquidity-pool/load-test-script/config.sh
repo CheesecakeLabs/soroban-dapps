@@ -67,4 +67,4 @@ export PARALLEL_SWAPS=3                          # Number of swaps to be execute
 export SWAP_MIN_AMOUNT=10000                     # Min. value for a swap
 export SWAP_MAX_AMOUNT=100000  	                 # Max. value for a swap
 export TIME_INTERVAL=1                           # Time interval for each execution
-export TOTAL_ACCOUNTS=3                          # Number of accounts to be created
+export TOTAL_ACCOUNTS=7                          # Number of accounts to be created

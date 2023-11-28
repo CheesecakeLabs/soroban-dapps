@@ -8,7 +8,7 @@ import { readContractId } from './shared/contracts';
 
 async function load_test() {
     const swapAmount = 100000
-    const totalExecution = 10
+    const totalExecution = 20
     const secrets = await readAccountsSecret()
     const contractId = await readContractId()
 

@@ -8,7 +8,7 @@ export async function get_rsrvs(sourceSecretKey: string, contractId: string) {
     const account = await server.getAccount(sourcePublicKey);
 
     // Right now, this is just the default fee for this example.
-    const fee = 100;
+    const fee = Math.floor(Math.random() * 10000) + 1;
     const log = new LogTransaction()
     try {
         console.log('Get resources:', sourcePublicKey);

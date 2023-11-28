@@ -15,11 +15,7 @@
     "fix": "gts fix",
     "prepare": "npm run build",
     "pretest": "npm run build",
-    "posttest": "npm run lint",
-    "bindings:amm": "soroban contract bindings typescript --network testnet --contract-id $(cat data/amm-deploy-out) --output-dir node_modules/liquidity-pool",
-    "bindings:asset_a": "soroban contract bindings typescript --network testnet --contract-id $(cat data/asset-a-deploy-out) --output-dir node_modules/token-a",
-    "bindings:asset_b": "soroban contract bindings typescript --network testnet --contract-id $(cat data/asset-b-deploy-out) --output-dir node_modules/token-b",
-    "postinstall": "npm run bindings:amm && npm run bindings:asset_a && npm run bindings:asset_b"
+    "posttest": "npm run lint"
   },
   "author": "",
   "license": "ISC",
