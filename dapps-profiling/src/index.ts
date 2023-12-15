@@ -1,3 +1,6 @@
 import { StellarPlus } from "stellar-plus";
+import { cometDexProfiling } from "./dapps/comet-contracts";
 
-console.log("Hello world!");
+const network = StellarPlus.Constants.futurenet;
+
+cometDexProfiling(network);
