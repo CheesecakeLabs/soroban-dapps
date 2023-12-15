@@ -13,7 +13,6 @@ CONTRACT_ID=$(soroban contract invoke \
   --fee ${FEE} \
   -- \
   "${FUNCTION_NAME}" \
-  --deployer ${COD_ADMIN_PK} \
   --wasm_hash ${COD_WASM_HASH} \
   --salt ${SALT} \
   --admin ${COD_ADMIN_PK} \
@@ -22,7 +21,8 @@ CONTRACT_ID=$(soroban contract invoke \
   --compound_step ${COD_COMPOUND_STEP} \
   --yield_rate ${COD_YIELD_RATE} \
   --min_deposit ${COD_MIN_DEPOSIT} \
-  --penalty_rate ${COD_PENALTY_RATE})
+  --penalty_rate ${COD_PENALTY_RATE} \
+  --allowance_period ${COD_ALLOWANCE_PERIOD})
 
   
 # Check if the directory exists and create it if it doesn't

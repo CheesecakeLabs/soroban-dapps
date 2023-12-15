@@ -10,9 +10,12 @@ NS='\033[0m' # No Color
 echo -e "\n ${STYLE}WRAPPING ASSET TOKEN...${NS}"
 ./helpers/asset-wrap.sh
 
+echo -e "\n ${STYLE}Optimizing deployer contract... ${NS}"
+soroban contract optimize --wasm ${DEP_CONTRACT_WASM}
+
 #Deploys the Certificates of deposit contract
 echo -e "\n ${STYLE}DEPLOYING THE DEPLOYER CONTRACT...${NS}"
-./helpers/deploy.sh ${DEP_CONTRACT_WASM} ${DEP_ADMIN_SK} ${DEP_DEPLOY_OUTPUT_FILE}
+./helpers/deploy.sh ${DEP_CONTRACT_WASM_OPTIMIZED} ${DEP_ADMIN_SK} ${DEP_DEPLOY_OUTPUT_FILE}
 
 echo -e "\n ${STYLE}STORE WASM HASH FOR COD...${NS}"
 ./helpers/soroban-install.sh ${COD_ADMIN_SK}

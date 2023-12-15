@@ -6,7 +6,7 @@ ADMIN=$1
 WASM_HASH=$(soroban contract install \
   --network ${NETWORK_NAME} \
   --source ${ADMIN} \
-  --wasm ${COD_CONTRACT_WASM})
+  --wasm ${COD_CONTRACT_WASM_OPTIMIZED})
 
 
   # Check if the directory exists and create it if it doesn't

@@ -11,6 +11,7 @@ YIELD_RATE=${COD_YIELD_RATE}
 MIN_DEPOSIT=${COD_MIN_DEPOSIT}
 PENALTY_RATE=${COD_PENALTY_RATE}
 COMPOUND_STEP=${COD_COMPOUND_STEP}
+ALLOWANCE_PERIOD=${COD_ALLOWANCE_PERIOD}
 
 ./helpers/invoke.sh \
   ${CONTRACT_ID} \
@@ -22,4 +23,5 @@ COMPOUND_STEP=${COD_COMPOUND_STEP}
   --compound_step  ${COMPOUND_STEP} \
   --yield_rate ${YIELD_RATE} \
   --min_deposit ${MIN_DEPOSIT} \
-  --penalty_rate ${PENALTY_RATE}
+  --penalty_rate ${PENALTY_RATE} \
+  --allowance_period ${ALLOWANCE_PERIOD}
