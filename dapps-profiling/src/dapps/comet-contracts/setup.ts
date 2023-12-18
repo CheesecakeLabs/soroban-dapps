@@ -2,7 +2,7 @@ import { StellarPlus } from "stellar-plus";
 import { loadWasmFile } from "../../utils/load-wasm";
 import { factorySpec, contractsSpec } from "./constants";
 import { FactoryClient } from "./factory-client";
-import { AccountHandler, TransactionInvocation } from "../../utils/lib-types";
+import { ContractClient } from "./contracts-client";
 
 export const initializeBaseAccounts = async (
   network: typeof StellarPlus.Constants.testnet
@@ -30,7 +30,7 @@ export const deployContracts = async (
   txInvocation: any
 ): Promise<{
   factoryEngine: FactoryClient;
-  contractsEngine: StellarPlus.ContractEngine;
+  contractsEngine: ContractClient;
 }> => {
   console.log("Loading WASM Files...");
   const factoryWasm = await loadWasmFile(
@@ -46,7 +46,7 @@ export const deployContracts = async (
     spec: factorySpec,
   });
 
-  const contractsEngine = new StellarPlus.ContractEngine({
+  const contractsEngine = new ContractClient({
     network,
     wasm: contractsWasm,
     spec: contractsSpec,
@@ -68,4 +68,26 @@ export const deployContracts = async (
   console.log("Contracts instance deployed!");
 
   return { factoryEngine, contractsEngine };
+};
+
+export const createUsers = async (
+  nUsers: number,
+  network: typeof StellarPlus.Constants.testnet,
+  txInvocation: any
+) => {
+  const users = [];
+  const promises = [];
+
+  for (let i = 0; i < nUsers; i++) {
+    const user = new StellarPlus.Account.DefaultAccountHandler({ network });
+    users.push(user);
+    console.log("Initializing user account: ", user.getPublicKey());
+    promises.push(user.friendbot?.initialize() as Promise<void>);
+  }
+
+  await Promise.all(promises).then(() => {
+    console.log("User accounts initialized!");
+  });
+
+  return users;
 };

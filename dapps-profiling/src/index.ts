@@ -1,6 +1,12 @@
 import { StellarPlus } from "stellar-plus";
-import { cometDexProfiling } from "./dapps/comet-contracts";
+import {
+  cometDexProfiling,
+  cometDexProfilingConfigType,
+} from "./dapps/comet-contracts";
 
-const network = StellarPlus.Constants.futurenet;
+const cometDexProfilingConfig: cometDexProfilingConfigType = {
+  nUsers: 3,
+  network: StellarPlus.Constants.futurenet,
+};
 
-cometDexProfiling(network);
+cometDexProfiling(cometDexProfilingConfig);

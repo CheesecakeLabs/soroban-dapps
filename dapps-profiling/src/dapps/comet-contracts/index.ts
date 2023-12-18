@@ -1,8 +1,14 @@
 import { StellarPlus } from "stellar-plus";
-import { deployContracts, initializeBaseAccounts } from "./setup";
-export const cometDexProfiling = async (
-  network: typeof StellarPlus.Constants.testnet
-) => {
+import { createUsers, deployContracts, initializeBaseAccounts } from "./setup";
+
+export type cometDexProfilingConfigType = {
+  nUsers: number;
+  network: typeof StellarPlus.Constants.testnet;
+};
+
+export const cometDexProfiling = async (args: cometDexProfilingConfigType) => {
+  const { nUsers, network } = args;
+
   console.log("Initiating Comet DEX Profiling!");
 
   const { opex, admin } = await initializeBaseAccounts(network);
@@ -31,6 +37,7 @@ export const cometDexProfiling = async (
     opexTxInvocation
   );
 
+  console.log("Factory Id", factoryEngine.getContractId());
   console.log("Contracts Id", contractsEngine.getContractId());
 
   console.log("Initializing Factory...");
@@ -39,4 +46,14 @@ export const cometDexProfiling = async (
     poolWasmHash: contractsEngine.getWasmHash() as string,
     txInvocation: adminTxInvocation,
   });
+
+  console.log("Initializing Pool Contract...");
+  await contractsEngine.init({
+    factory: factoryEngine.getContractId() as string,
+    controller: admin.getPublicKey(),
+    txInvocation: adminTxInvocation,
+  });
+
+  console.log("Creating users...");
+  const users = await createUsers(nUsers, network, opexTxInvocation);
 };
