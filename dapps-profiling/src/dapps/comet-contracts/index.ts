@@ -32,24 +32,24 @@ export const cometDexProfiling = async (args: cometDexProfilingConfigType) => {
     feeBump: opexTxInvocation,
   };
 
-  const { factoryEngine, contractsEngine } = await deployContracts(
+  const { factoryClient, cometClient } = await deployContracts(
     network,
     opexTxInvocation
   );
 
-  console.log("Factory Id", factoryEngine.getContractId());
-  console.log("Contracts Id", contractsEngine.getContractId());
+  console.log("Factory Id", factoryClient.getContractId());
+  console.log("Contracts Id", cometClient.getContractId());
 
   console.log("Initializing Factory...");
-  await factoryEngine.init({
+  await factoryClient.init({
     user: admin.getPublicKey(),
-    poolWasmHash: contractsEngine.getWasmHash() as string,
+    poolWasmHash: cometClient.getWasmHash() as string,
     txInvocation: adminTxInvocation,
   });
 
   console.log("Initializing Pool Contract...");
-  await contractsEngine.init({
-    factory: factoryEngine.getContractId() as string,
+  await cometClient.init({
+    factory: factoryClient.getContractId() as string,
     controller: admin.getPublicKey(),
     txInvocation: adminTxInvocation,
   });

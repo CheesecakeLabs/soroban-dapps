@@ -2,7 +2,7 @@ import { StellarPlus } from "stellar-plus";
 import { loadWasmFile } from "../../utils/load-wasm";
 import { factorySpec, contractsSpec } from "./constants";
 import { FactoryClient } from "./factory-client";
-import { ContractClient } from "./contracts-client";
+import { ContractClient } from "./comet-client";
 
 export const initializeBaseAccounts = async (
   network: typeof StellarPlus.Constants.testnet
@@ -29,45 +29,45 @@ export const deployContracts = async (
   network: typeof StellarPlus.Constants.testnet,
   txInvocation: any
 ): Promise<{
-  factoryEngine: FactoryClient;
-  contractsEngine: ContractClient;
+  factoryClient: FactoryClient;
+  cometClient: ContractClient;
 }> => {
   console.log("Loading WASM Files...");
   const factoryWasm = await loadWasmFile(
     "./src/dapps/comet-contracts/wasm/factory.optimized.wasm"
   );
-  const contractsWasm = await loadWasmFile(
+  const cometWasm = await loadWasmFile(
     "./src/dapps/comet-contracts/wasm/contracts.optimized.wasm"
   );
 
-  const factoryEngine = new FactoryClient({
+  const factoryClient = new FactoryClient({
     network,
     wasm: factoryWasm,
     spec: factorySpec,
   });
 
-  const contractsEngine = new ContractClient({
+  const cometClient = new ContractClient({
     network,
-    wasm: contractsWasm,
+    wasm: cometWasm,
     spec: contractsSpec,
   });
 
   console.log("Uploading WASM Files...");
 
   //cannot perform async because of sequence number of the opex
-  await contractsEngine.uploadWasm(txInvocation);
-  await factoryEngine.uploadWasm(txInvocation);
+  await cometClient.uploadWasm(txInvocation);
+  await factoryClient.uploadWasm(txInvocation);
 
   console.log("Contracts WASM uploaded!");
   console.log("Deploying instances...");
 
   //cannot perform async because of sequence number of the opex
-  await contractsEngine.deploy(txInvocation);
-  await factoryEngine.deploy(txInvocation);
+  await cometClient.deploy(txInvocation);
+  await factoryClient.deploy(txInvocation);
 
   console.log("Contracts instance deployed!");
 
-  return { factoryEngine, contractsEngine };
+  return { factoryClient, cometClient };
 };
 
 export const createUsers = async (
