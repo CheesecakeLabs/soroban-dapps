@@ -31,6 +31,8 @@ export const cometDexProfiling = async (
     opexTxInvocation
   );
 
+  console.log("Contracts Id", contractsEngine.getContractId());
+
   console.log("Initializing Factory...");
   await factoryEngine.init({
     user: admin.getPublicKey(),
