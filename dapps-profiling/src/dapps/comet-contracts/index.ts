@@ -1,5 +1,5 @@
 import { StellarPlus } from "stellar-plus";
-import { initializeBaseAccounts, initializeContracts } from "./setup";
+import { deployContracts, initializeBaseAccounts } from "./setup";
 export const cometDexProfiling = async (
   network: typeof StellarPlus.Constants.testnet
 ) => {
@@ -26,7 +26,7 @@ export const cometDexProfiling = async (
     feeBump: opexTxInvocation,
   };
 
-  const { factoryEngine, contractsEngine } = await initializeContracts(
+  const { factoryEngine, contractsEngine } = await deployContracts(
     network,
     opexTxInvocation
   );

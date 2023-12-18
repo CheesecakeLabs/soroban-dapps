@@ -2,6 +2,7 @@ import { StellarPlus } from "stellar-plus";
 import { loadWasmFile } from "../../utils/load-wasm";
 import { factorySpec, contractsSpec } from "./constants";
 import { FactoryClient } from "./factory-client";
+import { AccountHandler, TransactionInvocation } from "../../utils/lib-types";
 
 export const initializeBaseAccounts = async (
   network: typeof StellarPlus.Constants.testnet
@@ -24,7 +25,7 @@ export const initializeBaseAccounts = async (
   return { opex, admin };
 };
 
-export const initializeContracts = async (
+export const deployContracts = async (
   network: typeof StellarPlus.Constants.testnet,
   txInvocation: any
 ): Promise<{
