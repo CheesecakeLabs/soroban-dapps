@@ -1,12 +1,34 @@
 import { StellarPlus } from "stellar-plus";
 import { loadWasmFile } from "../../utils/load-wasm";
 import { factorySpec, contractsSpec } from "./constants";
+import { FactoryClient } from "./factory-client";
+
+export const initializeBaseAccounts = async (
+  network: typeof StellarPlus.Constants.testnet
+): Promise<{
+  opex: StellarPlus.Account.DefaultAccountHandler;
+  admin: StellarPlus.Account.DefaultAccountHandler;
+}> => {
+  const opex = new StellarPlus.Account.DefaultAccountHandler({ network });
+  console.log("Initializing opex account... ", opex.getPublicKey());
+  const promises = [opex.friendbot?.initialize() as Promise<void>];
+
+  const admin = new StellarPlus.Account.DefaultAccountHandler({ network });
+  console.log("Initializing admin account... ", admin.getPublicKey());
+  promises.push(admin.friendbot?.initialize() as Promise<void>);
+
+  await Promise.all(promises).then(() => {
+    console.log("Base accounts initialized!");
+  });
+
+  return { opex, admin };
+};
 
 export const initializeContracts = async (
   network: typeof StellarPlus.Constants.testnet,
   txInvocation: any
 ): Promise<{
-  factoryEngine: StellarPlus.ContractEngine;
+  factoryEngine: FactoryClient;
   contractsEngine: StellarPlus.ContractEngine;
 }> => {
   console.log("Loading WASM Files...");
@@ -17,7 +39,7 @@ export const initializeContracts = async (
     "./src/dapps/comet-contracts/wasm/contracts.optimized.wasm"
   );
 
-  const factoryEngine = new StellarPlus.ContractEngine({
+  const factoryEngine = new FactoryClient({
     network,
     wasm: factoryWasm,
     spec: factorySpec,
@@ -29,19 +51,20 @@ export const initializeContracts = async (
     spec: contractsSpec,
   });
 
-  console.log("Uploading Contracts WASM Files...");
-  await contractsEngine.uploadWasm(txInvocation);
-  console.log("Contracts WASM uploaded!");
-  console.log("Deploying instance...!");
-  await contractsEngine.deploy(txInvocation);
-  console.log("Contracts instance deployed!");
+  console.log("Uploading WASM Files...");
 
-  console.log("Uploading Factory WASM Files...");
+  //cannot perform async because of sequence number of the opex
+  await contractsEngine.uploadWasm(txInvocation);
   await factoryEngine.uploadWasm(txInvocation);
-  console.log("Factory WASM uploaded!");
-  console.log("Deploying instance...!");
+
+  console.log("Contracts WASM uploaded!");
+  console.log("Deploying instances...");
+
+  //cannot perform async because of sequence number of the opex
+  await contractsEngine.deploy(txInvocation);
   await factoryEngine.deploy(txInvocation);
-  console.log("Factory instance deployed!");
+
+  console.log("Contracts instance deployed!");
 
   return { factoryEngine, contractsEngine };
 };

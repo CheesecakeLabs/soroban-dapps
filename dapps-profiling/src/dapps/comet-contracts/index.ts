@@ -1,13 +1,11 @@
 import { StellarPlus } from "stellar-plus";
-import { initializeContracts } from "./setup";
+import { initializeBaseAccounts, initializeContracts } from "./setup";
 export const cometDexProfiling = async (
   network: typeof StellarPlus.Constants.testnet
 ) => {
   console.log("Initiating Comet DEX Profiling!");
 
-  const opex = new StellarPlus.Account.DefaultAccountHandler({ network });
-  console.log("Initializing opex account... ", opex.getPublicKey());
-  await (opex.friendbot?.initialize() as Promise<void>);
+  const { opex, admin } = await initializeBaseAccounts(network);
 
   const opexTxInvocation = {
     header: {
@@ -18,9 +16,25 @@ export const cometDexProfiling = async (
     signers: [opex],
   };
 
+  const adminTxInvocation = {
+    header: {
+      source: admin.getPublicKey(),
+      fee: "1000000", //0.1 XLM as maximum fee
+      timeout: 30,
+    },
+    signers: [admin],
+    feeBump: opexTxInvocation,
+  };
+
   const { factoryEngine, contractsEngine } = await initializeContracts(
     network,
     opexTxInvocation
   );
-  console.log("Factory Engine: ", factoryEngine);
+
+  console.log("Initializing Factory...");
+  await factoryEngine.init({
+    user: admin.getPublicKey(),
+    poolWasmHash: contractsEngine.getWasmHash() as string,
+    txInvocation: adminTxInvocation,
+  });
 };
