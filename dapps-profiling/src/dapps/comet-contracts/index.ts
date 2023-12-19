@@ -1,5 +1,10 @@
 import { StellarPlus } from "stellar-plus";
-import { createUsers, deployContracts, initializeBaseAccounts } from "./setup";
+import {
+  createUsers,
+  deployContracts,
+  initializeBaseAccounts,
+  setupAssets,
+} from "./setup";
 
 export type cometDexProfilingConfigType = {
   nUsers: number;
@@ -9,8 +14,9 @@ export type cometDexProfilingConfigType = {
 export const cometDexProfiling = async (args: cometDexProfilingConfigType) => {
   const { nUsers, network } = args;
 
+  console.log("====================================");
   console.log("Initiating Comet DEX Profiling!");
-
+  console.log("====================================");
   const { opex, admin } = await initializeBaseAccounts(network);
 
   const opexTxInvocation = {
@@ -31,7 +37,9 @@ export const cometDexProfiling = async (args: cometDexProfilingConfigType) => {
     signers: [admin],
     feeBump: opexTxInvocation,
   };
-
+  console.log("====================================");
+  console.log("Creating Core Contracts...");
+  console.log("====================================");
   const { factoryClient, cometClient } = await deployContracts(
     network,
     opexTxInvocation
@@ -54,6 +62,25 @@ export const cometDexProfiling = async (args: cometDexProfilingConfigType) => {
     txInvocation: adminTxInvocation,
   });
 
+  console.log("====================================");
   console.log("Creating users...");
+  console.log("====================================");
   const users = await createUsers(nUsers, network, opexTxInvocation);
+
+  console.log("====================================");
+  console.log("Creating Assets...");
+  console.log("====================================");
+  const { assetA, assetB } = await setupAssets(
+    network,
+    admin,
+    adminTxInvocation
+  );
+
+  console.log("====================================");
+  console.log(
+    "get C admin: ",
+    (
+      await factoryClient.get_c_admin({ txInvocation: adminTxInvocation })
+    ).toString()
+  );
 };

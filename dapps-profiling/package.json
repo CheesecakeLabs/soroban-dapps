@@ -18,7 +18,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "stellar-plus": "^0.3.4",
+    "stellar-plus": "^0.3.5",
     "stellar-sdk": "^11.0.1"
   }
 }

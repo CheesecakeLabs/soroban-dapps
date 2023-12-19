@@ -3,6 +3,8 @@ import { loadWasmFile } from "../../utils/load-wasm";
 import { factorySpec, contractsSpec } from "./constants";
 import { FactoryClient } from "./factory-client";
 import { ContractClient } from "./comet-client";
+import { AccountHandler, TransactionInvocation } from "../../utils/lib-types";
+import { Network } from "stellar-plus/lib/stellar-plus/types";
 
 export const initializeBaseAccounts = async (
   network: typeof StellarPlus.Constants.testnet
@@ -90,4 +92,57 @@ export const createUsers = async (
   });
 
   return users;
+};
+
+export const setupAssets = async (
+  network: Network,
+  issuer: AccountHandler,
+  txInvocation: TransactionInvocation
+): Promise<{
+  assetA: StellarPlus.Asset.SorobanTokenHandler;
+  assetB: StellarPlus.Asset.SorobanTokenHandler;
+}> => {
+  const wasmBuffer = await loadWasmFile(
+    "./src/dapps/soroban-token/wasm/soroban_token_contract.wasm"
+  );
+
+  const assetA = new StellarPlus.Asset.SorobanTokenHandler({
+    network,
+    wasm: wasmBuffer,
+  });
+
+  console.log("Initiating Asset A...");
+  console.log("Uploading WASM Files...");
+  await assetA.uploadWasm(txInvocation);
+  console.log("Deploying instance... ");
+  await assetA.deploy(txInvocation);
+  console.log("Initializing instance...");
+  await assetA.initialize({
+    admin: issuer.getPublicKey(),
+    decimal: 7,
+    name: "Asset A",
+    symbol: "ASTA",
+    ...txInvocation,
+  });
+
+  const assetB = new StellarPlus.Asset.SorobanTokenHandler({
+    network,
+    wasm: wasmBuffer,
+  });
+
+  console.log("Initiating Asset B...");
+  console.log("Uploading WASM Files...");
+  await assetB.uploadWasm(txInvocation);
+  console.log("Deploying instance... ");
+  await assetB.deploy(txInvocation);
+  console.log("Initializing instance...");
+  await assetB.initialize({
+    admin: issuer.getPublicKey(),
+    decimal: 7,
+    name: "Asset B",
+    symbol: "ASTB",
+    ...txInvocation,
+  });
+
+  return { assetA, assetB };
 };
