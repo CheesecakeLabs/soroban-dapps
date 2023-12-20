@@ -51,9 +51,15 @@ export const setupAssets = async (
     "./src/dapps/soroban-token/wasm/soroban_token_contract.wasm"
   );
 
+  const vcRpc = new StellarPlus.RPC.ValidationCloudRpcHandler(
+    network,
+    "Knct5k6sgFn2w2gPvBTOdOc3u5sNnLW9dt6kSLSPrs8"
+  );
+
   const sorobanToken = new StellarPlus.Asset.SorobanTokenHandler({
     network,
     wasm: sorobanTokenWasm,
+    rpcHandler: vcRpc,
   });
 
   console.log("Uploading Soroban Token WASM Files...");
@@ -77,6 +83,7 @@ export const setupAssets = async (
     code: "SAC",
     issuerPublicKey: issuer.getPublicKey(),
     issuerAccount: issuer,
+    rpcHandler: vcRpc,
   });
 
   sacToken.wrapAndDeploy(txInvocation);

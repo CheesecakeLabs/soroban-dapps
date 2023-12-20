@@ -1,4 +1,3 @@
-import { StellarPlus } from "stellar-plus";
 import { Network } from "stellar-plus/lib/stellar-plus/types";
 import { addTrustlinesToUsers, createBaseAccounts, setupAssets } from "./setup";
 
@@ -61,6 +60,37 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
       const amount = Math.floor(Math.random() * 100 + 1);
       console.log("Amount: ", amount);
       return sacToken.classicHandler.transfer({
+        from: user.getPublicKey(),
+        to: receiver.getPublicKey(),
+        amount,
+        ...userInvocation,
+      });
+    });
+
+    await Promise.all(promises);
+    console.log("Payments executed: ", i + users.length);
+  }
+
+  console.log("====================================");
+  console.log("Triggering Payments with SAC using Soroban Handler...");
+  console.log("====================================");
+
+  for (let i = 0; i < args.nTransactions; i += users.length) {
+    const promises = users.map((user) => {
+      const userInvocation = {
+        header: {
+          source: user.getPublicKey(),
+          fee: "1000000", //0.1 XLM as maximum fee
+          timeout: 0,
+        },
+        signers: [user],
+        feeBump: opexTxInvocation,
+      };
+
+      const receiver = users[Math.floor(Math.random() * users.length)];
+      const amount = Math.floor(Math.random() * 100 + 1);
+      console.log("Amount: ", amount);
+      return sacToken.sorobanTokenHandler.transfer({
         from: user.getPublicKey(),
         to: receiver.getPublicKey(),
         amount,
