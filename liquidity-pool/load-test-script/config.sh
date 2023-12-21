@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Environment Variables
-export NETWORK_NAME="testnet" # Name of the Stellar network to deploy the contract (testnet, futurenet)
+export NETWORK_NAME="futurenet" # Name of the Stellar network to deploy the contract (testnet, futurenet)
 export LOCAL=false
 
 if [ "$LOCAL" == true ]; then

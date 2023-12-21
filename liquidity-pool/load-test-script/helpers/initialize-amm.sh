@@ -19,6 +19,8 @@ TOKEN_WASM_HASH="$(soroban contract install \
     --wasm ${ASSET_WASM}  
 )"
 
+echo ${TOKEN_WASM_HASH} > ${DATA_DIR}/token_wasm_hash_out
+
 echo "TOKEN_WASM_HASH: $TOKEN_WASM_HASH"
 
 if [[ "$B_CONTRACT_ID_UPDT" < "$A_CONTRACT_ID_UPDT" ]]; then

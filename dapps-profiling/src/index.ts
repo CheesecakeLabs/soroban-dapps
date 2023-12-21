@@ -1,12 +1,7 @@
 import { StellarPlus } from "stellar-plus";
-import {
-  cometDexProfiling,
-  cometDexProfilingConfigType,
-} from "./dapps/comet-contracts";
+import { Account, Constants } from "stellar-plus/lib/stellar-plus";
+import { executeLiquidityPool } from "./dapps/liquidity-pool";
 
-const cometDexProfilingConfig: cometDexProfilingConfigType = {
-  nUsers: 3,
-  network: StellarPlus.Constants.futurenet,
-};
 
-cometDexProfiling(cometDexProfilingConfig);
+// cometDexProfiling(cometDexProfilingConfig);
+executeLiquidityPool({ nUsers: 3, network: Constants.testnet })

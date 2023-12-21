@@ -41,7 +41,7 @@ export async function deposit(sourceSecretKey: string, contractId: string, desir
         let getTransactionResponse = await server.getTransaction(
             sendTransactionResponse.hash
         );
-        while (Date.now() < waitUntil && getTransactionResponse.status === SorobanRpc.GetTransactionStatus.NOT_FOUND) {
+        while (Date.now() < waitUntil && getTransactionResponse.status === "NOT_FOUND") {
             try {
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 waitTime = waitTime * exponentialFactor;
