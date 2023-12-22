@@ -60,6 +60,9 @@ export const setupAssets = async (
     network,
     wasm: sorobanTokenWasm,
     rpcHandler: vcRpc,
+    options: {
+      debug: true,
+    },
   });
 
   console.log("Uploading Soroban Token WASM Files...");
@@ -84,6 +87,9 @@ export const setupAssets = async (
     issuerPublicKey: issuer.getPublicKey(),
     issuerAccount: issuer,
     rpcHandler: vcRpc,
+    options: {
+      debug: true,
+    },
   });
 
   sacToken.wrapAndDeploy(txInvocation);
