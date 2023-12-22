@@ -58,7 +58,6 @@ export type AccountHandler = AccountBase & {
   ): Promise<TransactionXdr> | TransactionXdr;
 };
 export type AccountBase = AccountHelpers & {
-  publicKey?: string;
   getPublicKey(): string;
 };
 
@@ -77,7 +76,6 @@ export type AccountDataViewer = {
       | Horizon.HorizonApi.BalanceLineLiquidityPool
     )[]
   >;
-  getTransactions(): Promise<void>;
 };
 
 //
