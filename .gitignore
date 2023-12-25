@@ -1,3 +1,4 @@
+*.csv
 .soroban
 .accounts
 node_modules

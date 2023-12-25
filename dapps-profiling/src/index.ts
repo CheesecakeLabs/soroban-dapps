@@ -13,7 +13,7 @@ import { tokensProfiling } from "./profilings/tokens";
 // cometDexProfiling(cometDexProfilingConfig);
 
 tokensProfiling({
-  nUsers: 3,
-  nTransactions: 9,
+  nUsers: 5,
+  nTransactions: 15,
   network: StellarPlus.Constants.testnet,
 });

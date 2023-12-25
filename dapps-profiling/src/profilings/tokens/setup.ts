@@ -2,6 +2,8 @@ import { Network } from "stellar-plus/lib/stellar-plus/types";
 import { AccountHandler, TransactionInvocation } from "../../utils/lib-types";
 import { StellarPlus } from "stellar-plus";
 import { loadWasmFile } from "../../utils/load-wasm";
+import { profile } from "console";
+import { Profiler } from "../../utils/profiler";
 
 export const createBaseAccounts = async (
   network: Network,
@@ -42,10 +44,13 @@ export const createBaseAccounts = async (
 export const setupAssets = async (
   network: Network,
   issuer: AccountHandler,
-  txInvocation: TransactionInvocation
+  txInvocation: TransactionInvocation,
+  profiler?: Profiler
 ): Promise<{
   sorobanToken: StellarPlus.Asset.SorobanTokenHandler;
   sacToken: StellarPlus.Asset.SACHandler;
+  tokenProfiler: Profiler;
+  sacProfiler: Profiler;
 }> => {
   const sorobanTokenWasm = await loadWasmFile(
     "./src/dapps/soroban-token/wasm/soroban_token_contract.wasm"
@@ -56,13 +61,13 @@ export const setupAssets = async (
     "Knct5k6sgFn2w2gPvBTOdOc3u5sNnLW9dt6kSLSPrs8"
   );
 
+  const tokenProfiler = new Profiler();
+
   const sorobanToken = new StellarPlus.Asset.SorobanTokenHandler({
     network,
     wasm: sorobanTokenWasm,
     rpcHandler: vcRpc,
-    options: {
-      debug: true,
-    },
+    options: tokenProfiler?.getOptionsArgs(),
   });
 
   console.log("Uploading Soroban Token WASM Files...");
@@ -80,6 +85,8 @@ export const setupAssets = async (
     ...txInvocation,
   });
 
+  const sacProfiler = new Profiler();
+
   console.log("Wrapping Classic Asset into SAC...");
   const sacToken = new StellarPlus.Asset.SACHandler({
     network,
@@ -87,14 +94,12 @@ export const setupAssets = async (
     issuerPublicKey: issuer.getPublicKey(),
     issuerAccount: issuer,
     rpcHandler: vcRpc,
-    options: {
-      debug: true,
-    },
+    options: sacProfiler?.getOptionsArgs(),
   });
 
   sacToken.wrapAndDeploy(txInvocation);
 
-  return { sorobanToken, sacToken };
+  return { sorobanToken, sacToken, tokenProfiler, sacProfiler };
 };
 
 export const addTrustlinesToUsers = async (
@@ -125,4 +130,23 @@ export const addTrustlinesToUsers = async (
   return await Promise.all(promises).then(() => {
     console.log("Trustlines added to users!");
   });
+};
+
+export const mintSorobanTokensToUsers = async (
+  users: AccountHandler[],
+  txInvocation: TransactionInvocation,
+  token: StellarPlus.Asset.SorobanTokenHandler
+): Promise<void> => {
+  // sequentially mints to users as the source is always the admin
+  for (let i = 0; i < users.length; i++) {
+    const user = users[i];
+
+    console.log(`Minting token to user: `, user.getPublicKey());
+
+    await token.mint({
+      to: user.getPublicKey(),
+      amount: "1000000",
+      ...txInvocation,
+    });
+  }
 };
