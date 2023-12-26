@@ -1,5 +1,5 @@
 import { StellarPlus } from "stellar-plus";
-import { tokensProfiling } from "./profilings/tokens";
+import { tokenTransactions, tokensProfiling } from "./profilings/tokens";
 import {
   cometDexProfiling,
   cometDexProfilingConfigType,
@@ -13,7 +13,8 @@ import {
 // cometDexProfiling(cometDexProfilingConfig);
 
 tokensProfiling({
-  nUsers: 5,
+  nUsers: 2,
   nTransactions: 15,
   network: StellarPlus.Constants.testnet,
+  transactions: [tokenTransactions.mint],
 });

@@ -99,7 +99,7 @@ export const addTrustlinesToUsers = async (
     asset.addTrustlineAndMint({
       ...user.transactionInvocation,
       amount: mintAmount,
-      destination: user.account.getPublicKey(),
+      to: user.account.getPublicKey(),
     })
   );
 
@@ -109,3 +109,62 @@ export const addTrustlinesToUsers = async (
 };
 
 // ======================================================
+
+export type MintSorobanTokensToUsers = {
+  users: DemoUser[];
+  issuer: DemoUser;
+  token: StellarPlus.Asset.SorobanTokenHandler;
+  mintAmount: string;
+};
+
+/**
+ *
+ * @args {MintSorobanTokensToUsers} args
+ * @param { DemoUser[] } args.users - array of demo users
+ * @param { DemoUser } args.issuer - issuer of the token
+ * @param { StellarPlus.Asset.SorobanTokenHandler } args.token - Soroban Token Handler for the token to mint to the users
+ * @param { string } args.mintAmount - amount to mint to users
+ *
+ * @returns  { Promise<void> } - void
+ *
+ * @description Mints tokens to users.
+ *
+ * */
+export const mintSorobanTokensToUsers = async (
+  args: MintSorobanTokensToUsers
+) => {
+  const { users, issuer, token, mintAmount } = args;
+  console.log(
+    `Minting ${await token.symbol(issuer.transactionInvocation)} tokens to ${
+      users.length
+    } users...`
+  );
+  for (let i = 0; i < users.length; i++) {
+    const user = users[i];
+    console.log(
+      `Minting ${mintAmount} tokens to user: ${user.account.getPublicKey()}`
+    );
+    await token.mint({
+      ...issuer.transactionInvocation,
+      amount: mintAmount,
+      to: user.account.getPublicKey(),
+    });
+  }
+};
+
+// ======================================================
+
+export const getRandomEntryFromArray = <T>(array: T[]): T => {
+  return array[Math.floor(Math.random() * array.length)];
+};
+
+export const getRandomAmount = (
+  min: number,
+  max: number,
+  decimals?: number
+): string => {
+  const amount = Math.floor(Math.random() * (max - min) + min);
+  return decimals
+    ? (BigInt(amount) * BigInt(10 ** decimals)).toString()
+    : amount.toString();
+};

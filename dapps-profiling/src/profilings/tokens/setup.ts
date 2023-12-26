@@ -6,41 +6,66 @@ import {
 import { StellarPlus } from "stellar-plus";
 import { loadWasmFile } from "../../utils/load-wasm";
 import { Profiler } from "stellar-plus/lib/stellar-plus/utils/profiler/soroban";
+import { DemoUser } from "../../utils/simulation-types";
 
 export const createBaseAccounts = async (
-  network: Network,
-  nUsers: number
+  network: Network
 ): Promise<{
-  opex: AccountHandler;
-  issuer: AccountHandler;
-  users: AccountHandler[];
+  opex: DemoUser;
+  issuer: DemoUser;
 }> => {
   console.log("Initializing base accounts... ");
 
-  const opex = new StellarPlus.Account.DefaultAccountHandler({ network });
-  const issuer = new StellarPlus.Account.DefaultAccountHandler({ network });
-  const users: AccountHandler[] = [];
+  const opexAccount = new StellarPlus.Account.DefaultAccountHandler({
+    network,
+  });
 
-  console.log("Opex: ", opex.getPublicKey());
-  console.log("issuer: ", issuer.getPublicKey());
+  const issuerAccount = new StellarPlus.Account.DefaultAccountHandler({
+    network,
+  });
 
-  for (let i = 0; i < nUsers; i++) {
-    const user = new StellarPlus.Account.DefaultAccountHandler({ network });
-    users.push(user);
-    console.log(`User ${i + 1}: `, user.getPublicKey());
-  }
+  console.log("Opex: ", opexAccount.getPublicKey());
+  console.log("issuer: ", issuerAccount.getPublicKey());
 
   const promises = [
-    opex.friendbot?.initialize() as Promise<void>,
-    issuer.friendbot?.initialize() as Promise<void>,
-    ...users.map((user) => user.friendbot?.initialize() as Promise<void>),
+    opexAccount.friendbot?.initialize() as Promise<void>,
+    issuerAccount.friendbot?.initialize() as Promise<void>,
   ];
 
   await Promise.all(promises).then(() => {
     console.log("Base accounts initialized!");
   });
 
-  return { opex, issuer, users };
+  const opexTxInvocation = {
+    header: {
+      source: opexAccount.getPublicKey(),
+      fee: "10000000", //1 XLM as maximum fee
+      timeout: 30,
+    },
+    signers: [opexAccount],
+  };
+
+  const issuerTxInvocation = {
+    header: {
+      source: issuerAccount.getPublicKey(),
+      fee: "1000000", //0.1 XLM as maximum fee
+      timeout: 0,
+    },
+    signers: [issuerAccount],
+    feeBump: opexTxInvocation,
+  };
+
+  const opex = {
+    account: opexAccount,
+    transactionInvocation: opexTxInvocation,
+  };
+
+  const issuer = {
+    account: issuerAccount,
+    transactionInvocation: issuerTxInvocation,
+  };
+
+  return { opex, issuer };
 };
 
 export const setupAssets = async (
