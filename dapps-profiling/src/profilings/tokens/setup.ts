@@ -1,5 +1,8 @@
 import { Network } from "stellar-plus/lib/stellar-plus/types";
-import { AccountHandler, TransactionInvocation } from "../../utils/lib-types";
+import {
+  AccountHandler,
+  TransactionInvocation,
+} from "../../utils/simulation/types";
 import { StellarPlus } from "stellar-plus";
 import { loadWasmFile } from "../../utils/load-wasm";
 import { Profiler } from "stellar-plus/lib/stellar-plus/utils/profiler/soroban";

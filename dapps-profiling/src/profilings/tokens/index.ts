@@ -11,7 +11,16 @@ export type tokensProfilingConfigType = {
   nUsers: number;
   nTransactions: number;
   network: Network;
+  transactions?: tokenTransactions[];
 };
+
+export enum tokenTransactions {
+  transfer = "transfer",
+  transferFrom = "transferFrom",
+  approve = "approve",
+  mint = "mint",
+  burn = "burn",
+}
 
 export const tokensProfiling = async (args: tokensProfilingConfigType) => {
   const { opex, issuer, users } = await createBaseAccounts(
