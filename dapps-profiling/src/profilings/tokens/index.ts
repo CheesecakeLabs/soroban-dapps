@@ -5,7 +5,6 @@ import {
   mintSorobanTokensToUsers,
   setupAssets,
 } from "./setup";
-import { Profiler } from "../../utils/profiler";
 import { exportArrayToCSV } from "../../utils/export-to-csv";
 
 export type tokensProfilingConfigType = {
@@ -158,7 +157,7 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
     })
   );
 
-  const logDataSAC = sacProfiler.getLog({ formatOutput: true });
+  const logDataSAC = sacProfiler.getLog({ formatOutput: "csv" });
   const columnsSAC = Object.keys(
     logDataSAC[0]
   ) as (keyof (typeof logDataSAC)[0])[];
@@ -169,7 +168,7 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
     columnsSAC
   );
 
-  const logDataToken = tokenProfiler.getLog({ formatOutput: true });
+  const logDataToken = tokenProfiler.getLog({ formatOutput: "csv" });
   const columnsToken = Object.keys(
     logDataToken[0]
   ) as (keyof (typeof logDataToken)[0])[];

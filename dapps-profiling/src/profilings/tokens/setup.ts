@@ -2,8 +2,7 @@ import { Network } from "stellar-plus/lib/stellar-plus/types";
 import { AccountHandler, TransactionInvocation } from "../../utils/lib-types";
 import { StellarPlus } from "stellar-plus";
 import { loadWasmFile } from "../../utils/load-wasm";
-import { profile } from "console";
-import { Profiler } from "../../utils/profiler";
+import { Profiler } from "stellar-plus/lib/stellar-plus/utils/profiler/soroban";
 
 export const createBaseAccounts = async (
   network: Network,
@@ -61,7 +60,7 @@ export const setupAssets = async (
     "Knct5k6sgFn2w2gPvBTOdOc3u5sNnLW9dt6kSLSPrs8"
   );
 
-  const tokenProfiler = new Profiler();
+  const tokenProfiler = new StellarPlus.Utils.SorobanProfiler();
 
   const sorobanToken = new StellarPlus.Asset.SorobanTokenHandler({
     network,
@@ -85,7 +84,7 @@ export const setupAssets = async (
     ...txInvocation,
   });
 
-  const sacProfiler = new Profiler();
+  const sacProfiler = new StellarPlus.Utils.SorobanProfiler();
 
   console.log("Wrapping Classic Asset into SAC...");
   const sacToken = new StellarPlus.Asset.SACHandler({
