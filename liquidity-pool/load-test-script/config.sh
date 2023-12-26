@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Environment Variables
-export NETWORK_NAME="futurenet" # Name of the Stellar network to deploy the contract (testnet, futurenet)
+export NETWORK_NAME="testnet" # Name of the Stellar network to deploy the contract (testnet, futurenet)
 export LOCAL=false
 
 if [ "$LOCAL" == true ]; then
@@ -17,8 +17,8 @@ fi
 export DATA_DIR="./data"
 
 # Accounts
-export ADMIN_PK="GCSDNKNXKYYSBR4XXB5YL23MNEOSN5FWTBVEY6HAQO2XW344D2CKUHOM"  #The Public key of the Admin account
-export ADMIN_SK="SBBARYTESWDLKU62HIGEQMUFFPLXUN73B42DXRFAM6LLN4B2Q5KS6UUG"  #The Secret key of the Admin account
+export ADMIN_PK="GDEH6G5Z2O4JUSHVYLTBNWXLDO7DODUQTQRO7LN3I572SXLZHX42ICW7"  #The Public key of the Admin account
+export ADMIN_SK="SATXSZZKDFW5RONBCBVAFG6QSAS4P7AVJLRUAMPIXCUPHP6Z6ZJBIZT6"  #The Secret key of the Admin account
 
 # Assets
 export ASSET_WASM="../target/wasm32-unknown-unknown/release/abundance_token.optimized.wasm"
@@ -67,4 +67,4 @@ export PARALLEL_SWAPS=3                          # Number of swaps to be execute
 export SWAP_MIN_AMOUNT=10000                     # Min. value for a swap
 export SWAP_MAX_AMOUNT=100000  	                 # Max. value for a swap
 export TIME_INTERVAL=1                           # Time interval for each execution
-export TOTAL_ACCOUNTS=7                          # Number of accounts to be created
+export TOTAL_ACCOUNTS=1                          # Number of accounts to be created

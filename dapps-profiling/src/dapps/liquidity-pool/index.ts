@@ -20,6 +20,9 @@ export async function executeLiquidityPool({ nUsers, network }: executeLiquidity
     const admin = new StellarPlus.Account.DefaultAccountHandler({ network: network });
     await admin.friendbot?.initialize()
 
+    console.log("admin key", admin.getPublicKey())
+    console.log("admin secret", admin.secretKey)
+
     const adminTxInvocation = {
         header: {
             source: admin.getPublicKey(),
