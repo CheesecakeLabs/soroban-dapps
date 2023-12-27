@@ -25,7 +25,7 @@ export class FactoryClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      user: new Address(args.user),
+      user: args.user,
       pool_wasm_hash: hexStringToBytes32(args.poolWasmHash),
     };
 
@@ -41,7 +41,7 @@ export class FactoryClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      user: new Address(args.user),
+      user: args.user,
       salt: randomBytes(32),
     };
 
@@ -59,8 +59,8 @@ export class FactoryClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      caller: new Address(args.caller),
-      user: new Address(args.user),
+      caller: args.caller,
+      user: args.user,
     };
 
     await this.invokeContract({
@@ -76,8 +76,8 @@ export class FactoryClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      caller: new Address(args.caller),
-      addr: new Address(args.addr),
+      caller: args.caller,
+      addr: args.addr,
     };
 
     await this.invokeContract({
@@ -92,7 +92,7 @@ export class FactoryClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<boolean> {
     const methodArgs = {
-      addr: new Address(args.addr),
+      addr: args.addr,
     };
 
     return (await this.readFromContract({

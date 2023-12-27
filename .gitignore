@@ -17,3 +17,5 @@ amm-deploy-out
 asset-a-deploy-out
 asset-b-deploy-out
 invoke-log.csv
+
+.env

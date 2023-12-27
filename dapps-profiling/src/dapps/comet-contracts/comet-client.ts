@@ -41,7 +41,7 @@ enum methods {
   is_bound = "is_bound",
   allowance = "allowance",
   approve = "approve",
-  balance_of = "balance_of",
+  balance_of = "balance",
   transfer = "transfer",
   transfer_from = "transfer_from",
   burn = "burn",
@@ -49,6 +49,7 @@ enum methods {
   decimals = "decimals",
   name = "name",
   symbol = "symbol",
+  initialize = "initialize"
 }
 
 export class ContractClient extends StellarPlus.ContractEngine {
@@ -62,8 +63,8 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      factory: new Address(args.factory),
-      controller: new Address(args.controller),
+      factory: args.factory,
+      controller: args.controller,
     };
 
     await this.invokeContract({
@@ -75,14 +76,14 @@ export class ContractClient extends StellarPlus.ContractEngine {
 
   async bundleBind(args: {
     token: string[];
-    balance: i128;
-    denorm: i128;
+    balance: i128[];
+    denorm: i128[];
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      token: args.token.map((token) => new Address(token)),
-      balance: args.balance as i128,
-      denorm: args.denorm as i128,
+      token: args.token.map((token) => token),
+      balance: args.balance,
+      denorm: args.denorm,
     };
 
     await this.invokeContract({
@@ -100,10 +101,10 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      token: new Address(args.token),
+      token: args.token,
       balance: args.balance as i128,
       denorm: args.denorm as i128,
-      admin: new Address(args.admin),
+      admin: args.admin,
     };
 
     await this.invokeContract({
@@ -121,10 +122,10 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      token: new Address(args.token),
+      token: args.token,
       balance: args.balance as i128,
       denorm: args.denorm as i128,
-      admin: new Address(args.admin),
+      admin: args.admin,
     };
 
     await this.invokeContract({
@@ -141,8 +142,8 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      token: new Address(args.token),
-      user: new Address(args.user),
+      token: args.token,
+      user: args.user,
     };
 
     await this.invokeContract({
@@ -165,7 +166,7 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      t: new Address(args.t),
+      t: args.t,
     };
 
     await this.invokeContract({
@@ -184,7 +185,7 @@ export class ContractClient extends StellarPlus.ContractEngine {
     const methodArgs = {
       pool_amount_out: args.poolAmountOut as i128,
       max_amounts_in: args.maxAmountsIn.map((amount) => amount as i128),
-      user: new Address(args.user),
+      user: args.user,
     };
 
     await this.invokeContract({
@@ -203,7 +204,7 @@ export class ContractClient extends StellarPlus.ContractEngine {
     const methodArgs = {
       pool_amount_in: args.poolAmountIn as i128,
       min_amounts_out: args.minAmountsOut.map((amount) => amount as i128),
-      user: new Address(args.user),
+      user: args.user,
     };
 
     await this.invokeContract({
@@ -223,12 +224,12 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      token_in: new Address(args.tokenIn),
+      token_in: args.tokenIn,
       token_amount_in: args.tokenAmountIn as i128,
-      token_out: new Address(args.tokenOut),
+      token_out: args.tokenOut,
       min_amount_out: args.minAmountOut as i128,
       max_price: args.maxPrice as i128,
-      user: new Address(args.user),
+      user: args.user,
     };
 
     await this.invokeContract({
@@ -248,12 +249,12 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      token_in: new Address(args.tokenIn),
+      token_in: args.tokenIn,
       max_amount_in: args.maxAmountIn as i128,
-      token_out: new Address(args.tokenOut),
+      token_out: args.tokenOut,
       token_amount_out: args.tokenAmountOut as i128,
       max_price: args.maxPrice as i128,
-      user: new Address(args.user),
+      user: args.user,
     };
 
     await this.invokeContract({
@@ -271,10 +272,10 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      token_in: new Address(args.tokenIn),
+      token_in: args.tokenIn,
       token_amount_in: args.tokenAmountIn as i128,
       min_pool_amount_out: args.minPoolAmountOut as i128,
-      user: new Address(args.user),
+      user: args.user,
     };
 
     await this.invokeContract({
@@ -292,10 +293,10 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      token_in: new Address(args.tokenIn),
+      token_in: args.tokenIn,
       pool_amount_out: args.poolAmountOut as i128,
       max_amount_in: args.maxTokenAmountIn as i128,
-      user: new Address(args.user),
+      user: args.user,
     };
 
     await this.invokeContract({
@@ -313,14 +314,14 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      token_out: new Address(args.tokenOut),
+      token_out: args.tokenOut,
       pool_amount_in: args.poolAmountIn as i128,
       min_amount_out: args.minAmountOut as i128,
-      user: new Address(args.user),
+      user: args.user,
     };
 
     await this.invokeContract({
-      method: methods.wdr_tokn_amt_out_get_lp_tokns_in,
+      method: methods.wdr_tokn_amt_in_get_lp_tokns_out,
       methodArgs: methodArgs,
       ...args.txInvocation,
     });
@@ -334,10 +335,10 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      token_out: new Address(args.tokenOut),
+      token_out: args.tokenOut,
       token_amount_out: args.tokenAmountOut as i128,
       max_pool_amount_in: args.maxPoolAmountIn as i128,
-      user: new Address(args.user),
+      user: args.user,
     };
 
     await this.invokeContract({
@@ -354,7 +355,7 @@ export class ContractClient extends StellarPlus.ContractEngine {
   }): Promise<void> {
     const methodArgs = {
       fee: args.fee as i128,
-      caller: new Address(args.caller),
+      caller: args.caller,
     };
 
     await this.invokeContract({
@@ -370,8 +371,8 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      caller: new Address(args.caller),
-      manager: new Address(args.manager),
+      caller: args.caller,
+      manager: args.manager,
     };
 
     await this.invokeContract({
@@ -387,7 +388,7 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      caller: new Address(args.caller),
+      caller: args.caller,
       val: args.val,
     };
 
@@ -404,7 +405,7 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      caller: new Address(args.caller),
+      caller: args.caller,
       val: args.val,
     };
 
@@ -418,40 +419,40 @@ export class ContractClient extends StellarPlus.ContractEngine {
   async getTotalSupply(args: {
     txInvocation: TransactionInvocation;
   }): Promise<i128> {
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.get_total_supply,
       methodArgs: {},
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as i128;
   }
 
   async getController(args: {
     txInvocation: TransactionInvocation;
   }): Promise<string> {
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.get_controller,
       methodArgs: {},
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as string;
   }
 
   async getTotalDenormalizedWeight(args: {
     txInvocation: TransactionInvocation;
   }): Promise<i128> {
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.get_total_denormalized_weight,
       methodArgs: {},
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as i128;
   }
 
   async getTokens(args: {
     txInvocation: TransactionInvocation;
   }): Promise<string[]> {
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.get_tokens,
       methodArgs: {},
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as string[];
   }
 
@@ -461,14 +462,14 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<i128> {
     const methodArgs = {
-      token: new Address(args.token),
-      user: new Address(args.user),
+      token: args.token,
+      user: args.user,
     };
 
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.get_balance,
       methodArgs: methodArgs,
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as i128;
   }
 
@@ -477,13 +478,13 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<i128> {
     const methodArgs = {
-      token: new Address(args.token),
+      token: args.token,
     };
 
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.get_denormalized_weight,
       methodArgs: methodArgs,
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as i128;
   }
 
@@ -492,13 +493,13 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<i128> {
     const methodArgs = {
-      token: new Address(args.token),
+      token: args.token,
     };
 
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.get_normalized_weight,
       methodArgs: methodArgs,
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as i128;
   }
 
@@ -508,24 +509,24 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<i128> {
     const methodArgs = {
-      token_in: new Address(args.tokenIn),
-      token_out: new Address(args.tokenOut),
+      token_in: args.tokenIn,
+      token_out: args.tokenOut,
     };
 
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.get_spot_price,
       methodArgs: methodArgs,
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as i128;
   }
 
   async getSwapFee(args: {
     txInvocation: TransactionInvocation;
   }): Promise<i128> {
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.get_swap_fee,
       methodArgs: {},
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as i128;
   }
 
@@ -535,34 +536,34 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<i128> {
     const methodArgs = {
-      token_in: new Address(args.tokenIn),
-      token_out: new Address(args.tokenOut),
+      token_in: args.tokenIn,
+      token_out: args.tokenOut,
     };
 
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.get_spot_price_sans_fee,
       methodArgs: methodArgs,
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as i128;
   }
 
   async isPublicSwap(args: {
     txInvocation: TransactionInvocation;
   }): Promise<boolean> {
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.is_public_swap,
       methodArgs: {},
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as boolean;
   }
 
   async isFinalized(args: {
     txInvocation: TransactionInvocation;
   }): Promise<boolean> {
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.is_finalized,
       methodArgs: {},
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as boolean;
   }
 
@@ -571,13 +572,13 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<boolean> {
     const methodArgs = {
-      t: new Address(args.t),
+      t: args.t,
     };
 
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.is_bound,
       methodArgs: methodArgs,
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as boolean;
   }
 
@@ -587,14 +588,14 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<i128> {
     const methodArgs = {
-      from: new Address(args.from),
-      spender: new Address(args.spender),
+      from: args.from,
+      spender: args.spender,
     };
 
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.allowance,
       methodArgs: methodArgs,
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as i128;
   }
 
@@ -606,8 +607,8 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      from: new Address(args.from),
-      spender: new Address(args.spender),
+      from: args.from,
+      spender: args.spender,
       amount: args.amount as i128,
       expiration_ledger: args.expirationLedger as u32,
     };
@@ -624,13 +625,13 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<i128> {
     const methodArgs = {
-      id: new Address(args.id),
+      id: args.id,
     };
 
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.balance_of,
       methodArgs: methodArgs,
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as i128;
   }
 
@@ -641,8 +642,8 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      from: new Address(args.from),
-      to: new Address(args.to),
+      from: args.from,
+      to: args.to,
       amount: args.amount as i128,
     };
 
@@ -661,9 +662,9 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      spender: new Address(args.spender),
-      from: new Address(args.from),
-      to: new Address(args.to),
+      spender: args.spender,
+      from: args.from,
+      to: args.to,
       amount: args.amount as i128,
     };
 
@@ -680,7 +681,7 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      from: new Address(args.from),
+      from: args.from,
       amount: args.amount as i128,
     };
 
@@ -698,8 +699,8 @@ export class ContractClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
-      spender: new Address(args.spender),
-      from: new Address(args.from),
+      spender: args.spender,
+      from: args.from,
       amount: args.amount as i128,
     };
 
@@ -711,26 +712,28 @@ export class ContractClient extends StellarPlus.ContractEngine {
   }
 
   async decimals(args: { txInvocation: TransactionInvocation }): Promise<u32> {
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.decimals,
       methodArgs: {},
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as u32;
   }
 
   async name(args: { txInvocation: TransactionInvocation }): Promise<string> {
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.name,
       methodArgs: {},
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as string;
   }
 
   async symbol(args: { txInvocation: TransactionInvocation }): Promise<string> {
-    return (await this.readFromContract({
+    return (await this.invokeContract({
       method: methods.symbol,
       methodArgs: {},
-      header: args.txInvocation.header,
+      ...args.txInvocation,
     })) as string;
   }
+
+
 }
