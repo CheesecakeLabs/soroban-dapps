@@ -85,7 +85,7 @@ export const setupAssets = async (
 
   const vcRpc = new StellarPlus.RPC.ValidationCloudRpcHandler(
     network,
-    "Knct5k6sgFn2w2gPvBTOdOc3u5sNnLW9dt6kSLSPrs8"
+    "<Your API Key>"
   );
 
   const tokenProfiler = new StellarPlus.Utils.SorobanProfiler();

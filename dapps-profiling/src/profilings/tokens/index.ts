@@ -12,6 +12,7 @@ import {
   profilePayments,
 } from "./profiling-simulations";
 import { exportArrayToCSV } from "../../utils/export-to-csv";
+import { Console } from "console";
 
 export type tokensProfilingConfigType = {
   nUsers: number;
@@ -152,94 +153,12 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
     });
   }
 
-  // console.log("profiler results: ", tokenProfiler.getLog());
-
-  // console.log("====================================");
-  // console.log("Triggering Payments with SAC using Soroban Handler...");
-  // console.log("====================================");
-
-  // for (let i = 0; i < args.nTransactions; i += users.length) {
-  //   const promises = users.map((user) => {
-  //     const userInvocation = {
-  //       header: {
-  //         source: user.getPublicKey(),
-  //         fee: "1000000", //0.1 XLM as maximum fee
-  //         timeout: 0,
-  //       },
-  //       signers: [user],
-  //       feeBump: opexTxInvocation,
-  //     };
-
-  //     const receiver = users[Math.floor(Math.random() * users.length)];
-  //     const amount = Math.floor(Math.random() * 100 + 1);
-  //     console.log("Amount: ", amount);
-  //     return sacToken.sorobanTokenHandler.transfer({
-  //       from: user.getPublicKey(),
-  //       to: receiver.getPublicKey(),
-  //       amount,
-  //       ...userInvocation,
-  //     });
-  //   });
-
-  //   await Promise.all(promises);
-  //   console.log("Payments executed: ", i + users.length);
-  // }
-
-  // console.log("====================================");
-  // console.log("Triggering Payments with pure soroban token...");
-  // console.log("====================================");
-
-  // for (let i = 0; i < args.nTransactions; i += users.length) {
-  //   const promises = users.map((user) => {
-  //     const userInvocation = {
-  //       header: {
-  //         source: user.getPublicKey(),
-  //         fee: "1000000", //0.1 XLM as maximum fee
-  //         timeout: 0,
-  //       },
-  //       signers: [user],
-  //       feeBump: opexTxInvocation,
-  //     };
-
-  //     const receiver = users[Math.floor(Math.random() * users.length)];
-  //     const amount = Math.floor(Math.random() * 100 + 1);
-  //     console.log("Amount: ", amount);
-  //     return sorobanToken.transfer({
-  //       from: user.getPublicKey(),
-  //       to: receiver.getPublicKey(),
-  //       amount,
-  //       ...userInvocation,
-  //     });
-  //   });
-
-  //   await Promise.all(promises);
-  //   console.log("Payments executed: ", i + users.length);
-  // }
-
-  // console.log("====================================");
-
-  // console.log("Profiling Results: ");
-
-  // console.log(
-  //   "SAC transfer invocations aggregated by standardDeviation: ",
-  //   sacProfiler.getLog({
-  //     filter: { methods: ["transfer"] },
-  //     aggregate: { all: { method: "standardDeviation" } },
-  //   })
-  // );
-
-  // console.log(
-  //   "Soroban token transfer invocations aggregated by standardDeviation: ",
-  //   tokenProfiler.getLog({
-  //     filter: { methods: ["transfer"] },
-  //     aggregate: { all: { method: "standardDeviation" } },
-  //   })
-  // );
-
   const logDataSAC = sacProfiler.getLog({ formatOutput: "csv" });
   const columnsSAC = Object.keys(
     logDataSAC[0]
   ) as (keyof (typeof logDataSAC)[0])[];
+
+  console.log("Exporting SAC profiling data to file assets_profiling_sac.csv");
 
   exportArrayToCSV(
     logDataSAC,
@@ -252,9 +171,17 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
     logDataToken[0]
   ) as (keyof (typeof logDataToken)[0])[];
 
+  console.log(
+    "Exporting token profiling data to file assets_profiling_token.csv"
+  );
+
   exportArrayToCSV(
     logDataToken,
     "./src/export/assets_profiling_token.csv",
     columnsToken
   );
+
+  console.log("====================================");
+  console.log("Finished profiling tokens!");
+  console.log("====================================");
 };
