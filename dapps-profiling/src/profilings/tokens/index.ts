@@ -11,6 +11,7 @@ import {
   profileMinting,
   profilePayments,
 } from "./profiling-simulations";
+import { exportArrayToCSV } from "../../utils/export-to-csv";
 
 export type tokensProfilingConfigType = {
   nUsers: number;
@@ -235,25 +236,25 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
   //   })
   // );
 
-  // const logDataSAC = sacProfiler.getLog({ formatOutput: "csv" });
-  // const columnsSAC = Object.keys(
-  //   logDataSAC[0]
-  // ) as (keyof (typeof logDataSAC)[0])[];
+  const logDataSAC = sacProfiler.getLog({ formatOutput: "csv" });
+  const columnsSAC = Object.keys(
+    logDataSAC[0]
+  ) as (keyof (typeof logDataSAC)[0])[];
 
-  // exportArrayToCSV(
-  //   logDataSAC,
-  //   "./src/export/assets_profiling_sac.csv",
-  //   columnsSAC
-  // );
+  exportArrayToCSV(
+    logDataSAC,
+    "./src/export/assets_profiling_sac.csv",
+    columnsSAC
+  );
 
-  // const logDataToken = tokenProfiler.getLog({ formatOutput: "csv" });
-  // const columnsToken = Object.keys(
-  //   logDataToken[0]
-  // ) as (keyof (typeof logDataToken)[0])[];
+  const logDataToken = tokenProfiler.getLog({ formatOutput: "csv" });
+  const columnsToken = Object.keys(
+    logDataToken[0]
+  ) as (keyof (typeof logDataToken)[0])[];
 
-  // exportArrayToCSV(
-  //   logDataToken,
-  //   "./src/export/assets_profiling_token.csv",
-  //   columnsToken
-  // );
+  exportArrayToCSV(
+    logDataToken,
+    "./src/export/assets_profiling_token.csv",
+    columnsToken
+  );
 };

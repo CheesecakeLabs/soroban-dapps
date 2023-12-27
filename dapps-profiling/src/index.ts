@@ -14,7 +14,11 @@ import {
 
 tokensProfiling({
   nUsers: 3,
-  nTransactions: 15,
+  nTransactions: 9,
   network: StellarPlus.Constants.testnet,
-  transactions: [tokenTransactions.burn],
+  transactions: [
+    tokenTransactions.burn,
+    tokenTransactions.mint,
+    tokenTransactions.transfer,
+  ],
 });
