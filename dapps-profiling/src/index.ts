@@ -13,8 +13,8 @@ import {
 // cometDexProfiling(cometDexProfilingConfig);
 
 tokensProfiling({
-  nUsers: 2,
+  nUsers: 3,
   nTransactions: 15,
   network: StellarPlus.Constants.testnet,
-  transactions: [tokenTransactions.transfer],
+  transactions: [tokenTransactions.burn],
 });

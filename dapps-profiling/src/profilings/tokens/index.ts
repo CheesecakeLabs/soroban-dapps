@@ -6,7 +6,11 @@ import {
   setupDemuUsers,
 } from "../../utils/simulation/functions";
 import { DemoUser } from "../../utils/simulation-types";
-import { profileMinting, profilePayments } from "./profiling-simulations";
+import {
+  profileBurn,
+  profileMinting,
+  profilePayments,
+} from "./profiling-simulations";
 
 export type tokensProfilingConfigType = {
   nUsers: number;
@@ -17,8 +21,8 @@ export type tokensProfilingConfigType = {
 
 export enum tokenTransactions {
   transfer = "transfer",
-  transferFrom = "transferFrom",
-  approve = "approve",
+  // transferFrom = "transferFrom",
+  // approve = "approve",
   mint = "mint",
   burn = "burn",
 }
@@ -87,6 +91,10 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
     mintAmount: mintAmountSAC,
   });
 
+  // ====================================
+  // Profiling minting transactions
+  // ====================================
+
   if (args.transactions?.includes(tokenTransactions.mint)) {
     await profileMinting({
       nTransactions: args.nTransactions,
@@ -103,6 +111,10 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
     });
   }
 
+  // ====================================
+  // Profiling payments transactions
+  // ====================================
+
   if (args.transactions?.includes(tokenTransactions.transfer)) {
     await profilePayments({
       nTransactions: args.nTransactions,
@@ -112,6 +124,26 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
     });
 
     await profilePayments({
+      nTransactions: args.nTransactions,
+      users,
+      issuer,
+      sorobanToken: sacToken.sorobanTokenHandler,
+    });
+  }
+
+  // ====================================
+  // Profiling burn transactions
+  // ====================================
+
+  if (args.transactions?.includes(tokenTransactions.burn)) {
+    await profileBurn({
+      nTransactions: args.nTransactions,
+      users,
+      issuer,
+      sorobanToken,
+    });
+
+    await profileBurn({
       nTransactions: args.nTransactions,
       users,
       issuer,
