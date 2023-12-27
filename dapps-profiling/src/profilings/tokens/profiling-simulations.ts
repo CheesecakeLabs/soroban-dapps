@@ -33,8 +33,9 @@ export const profileMinting = async (args: ProfileMintingArgs) => {
     const amount = BigInt(getRandomAmount(1, 10000, sorobanTokenDecimals));
 
     console.log(
-      ` ${i + 1}/${args.nTransactions} - minting ${amount} tokens to user: `,
-      user.account.getPublicKey()
+      ` ${i + 1}/${
+        args.nTransactions
+      } - minting ${amount} tokens to user ${user.account.getPublicKey()} `
     );
 
     await sorobanToken.mint({
@@ -77,9 +78,11 @@ export const profilePayments = async (args: ProfilePaymentsArgs) => {
       // select another user to receive the payment
       const receiver = getRandomEntryFromArray(users.filter((u) => u !== user));
 
-      console.log(`${i + 1}/${args.nTransactions} 
+      console.log(
+        `${i + 1}/${args.nTransactions} 
 Sender ${user.account.getPublicKey()} is paying ${amount} tokens to 
-Receiver ${receiver.account.getPublicKey()}`);
+Receiver ${receiver.account.getPublicKey()}`
+      );
 
       i++;
 
@@ -124,8 +127,10 @@ export const profileBurn = async (args: BurnProfileArgs) => {
     const promises = users.map((user) => {
       const amount = BigInt(getRandomAmount(1, 500, sorobanTokenDecimals));
 
-      console.log(`${i + 1}/${args.nTransactions} 
-User ${user.account.getPublicKey()} is burning ${amount} tokens`);
+      console.log(
+        `${i + 1}/${args.nTransactions} 
+User ${user.account.getPublicKey()} is burning ${amount} tokens`
+      );
 
       i++;
 

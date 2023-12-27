@@ -1,7 +1,7 @@
 import { StellarPlus } from "stellar-plus";
 import { Network } from "stellar-plus/lib/stellar-plus/types";
 import { DemoUser } from "../simulation-types";
-import { FeeBumpHeader, TransactionInvocation } from "./types";
+import { FeeBumpHeader } from "./types";
 
 // ======================================================
 export type SetupDemoUsersArgs = {
@@ -142,7 +142,9 @@ export const mintSorobanTokensToUsers = async (
   for (let i = 0; i < users.length; i++) {
     const user = users[i];
     console.log(
-      `Minting ${mintAmount} tokens to user: ${user.account.getPublicKey()}`
+      `${i + 1}/${
+        users.length
+      } - Minting ${mintAmount} tokens to user: ${user.account.getPublicKey()}`
     );
     await token.mint({
       ...issuer.transactionInvocation,
