@@ -13,8 +13,6 @@ dotenv.config();
 export type cometDexProfilingConfigType = {
   nUsers: number;
   network: typeof StellarPlus.Constants.testnet;
-  useConfig: boolean;
-  saveConfig: boolean;
 };
 
 export const cometDexProfiling = async (args: cometDexProfilingConfigType) => {

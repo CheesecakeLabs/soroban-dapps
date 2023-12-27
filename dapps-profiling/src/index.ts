@@ -3,19 +3,17 @@ import { tokensProfiling } from "./profilings/tokens";
 import {
   cometDexProfiling,
   cometDexProfilingConfigType,
-} from "./dapps/comet-contracts";
+} from "./profilings/comet-dex";
 
 const cometDexProfilingConfig: cometDexProfilingConfigType = {
   nUsers: 1,
-  network: StellarPlus.Constants.testnet,
-  useConfig: true,
-  saveConfig: true
+  network: StellarPlus.Constants.futurenet,
 };
 
 cometDexProfiling(cometDexProfilingConfig);
 
 // tokensProfiling({
-//   nUsers: 3,
-//   nTransactions: 9,
+//   nUsers: 5,
+//   nTransactions: 15,
 //   network: StellarPlus.Constants.testnet,
 // });

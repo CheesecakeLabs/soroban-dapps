@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "dotenv": "^16.3.1",
-    "stellar-plus": "^0.3.6",
-    "stellar-sdk": "^11.1.0"
+    "stellar-plus": "^0.4.0",
+    "stellar-sdk": "^11.0.1"
   }
 }

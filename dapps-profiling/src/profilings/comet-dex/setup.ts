@@ -1,8 +1,11 @@
 import { StellarPlus } from "stellar-plus";
 import { loadWasmFile } from "../../utils/load-wasm";
-import { factorySpec, contractsSpec } from "./constants";
-import { FactoryClient } from "./factory-client";
-import { ContractClient } from "./comet-client";
+import {
+  factorySpec,
+  contractsSpec,
+} from "../../dapps/comet-contracts/constants";
+import { FactoryClient } from "../../dapps/comet-contracts/factory-client";
+import { ContractClient } from "../../dapps/comet-contracts/comet-client";
 import { AccountHandler, TransactionInvocation } from "../../utils/lib-types";
 import { Network } from "stellar-plus/lib/stellar-plus/types";
 import { TransactionCosts } from "stellar-plus/lib/stellar-plus/core/contract-engine/types";
