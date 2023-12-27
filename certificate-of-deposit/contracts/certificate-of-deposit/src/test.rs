@@ -39,7 +39,7 @@ fn test_compound_rate() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let token_admin = Address::random(&env);
+    let token_admin = Address::generate(&env);
     let (token, _token_admin) = create_token_contract(&env, &token_admin);
     let _token_admin_client = TokenAdminClient::new(&env, &token.address);
     let (token, token_admin_client) = create_token_contract(&env, &token_admin);
@@ -79,7 +79,7 @@ fn test_compound_rate() {
     // Withdraws 3281
     //
 
-    let user = Address::random(&env);
+    let user = Address::generate(&env);
     token_admin_client.mint(&user, &1000); //fuel user wallet
     contract.deposit(&1000, &user);
 
@@ -156,7 +156,7 @@ fn test_flat_rate() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let token_admin = Address::random(&env);
+    let token_admin = Address::generate(&env);
     let (token, _token_admin) = create_token_contract(&env, &token_admin);
     let _token_admin_client = TokenAdminClient::new(&env, &token.address);
     let (token, token_admin_client) = create_token_contract(&env, &token_admin);
@@ -194,7 +194,7 @@ fn test_flat_rate() {
     // Withdraws 1200
     //
 
-    let user = Address::random(&env);
+    let user = Address::generate(&env);
     token_admin_client.mint(&user, &1000); //fuel user wallet
     contract.deposit(&1000, &user);
 

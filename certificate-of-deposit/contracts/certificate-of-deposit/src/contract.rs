@@ -184,37 +184,37 @@ impl CertificateOfDepositsTrait for CertificateOfDeposits {
         // environment, it would be necessary to maintain the contract states active by periodically
         // bumping their expiration times.
         //
-        env.storage().persistent().bump(
+        env.storage().persistent().extend_ttl(
             &DataKey::Admin,
             BALANCE_BUMP_THREASHOLD,
             BALANCE_BUMP_AMOUNT,
         );
-        env.storage().persistent().bump(
+        env.storage().persistent().extend_ttl(
             &DataKey::Asset,
             BALANCE_BUMP_THREASHOLD,
             BALANCE_BUMP_AMOUNT,
         );
-        env.storage().persistent().bump(
+        env.storage().persistent().extend_ttl(
             &DataKey::Term,
             BALANCE_BUMP_THREASHOLD,
             BALANCE_BUMP_AMOUNT,
         );
-        env.storage().persistent().bump(
+        env.storage().persistent().extend_ttl(
             &DataKey::CompoundStep,
             BALANCE_BUMP_THREASHOLD,
             BALANCE_BUMP_AMOUNT,
         );
-        env.storage().persistent().bump(
+        env.storage().persistent().extend_ttl(
             &DataKey::YieldRate,
             BALANCE_BUMP_THREASHOLD,
             BALANCE_BUMP_AMOUNT,
         );
-        env.storage().persistent().bump(
+        env.storage().persistent().extend_ttl(
             &DataKey::MinDeposit,
             BALANCE_BUMP_THREASHOLD,
             BALANCE_BUMP_AMOUNT,
         );
-        env.storage().persistent().bump(
+        env.storage().persistent().extend_ttl(
             &DataKey::PenaltyRate,
             BALANCE_BUMP_THREASHOLD,
             BALANCE_BUMP_AMOUNT,

@@ -1,3 +1,5 @@
+*.wasm
+
 .soroban
 node_modules
 
