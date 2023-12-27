@@ -5,9 +5,10 @@ import styles from './styles.module.scss'
 import { Deposit, Swap, Withdraw } from "components/molecules"
 import { IToken } from "interfaces/soroban/token"
 import { IReserves } from "interfaces/soroban/liquidityPool"
+import { Address } from 'token-a-contract';
 
 interface ILiquidityActions {
-  account: string;
+  account: Address;
   tokenA: IToken;
   tokenB: IToken;
   shareToken: IToken;
