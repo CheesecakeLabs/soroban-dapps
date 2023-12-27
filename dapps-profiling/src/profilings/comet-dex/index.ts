@@ -420,7 +420,7 @@ export const cometDexProfiling = async (args: cometDexProfilingConfigType) => {
     txInvocation: adminTxInvocation
   })
 
-  const logDataComet = factoryProfiler.getLog({ formatOutput: "csv" });
+  const logDataComet = cometProfiler.getLog({ formatOutput: "csv" });
   const columnsComet = Object.keys(
     logDataComet[0]
   ) as (keyof (typeof logDataComet)[0])[];
