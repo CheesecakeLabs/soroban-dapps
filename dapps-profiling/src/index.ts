@@ -7,7 +7,7 @@ import {
 
 const cometDexProfilingConfig: cometDexProfilingConfigType = {
   nUsers: 1,
-  network: StellarPlus.Constants.futurenet,
+  network: StellarPlus.Constants.testnet,
 };
 
 cometDexProfiling(cometDexProfilingConfig);
