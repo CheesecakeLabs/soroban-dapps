@@ -418,185 +418,214 @@ export class ContractClient extends StellarPlus.ContractEngine {
 
   async getTotalSupply(args: {
     txInvocation: TransactionInvocation;
+    invoke?: boolean;
   }): Promise<i128> {
-    return (await this.invokeContract({
-      method: methods.get_total_supply,
-      methodArgs: {},
-      ...args.txInvocation,
-    })) as i128;
+    return (await this.invokeOrReadFromContract(
+      methods.get_total_supply,
+      {},
+      args.txInvocation,
+      args.invoke as boolean
+    )) as i128;
   }
 
   async getController(args: {
     txInvocation: TransactionInvocation;
+    invoke?: boolean
   }): Promise<string> {
-    return (await this.invokeContract({
-      method: methods.get_controller,
-      methodArgs: {},
-      ...args.txInvocation,
-    })) as string;
+    return (await this.invokeOrReadFromContract(
+      methods.get_controller,
+      {},
+      args.txInvocation,
+      args.invoke as boolean
+    )) as string;
   }
 
   async getTotalDenormalizedWeight(args: {
     txInvocation: TransactionInvocation;
+    invoke?: boolean
   }): Promise<i128> {
-    return (await this.invokeContract({
-      method: methods.get_total_denormalized_weight,
-      methodArgs: {},
-      ...args.txInvocation,
-    })) as i128;
+    return (await this.invokeOrReadFromContract(
+      methods.get_total_denormalized_weight,
+      {},
+      args.txInvocation,
+      args.invoke as boolean
+    )) as i128;
   }
 
   async getTokens(args: {
     txInvocation: TransactionInvocation;
+    invoke?: boolean
   }): Promise<string[]> {
-    return (await this.invokeContract({
-      method: methods.get_tokens,
-      methodArgs: {},
-      ...args.txInvocation,
-    })) as string[];
+    return (await this.invokeOrReadFromContract(
+      methods.get_tokens,
+      {},
+      args.txInvocation,
+      args.invoke as boolean
+    )) as string[];
   }
 
   async getBalance(args: {
     token: string;
     user: string;
     txInvocation: TransactionInvocation;
+    invoke?: boolean
   }): Promise<i128> {
     const methodArgs = {
       token: args.token,
       user: args.user,
     };
 
-    return (await this.invokeContract({
-      method: methods.get_balance,
-      methodArgs: methodArgs,
-      ...args.txInvocation,
-    })) as i128;
+    return (await this.invokeOrReadFromContract(
+      methods.get_balance,
+      methodArgs,
+      args.txInvocation,
+      args.invoke as boolean
+    )) as i128;
   }
 
   async getDenormalizedWeight(args: {
     token: string;
     txInvocation: TransactionInvocation;
+    invoke?: boolean
   }): Promise<i128> {
     const methodArgs = {
       token: args.token,
     };
 
-    return (await this.invokeContract({
-      method: methods.get_denormalized_weight,
-      methodArgs: methodArgs,
-      ...args.txInvocation,
-    })) as i128;
+    return (await this.invokeOrReadFromContract(
+      methods.get_denormalized_weight,
+      methodArgs,
+      args.txInvocation,
+      args.invoke as boolean
+    )) as i128;
+
   }
 
   async getNormalizedWeight(args: {
     token: string;
     txInvocation: TransactionInvocation;
+    invoke?: boolean
   }): Promise<i128> {
     const methodArgs = {
       token: args.token,
     };
 
-    return (await this.invokeContract({
-      method: methods.get_normalized_weight,
-      methodArgs: methodArgs,
-      ...args.txInvocation,
-    })) as i128;
+    return (await this.invokeOrReadFromContract(
+      methods.get_normalized_weight,
+      methodArgs,
+      args.txInvocation,
+      args.invoke as boolean
+    )) as i128;
   }
 
   async getSpotPrice(args: {
     tokenIn: string;
     tokenOut: string;
     txInvocation: TransactionInvocation;
+    invoke?: boolean
   }): Promise<i128> {
     const methodArgs = {
       token_in: args.tokenIn,
       token_out: args.tokenOut,
     };
 
-    return (await this.invokeContract({
-      method: methods.get_spot_price,
-      methodArgs: methodArgs,
-      ...args.txInvocation,
-    })) as i128;
+    return (await this.invokeOrReadFromContract(
+      methods.get_spot_price,
+      methodArgs,
+      args.txInvocation,
+      args.invoke as boolean
+    )) as i128;
   }
 
   async getSwapFee(args: {
     txInvocation: TransactionInvocation;
+    invoke?: boolean
   }): Promise<i128> {
-    return (await this.invokeContract({
-      method: methods.get_swap_fee,
-      methodArgs: {},
-      ...args.txInvocation,
-    })) as i128;
+    return (await this.invokeOrReadFromContract(
+      methods.get_swap_fee,
+      {},
+      args.txInvocation,
+      args.invoke as boolean
+    )) as i128;
   }
 
   async getSpotPriceSansFee(args: {
     tokenIn: string;
     tokenOut: string;
     txInvocation: TransactionInvocation;
+    invoke?: boolean
   }): Promise<i128> {
     const methodArgs = {
       token_in: args.tokenIn,
       token_out: args.tokenOut,
     };
 
-    return (await this.invokeContract({
-      method: methods.get_spot_price_sans_fee,
-      methodArgs: methodArgs,
-      ...args.txInvocation,
-    })) as i128;
+    return (await this.invokeOrReadFromContract(
+      methods.get_spot_price_sans_fee,
+      methodArgs,
+      args.txInvocation,
+      args.invoke as boolean
+    )) as i128;
   }
 
   async isPublicSwap(args: {
     txInvocation: TransactionInvocation;
+    invoke?: boolean
   }): Promise<boolean> {
-    return (await this.invokeContract({
-      method: methods.is_public_swap,
-      methodArgs: {},
-      ...args.txInvocation,
-    })) as boolean;
+    return (await this.invokeOrReadFromContract(
+      methods.is_public_swap,
+      {},
+      args.txInvocation,
+      args.invoke as boolean
+    )) as boolean;
   }
 
   async isFinalized(args: {
     txInvocation: TransactionInvocation;
+    invoke?: boolean
   }): Promise<boolean> {
-    return (await this.invokeContract({
-      method: methods.is_finalized,
-      methodArgs: {},
-      ...args.txInvocation,
-    })) as boolean;
+    return (await this.invokeOrReadFromContract(
+      methods.is_finalized,
+      {},
+      args.txInvocation,
+      args.invoke as boolean
+    )) as boolean;
   }
 
   async isBound(args: {
     t: string;
     txInvocation: TransactionInvocation;
+    invoke?: boolean
   }): Promise<boolean> {
     const methodArgs = {
       t: args.t,
     };
 
-    return (await this.invokeContract({
-      method: methods.is_bound,
-      methodArgs: methodArgs,
-      ...args.txInvocation,
-    })) as boolean;
+    return (await this.invokeOrReadFromContract(
+      methods.is_bound,
+      methodArgs,
+      args.txInvocation,
+      args.invoke as boolean
+    )) as boolean;
   }
 
   async allowance(args: {
     from: string;
     spender: string;
     txInvocation: TransactionInvocation;
+    invoke?: boolean
   }): Promise<i128> {
     const methodArgs = {
       from: args.from,
       spender: args.spender,
     };
 
-    return (await this.invokeContract({
-      method: methods.allowance,
-      methodArgs: methodArgs,
-      ...args.txInvocation,
-    })) as i128;
+    return (await this.invokeOrReadFromContract(
+      methods.allowance,
+      methodArgs,
+      args.txInvocation,
+      args.invoke as boolean
+    )) as i128;
   }
 
   async approve(args: {
@@ -623,16 +652,18 @@ export class ContractClient extends StellarPlus.ContractEngine {
   async balanceOf(args: {
     id: string;
     txInvocation: TransactionInvocation;
+    invoke?: boolean
   }): Promise<i128> {
     const methodArgs = {
       id: args.id,
     };
 
-    return (await this.invokeContract({
-      method: methods.balance_of,
-      methodArgs: methodArgs,
-      ...args.txInvocation,
-    })) as i128;
+    return (await this.invokeOrReadFromContract(
+      methods.balance_of,
+      methodArgs,
+      args.txInvocation,
+      args.invoke as boolean
+    )) as i128;
   }
 
   async transfer(args: {
@@ -711,29 +742,51 @@ export class ContractClient extends StellarPlus.ContractEngine {
     });
   }
 
-  async decimals(args: { txInvocation: TransactionInvocation }): Promise<u32> {
-    return (await this.invokeContract({
-      method: methods.decimals,
-      methodArgs: {},
-      ...args.txInvocation,
-    })) as u32;
+  async decimals(args: { txInvocation: TransactionInvocation, invoke?: boolean }): Promise<u32> {
+    return (await this.invokeOrReadFromContract(
+      methods.decimals,
+      {},
+      args.txInvocation,
+      args.invoke as boolean
+    )) as u32;
   }
 
-  async name(args: { txInvocation: TransactionInvocation }): Promise<string> {
-    return (await this.invokeContract({
-      method: methods.name,
-      methodArgs: {},
-      ...args.txInvocation,
-    })) as string;
+  async name(args: { txInvocation: TransactionInvocation, invoke?: boolean }): Promise<string> {
+    return (await this.invokeOrReadFromContract(
+      methods.name,
+      {},
+      args.txInvocation,
+      args.invoke as boolean
+    )) as string;
   }
 
-  async symbol(args: { txInvocation: TransactionInvocation }): Promise<string> {
-    return (await this.invokeContract({
-      method: methods.symbol,
-      methodArgs: {},
-      ...args.txInvocation,
-    })) as string;
+  async symbol(args: { txInvocation: TransactionInvocation, invoke?: boolean }): Promise<string> {
+    return (await this.invokeOrReadFromContract(
+      methods.symbol,
+      {},
+      args.txInvocation,
+      args.invoke as boolean
+    )) as string;
   }
 
+  private async invokeOrReadFromContract(
+    method: string,
+    methodArgs: object,
+    txInvocation: TransactionInvocation,
+    invoke: boolean,
+  ): Promise<any> {
+    if (invoke) {
+      return (await this.invokeContract({
+        method: method,
+        methodArgs: methodArgs,
+        ...txInvocation,
+      }));
+    }
+    return (await this.readFromContract({
+      method: method,
+      methodArgs: methodArgs,
+      header: txInvocation.header,
+    }));
+  }
 
 }

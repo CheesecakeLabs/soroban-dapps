@@ -1,6 +1,5 @@
 import { StellarPlus } from "stellar-plus";
-import { Address } from "@stellar/stellar-base";
-import { TransactionInvocation, Network } from "../../utils/lib-types";
+import { TransactionInvocation } from "../../utils/lib-types";
 import { randomBytes } from "crypto";
 import { ContractEngineConstructorArgs } from "stellar-plus/lib/stellar-plus/core/contract-engine/types";
 import { hexStringToBytes32 } from "../../utils/converters";
@@ -39,17 +38,17 @@ export class FactoryClient extends StellarPlus.ContractEngine {
   async new_c_pool(args: {
     user: string;
     txInvocation: TransactionInvocation;
-  }): Promise<void> {
+  }): Promise<string> {
     const methodArgs = {
       user: args.user,
       salt: randomBytes(32),
     };
 
-    await this.invokeContract({
+    return (await this.invokeContract({
       method: methods.new_c_pool,
       methodArgs: methodArgs,
       ...args.txInvocation,
-    });
+    })) as string;
   }
 
   async set_c_admin(args: {
@@ -90,27 +89,53 @@ export class FactoryClient extends StellarPlus.ContractEngine {
   async is_c_pool(args: {
     addr: string;
     txInvocation: TransactionInvocation;
+    invoke?: boolean;
   }): Promise<boolean> {
     const methodArgs = {
       addr: args.addr,
     };
 
-    return (await this.readFromContract({
-      method: methods.is_c_pool,
-      methodArgs: methodArgs,
-      header: args.txInvocation.header,
-    })) as boolean;
+    return (await this.invokeOrReadFromContract(
+      methods.is_c_pool,
+      methodArgs,
+      args.txInvocation,
+      args.invoke as boolean
+    )) as boolean;
   }
 
   async get_c_admin(args: {
     txInvocation: TransactionInvocation;
+    invoke?: boolean;
   }): Promise<string> {
     const methodArgs = {};
 
-    return (await this.readFromContract({
-      method: methods.get_c_admin,
-      methodArgs: methodArgs,
-      header: args.txInvocation.header,
-    })) as string;
+    return (await this.invokeOrReadFromContract(
+      methods.get_c_admin,
+      methodArgs,
+      args.txInvocation,
+      args.invoke as boolean
+    )) as string;
+
   }
+
+  private async invokeOrReadFromContract(
+    method: string,
+    methodArgs: object,
+    txInvocation: TransactionInvocation,
+    invoke: boolean,
+  ): Promise<any> {
+    if (invoke) {
+      return (await this.invokeContract({
+        method: method,
+        methodArgs: methodArgs,
+        ...txInvocation,
+      }));
+    }
+    return (await this.readFromContract({
+      method: method,
+      methodArgs: methodArgs,
+      header: txInvocation.header,
+    }));
+  }
+
 }
