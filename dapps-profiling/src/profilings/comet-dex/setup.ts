@@ -9,6 +9,7 @@ import { ContractClient } from "../../dapps/comet-contracts/comet-client";
 import { AccountHandler, TransactionInvocation } from "../../utils/lib-types";
 import { Network } from "stellar-plus/lib/stellar-plus/types";
 import { TransactionCosts } from "stellar-plus/lib/stellar-plus/core/contract-engine/types";
+import { Profiler } from "stellar-plus/lib/stellar-plus/utils/profiler/soroban";
 
 export const initializeBaseAccounts = async (
   network: typeof StellarPlus.Constants.testnet,
@@ -40,6 +41,8 @@ export const deployContracts = async (
 ): Promise<{
   factoryClient: FactoryClient;
   cometClient: ContractClient;
+  factoryProfiler: Profiler;
+  cometProfiler: Profiler;
 }> => {
   console.log("Loading WASM Files...");
   const factoryWasm = await loadWasmFile(
@@ -49,20 +52,22 @@ export const deployContracts = async (
     "./src/dapps/comet-contracts/wasm/contracts.wasm"
   );
 
+  const factoryProfiler = new StellarPlus.Utils.SorobanProfiler();
   const factoryClient = new FactoryClient({
     network,
     wasm: factoryWasm,
     spec: factorySpec,
     contractId: factoryId,
-    options: { debug: true, costHandler: defaultCostHandler }
+    options: factoryProfiler.getOptionsArgs()
   });
 
+  const cometProfiler = new StellarPlus.Utils.SorobanProfiler();
   const cometClient = new ContractClient({
     network,
     wasm: cometWasm,
     spec: contractsSpec,
     contractId: cometId,
-    options: { debug: true, costHandler: defaultCostHandler }
+    options: cometProfiler.getOptionsArgs()
   });
 
   console.log("Uploading WASM Files...");
@@ -83,7 +88,7 @@ export const deployContracts = async (
     console.log("Contracts instance deployed!");
   }
 
-  return { factoryClient, cometClient };
+  return { factoryClient, cometClient, factoryProfiler, cometProfiler };
 };
 
 export const createUsers = async (
@@ -123,7 +128,7 @@ export const setupAssets = async (
   network: Network,
   issuer: AccountHandler,
   txInvocation: TransactionInvocation,
-  users?: AccountHandler[],
+  mintingForUsers?: AccountHandler[],
   assetAId?: string,
   assetBId?: string
 ): Promise<{
@@ -181,10 +186,9 @@ export const setupAssets = async (
   console.log("Asset A: ", assetA.getContractId())
   console.log("Asset B: ", assetB.getContractId())
 
-  if (users) {
+  if (mintingForUsers) {
     console.log("Minting assets")
-    users.push(issuer);
-    for (let user of users) {
+    for (let user of mintingForUsers) {
       for (let asset of [assetA, assetB]) {
         await asset.mint({
           to: user.getPublicKey(),
@@ -197,14 +201,3 @@ export const setupAssets = async (
 
   return { assetA, assetB };
 };
-
-function defaultCostHandler(methodName: string, costs: TransactionCosts): void {
-  console.log("Debugging method: ", methodName)
-  console.log(costs);
-  console.log(
-    `${costs.cpuInstructions},${costs.ram},${costs.minResourceFee},` +
-    `${costs.ledgerReadBytes},${costs.ledgerWriteBytes},` +
-    `${costs.ledgerEntryReads},${costs.ledgerEntryWrites},` +
-    `${(costs.eventSize || 0) + (costs.returnValueSize || 0)},${costs.transactionSize}`
-  );
-}
