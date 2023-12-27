@@ -16,5 +16,5 @@ tokensProfiling({
   nUsers: 2,
   nTransactions: 15,
   network: StellarPlus.Constants.testnet,
-  transactions: [tokenTransactions.mint],
+  transactions: [tokenTransactions.transfer],
 });

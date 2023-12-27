@@ -1,15 +1,12 @@
 import { Network } from "stellar-plus/lib/stellar-plus/types";
-import { addTrustlinesToUsers, createBaseAccounts, setupAssets } from "./setup";
-import { exportArrayToCSV } from "../../utils/export-to-csv";
+import { createBaseAccounts, setupAssets } from "./setup";
+
 import {
-  getRandomAmount,
-  getRandomEntryFromArray,
   mintSorobanTokensToUsers,
   setupDemuUsers,
 } from "../../utils/simulation/functions";
 import { DemoUser } from "../../utils/simulation-types";
-import { profile } from "console";
-import { profileMinting } from "./profiling-simulations";
+import { profileMinting, profilePayments } from "./profiling-simulations";
 
 export type tokensProfilingConfigType = {
   nUsers: number;
@@ -63,9 +60,6 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
     ],
   });
 
-  // console.log("soroban token", sorobanToken);
-  // console.log("sac token", sacToken);
-
   const sorobanTokenDecimals = await sorobanToken.decimals(
     issuer.transactionInvocation
   );
@@ -102,6 +96,22 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
     });
 
     await profileMinting({
+      nTransactions: args.nTransactions,
+      users,
+      issuer,
+      sorobanToken: sacToken.sorobanTokenHandler,
+    });
+  }
+
+  if (args.transactions?.includes(tokenTransactions.transfer)) {
+    await profilePayments({
+      nTransactions: args.nTransactions,
+      users,
+      issuer,
+      sorobanToken,
+    });
+
+    await profilePayments({
       nTransactions: args.nTransactions,
       users,
       issuer,
