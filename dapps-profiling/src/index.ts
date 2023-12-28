@@ -8,11 +8,11 @@ import {
 } from "./profilings/comet-dex";
 
 
-executeLiquidityPool({ nUsers: 3, network: Constants.testnet })
+executeLiquidityPool({ network: Constants.testnet })
 
 const cometDexProfilingConfig: cometDexProfilingConfigType = {
     nUsers: 3,
     network: StellarPlus.Constants.futurenet,
 };
-cometDexProfiling(cometDexProfilingConfig);
+// cometDexProfiling(cometDexProfilingConfig);
 

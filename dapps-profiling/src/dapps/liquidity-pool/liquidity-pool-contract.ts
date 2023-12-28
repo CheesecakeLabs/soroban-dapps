@@ -2,7 +2,7 @@ import { ContractEngine } from "stellar-plus/lib/stellar-plus";
 import { ContractEngineConstructorArgs } from "stellar-plus/lib/stellar-plus/core/contract-engine/types";
 import { TransactionInvocation } from "../../utils/lib-types";
 import { hexStringToBytes32 } from "../../utils/converters";
-import { Address } from "stellar-sdk";
+import { Address } from "@stellar/stellar-base";
 
 enum methods {
     initialize = "initialize",
@@ -13,7 +13,7 @@ enum methods {
 }
 
 type initializeArgs = {
-    poolWasmHash: string,
+    tokenWasmHash: string,
     tokenA: string,
     tokenB: string,
     txInvocation: TransactionInvocation,
@@ -33,13 +33,13 @@ export class LiquidityPoolContract extends ContractEngine {
     }
 
     async initialize({
-        poolWasmHash,
+        tokenWasmHash,
         tokenA,
         tokenB,
         txInvocation
     }: initializeArgs): Promise<void> {
         const methodArgs = {
-            token_wasm_hash: hexStringToBytes32(poolWasmHash),
+            token_wasm_hash: hexStringToBytes32(tokenWasmHash),
             token_a: new Address(tokenA),
             token_b: new Address(tokenB),
         };

@@ -4,14 +4,14 @@ import { Constants } from "stellar-plus/lib/stellar-plus";
 import { loadWasmFile } from "../../utils/load-wasm";
 import { liquidityPoolSpec } from "./constants";
 import { Network } from "stellar-plus/lib/stellar-plus/types";
-import { setupAssets } from "../comet-contracts/setup";
+import { setupAssets } from "../../profilings/tokens/setup";
+import { createAbundanceAsset, createAbundanceAssetWithId } from "./setup";
 
 export type executeLiquidityPoolArgs = {
-    nUsers: number;
     network: Network;
 };
 
-export async function executeLiquidityPool({ nUsers, network }: executeLiquidityPoolArgs) {
+export async function executeLiquidityPool({ network }: executeLiquidityPoolArgs) {
 
     console.log("====================================");
     console.log("Creating Admin");
@@ -19,9 +19,6 @@ export async function executeLiquidityPool({ nUsers, network }: executeLiquidity
 
     const admin = new StellarPlus.Account.DefaultAccountHandler({ network: network });
     await admin.friendbot?.initialize()
-
-    console.log("admin key", admin.getPublicKey())
-    console.log("admin secret", admin.secretKey)
 
     const adminTxInvocation = {
         header: {
@@ -32,59 +29,63 @@ export async function executeLiquidityPool({ nUsers, network }: executeLiquidity
         signers: [admin],
     };
 
+    console.log("====================================");
+    console.log("Creating Assets...");
+    console.log("====================================");
+
+    const { assetA, assetB } = await createAbundanceAsset({ network: Constants.testnet, txInvocation: adminTxInvocation, admin })
+
+    console.log("====================================");
+    console.log("Deploying Contract");
+    console.log("====================================");
+
     const liquidityPoolWasm = await loadWasmFile(
         "./src/dapps/liquidity-pool/wasm/soroban_liquidity_pool_contract.optimized.wasm"
     );
 
+    // const liquidityPoolContractId = "CCTYFBJT4CTTQ766S54I4VEGAXPRGSEWL3SS2ZYAF62H6AZ42FDXNINE"
     const liquidityPool = new LiquidityPoolContract({
         network: Constants.testnet,
         spec: liquidityPoolSpec,
         wasm: liquidityPoolWasm
     })
 
-    console.log("====================================");
-    console.log("Deploying Contract");
-    console.log("====================================");
-
-    await liquidityPool.uploadWasm(adminTxInvocation);
+    await liquidityPool.uploadWasm(adminTxInvocation)
     await liquidityPool.deploy(adminTxInvocation)
-
-    console.log("====================================");
-    console.log("Creating Assets...");
-    console.log("====================================");
-    const { assetA, assetB } = await setupAssets(
-        network,
-        admin,
-        adminTxInvocation
-    );
 
     const assetAId = assetA.getContractId()
     if (!assetAId) {
-        throw "Asset A Id not found"
+        throw "assetAId not found"
     }
+    console.log("assetAId: ", assetAId)
 
     const assetBId = assetB.getContractId()
     if (!assetBId) {
-        throw "Asset B Id not found"
+        throw "assetBId not found"
+    }
+    console.log("assetBId: ", assetBId)
+
+    // const poolWasmHashBuffer = await loadWasmFile(
+    //     "./src/dapps/liquidity-pool/wasm/token_wasm_hash"
+    // );
+
+    const tokenWasmHash = assetA.getWasmHash()
+    if (!tokenWasmHash) {
+        throw "Wasm Hash not found"
     }
 
     console.log("====================================");
     console.log("Initialize Contract");
     console.log("====================================");
 
-    const poolWasmHash = assetA.getWasmHash()
-    if (!poolWasmHash) {
-        throw "Wasm hash not found"
-    }
-
-    console.log("poolWasmHash: ", poolWasmHash)
+    console.log("liquidityPool Id:", liquidityPool.getContractId());
 
     await liquidityPool.initialize({
-        poolWasmHash: poolWasmHash,
+        tokenWasmHash: tokenWasmHash,
         tokenA: assetAId,
         tokenB: assetBId,
         txInvocation: adminTxInvocation
     })
-
+    console.log("liquidityPool reserves:", await liquidityPool.getReserves(adminTxInvocation))
     // console.log("liquidityPool reserves:", await liquidityPool.getReserves(adminTxInvocation))
 }
