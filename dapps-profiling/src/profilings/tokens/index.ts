@@ -66,7 +66,7 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
 
   const users: DemoUser[] = await setupDemuUsers({
     nOfUsers: nUsers,
-    network: network,
+    network,
     feeBump: opex.transactionInvocation,
     addTrustline: [
       {
@@ -109,14 +109,14 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
 
   if (transactions?.includes(tokenTransactions.mint)) {
     await profileMinting({
-      nTransactions: nTransactions,
+      nTransactions,
       users,
       issuer,
       sorobanToken,
     });
 
     await profileMinting({
-      nTransactions: nTransactions,
+      nTransactions,
       users,
       issuer,
       sorobanToken: sacToken.sorobanTokenHandler,
@@ -129,14 +129,14 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
 
   if (transactions?.includes(tokenTransactions.transfer)) {
     await profilePayments({
-      nTransactions: nTransactions,
+      nTransactions,
       users,
       issuer,
       sorobanToken,
     });
 
     await profilePayments({
-      nTransactions: nTransactions,
+      nTransactions,
       users,
       issuer,
       sorobanToken: sacToken.sorobanTokenHandler,
@@ -149,14 +149,14 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
 
   if (transactions?.includes(tokenTransactions.burn)) {
     await profileBurn({
-      nTransactions: nTransactions,
+      nTransactions,
       users,
       issuer,
       sorobanToken,
     });
 
     await profileBurn({
-      nTransactions: nTransactions,
+      nTransactions,
       users,
       issuer,
       sorobanToken: sacToken.sorobanTokenHandler,
