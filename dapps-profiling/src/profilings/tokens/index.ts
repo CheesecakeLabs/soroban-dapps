@@ -46,19 +46,27 @@ export enum tokenTransactions {
  * 5. Export results - Export the results to a CSV file.
  **/
 export const tokensProfiling = async (args: tokensProfilingConfigType) => {
-  const { opex, issuer } = await createBaseAccounts(args.network);
+  const {
+    nUsers,
+    nTransactions,
+    network,
+    transactions,
+    validationCloudApiKey,
+  } = args;
+
+  const { opex, issuer } = await createBaseAccounts(network);
 
   const { sorobanToken, sacToken, tokenProfiler, sacProfiler } =
     await setupAssets(
-      args.network,
+      network,
       issuer.account,
       issuer.transactionInvocation,
-      args.validationCloudApiKey
+      validationCloudApiKey
     );
 
   const users: DemoUser[] = await setupDemuUsers({
-    nOfUsers: args.nUsers,
-    network: args.network,
+    nOfUsers: nUsers,
+    network: network,
     feeBump: opex.transactionInvocation,
     addTrustline: [
       {
@@ -99,16 +107,16 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
   // Profiling minting transactions
   // ====================================
 
-  if (args.transactions?.includes(tokenTransactions.mint)) {
+  if (transactions?.includes(tokenTransactions.mint)) {
     await profileMinting({
-      nTransactions: args.nTransactions,
+      nTransactions: nTransactions,
       users,
       issuer,
       sorobanToken,
     });
 
     await profileMinting({
-      nTransactions: args.nTransactions,
+      nTransactions: nTransactions,
       users,
       issuer,
       sorobanToken: sacToken.sorobanTokenHandler,
@@ -119,16 +127,16 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
   // Profiling payments transactions
   // ====================================
 
-  if (args.transactions?.includes(tokenTransactions.transfer)) {
+  if (transactions?.includes(tokenTransactions.transfer)) {
     await profilePayments({
-      nTransactions: args.nTransactions,
+      nTransactions: nTransactions,
       users,
       issuer,
       sorobanToken,
     });
 
     await profilePayments({
-      nTransactions: args.nTransactions,
+      nTransactions: nTransactions,
       users,
       issuer,
       sorobanToken: sacToken.sorobanTokenHandler,
@@ -139,16 +147,16 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
   // Profiling burn transactions
   // ====================================
 
-  if (args.transactions?.includes(tokenTransactions.burn)) {
+  if (transactions?.includes(tokenTransactions.burn)) {
     await profileBurn({
-      nTransactions: args.nTransactions,
+      nTransactions: nTransactions,
       users,
       issuer,
       sorobanToken,
     });
 
     await profileBurn({
-      nTransactions: args.nTransactions,
+      nTransactions: nTransactions,
       users,
       issuer,
       sorobanToken: sacToken.sorobanTokenHandler,
