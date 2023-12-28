@@ -72,7 +72,7 @@ export const setupAssets = async (
   network: Network,
   issuer: AccountHandler,
   txInvocation: TransactionInvocation,
-  profiler?: Profiler
+  validationCloudApiKey?: string
 ): Promise<{
   sorobanToken: StellarPlus.Asset.SorobanTokenHandler;
   sacToken: StellarPlus.Asset.SACHandler;
@@ -83,10 +83,12 @@ export const setupAssets = async (
     "./src/dapps/soroban-token/wasm/soroban_token_contract.wasm"
   );
 
-  const vcRpc = new StellarPlus.RPC.ValidationCloudRpcHandler(
-    network,
-    "<Your API Key>"
-  );
+  const vcRpc = validationCloudApiKey
+    ? new StellarPlus.RPC.ValidationCloudRpcHandler(
+        network,
+        validationCloudApiKey
+      )
+    : undefined;
 
   const tokenProfiler = new StellarPlus.Utils.SorobanProfiler();
 

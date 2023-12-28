@@ -19,6 +19,7 @@ export type tokensProfilingConfigType = {
   nTransactions: number;
   network: Network;
   transactions?: tokenTransactions[];
+  validationCloudApiKey?: string;
 };
 
 export enum tokenTransactions {
@@ -51,7 +52,8 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
     await setupAssets(
       args.network,
       issuer.account,
-      issuer.transactionInvocation
+      issuer.transactionInvocation,
+      args.validationCloudApiKey
     );
 
   const users: DemoUser[] = await setupDemuUsers({
