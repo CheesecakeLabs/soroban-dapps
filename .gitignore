@@ -1,6 +1,6 @@
-*.wasm
-
+*.csv
 .soroban
+.accounts
 node_modules
 
 # misc
@@ -13,3 +13,10 @@ node_modules
 
 # Rust
 target
+
+amm-deploy-out
+asset-a-deploy-out
+asset-b-deploy-out
+invoke-log.csv
+
+.env
