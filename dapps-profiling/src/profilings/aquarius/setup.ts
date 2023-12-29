@@ -1,6 +1,9 @@
 import { StellarPlus } from "stellar-plus";
 import { loadWasmFile } from "../../utils/load-wasm";
-import { AccountHandler, TransactionInvocation } from "../../utils/lib-types";
+import {
+  AccountHandler,
+  TransactionInvocation,
+} from "../../utils/simulation/types";
 import { Network } from "stellar-plus/lib/stellar-plus/types";
 import { Profiler } from "stellar-plus/lib/stellar-plus/utils/profiler/soroban";
 import { PoolRouterClient } from "../../dapps/aquarius/pool-router-client";
@@ -9,20 +12,25 @@ import { poolRouterSpec, poolSpec } from "../../dapps/aquarius/constants";
 
 export const initializeBaseAccounts = async (
   network: typeof StellarPlus.Constants.testnet,
-  opexSecret?: string, adminSecret?: string
+  opexSecret?: string,
+  adminSecret?: string
 ): Promise<{
   opex: StellarPlus.Account.DefaultAccountHandler;
   admin: StellarPlus.Account.DefaultAccountHandler;
 }> => {
-  const opex = new StellarPlus.Account.DefaultAccountHandler({ network, secretKey: opexSecret });
+  const opex = new StellarPlus.Account.DefaultAccountHandler({
+    network,
+    secretKey: opexSecret,
+  });
   console.log("Initializing opex account... ", opex.getPublicKey());
-  if (!opexSecret)
-    await [opex.friendbot?.initialize() as Promise<void>];
+  if (!opexSecret) await [opex.friendbot?.initialize() as Promise<void>];
 
-  const admin = new StellarPlus.Account.DefaultAccountHandler({ network, secretKey: adminSecret });
+  const admin = new StellarPlus.Account.DefaultAccountHandler({
+    network,
+    secretKey: adminSecret,
+  });
   console.log("Initializing admin account... ", admin.getPublicKey());
-  if (!adminSecret)
-    await (admin.friendbot?.initialize() as Promise<void>);
+  if (!adminSecret) await (admin.friendbot?.initialize() as Promise<void>);
 
   console.log("Base accounts initialized!");
 
@@ -33,7 +41,7 @@ export const deployContracts = async (
   network: typeof StellarPlus.Constants.testnet,
   txInvocation: any,
   poolRouterId?: string,
-  poolId?: string,
+  poolId?: string
 ): Promise<{
   poolRouterClient: PoolRouterClient;
   poolClient: PoolClient;
@@ -54,7 +62,7 @@ export const deployContracts = async (
     wasm: poolRouterWasm,
     spec: poolRouterSpec,
     contractId: poolRouterId,
-    options: poolRouterProfiler.getOptionsArgs()
+    options: poolRouterProfiler.getOptionsArgs(),
   });
 
   const poolProfiler = new StellarPlus.Utils.SorobanProfiler();
@@ -63,14 +71,13 @@ export const deployContracts = async (
     wasm: poolWasm,
     spec: poolSpec,
     contractId: poolId,
-    options: poolProfiler.getOptionsArgs()
+    options: poolProfiler.getOptionsArgs(),
   });
 
   console.log("Uploading WASM Files...");
   await poolClient.uploadWasm(txInvocation);
   await poolRouterClient.uploadWasm(txInvocation);
   console.log("Contracts WASM uploaded!");
-
 
   if (!poolId) {
     console.log("Deploying pool instance...");
@@ -91,13 +98,16 @@ export const createUsers = async (
   nUsers: number,
   network: typeof StellarPlus.Constants.testnet,
   txInvocation: any,
-  userSecrets?: string[],
+  userSecrets?: string[]
 ) => {
   const users = [];
 
   if (userSecrets) {
     for (let i = 0; i < nUsers; i++) {
-      const user = new StellarPlus.Account.DefaultAccountHandler({ network, secretKey: userSecrets[i] });
+      const user = new StellarPlus.Account.DefaultAccountHandler({
+        network,
+        secretKey: userSecrets[i],
+      });
       users.push(user);
       console.log("Initializing user account: ", user.getPublicKey());
     }
@@ -152,12 +162,12 @@ export const setupAssets = async (
   let assetA = new StellarPlus.Asset.SorobanTokenHandler({
     network,
     wasm: wasmBuffer,
-    contractId: assetAId
+    contractId: assetAId,
   });
+  console.log("Uploading WASM Files...");
+  await assetA.uploadWasm(txInvocation);
 
   if (!assetAId) {
-    console.log("Uploading WASM Files...");
-    await assetA.uploadWasm(txInvocation);
     console.log("Deploying instance... ");
     await assetA.deploy(txInvocation);
     console.log("Initializing instance...");
@@ -174,12 +184,12 @@ export const setupAssets = async (
   let assetB = new StellarPlus.Asset.SorobanTokenHandler({
     network,
     wasm: wasmBuffer,
-    contractId: assetBId
+    contractId: assetBId,
   });
+  console.log("Uploading WASM Files...");
+  await assetB.uploadWasm(txInvocation);
 
   if (!assetBId) {
-    console.log("Uploading WASM Files...");
-    await assetB.uploadWasm(txInvocation);
     console.log("Deploying instance... ");
     await assetB.deploy(txInvocation);
     console.log("Initializing instance...");
@@ -192,24 +202,26 @@ export const setupAssets = async (
     });
   }
 
-  if ((assetA.getContractId() as string) >= (assetB.getContractId() as string)) {
+  if (
+    (assetA.getContractId() as string) >= (assetB.getContractId() as string)
+  ) {
     let tempAssetA = assetA;
     assetA = assetB;
-    assetB = tempAssetA
+    assetB = tempAssetA;
   }
 
-  console.log("Asset A: ", assetA.getContractId())
-  console.log("Asset B: ", assetB.getContractId())
+  console.log("Asset A: ", assetA.getContractId());
+  console.log("Asset B: ", assetB.getContractId());
 
   if (mintingForUsers) {
-    console.log("Minting assets")
+    console.log("Minting assets");
     for (let user of mintingForUsers) {
       for (let asset of [assetA, assetB]) {
         await asset.mint({
           to: user.getPublicKey(),
           amount: BigInt(1000000000000000),
           ...txInvocation,
-        })
+        });
       }
     }
   }

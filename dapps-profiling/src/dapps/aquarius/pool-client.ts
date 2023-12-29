@@ -1,5 +1,5 @@
 import { StellarPlus } from "stellar-plus";
-import { TransactionInvocation } from "../../utils/lib-types";
+import { TransactionInvocation } from "../../utils/simulation/types";
 import { ContractEngineConstructorArgs } from "stellar-plus/lib/stellar-plus/core/contract-engine/types";
 import { hexStringToBytes32 } from "../../utils/converters";
 
@@ -32,7 +32,7 @@ export class PoolClient extends StellarPlus.ContractEngine {
     admin: string;
     tokens: string[];
     lp_token_wasm_hash: string;
-    fee_fraction: number,
+    fee_fraction: number;
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
@@ -52,8 +52,7 @@ export class PoolClient extends StellarPlus.ContractEngine {
   async pool_type(args: {
     txInvocation: TransactionInvocation;
   }): Promise<void> {
-    const methodArgs = {
-    };
+    const methodArgs = {};
 
     await this.invokeContract({
       method: methods.pool_type,
@@ -66,8 +65,7 @@ export class PoolClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
     invoke?: boolean;
   }): Promise<string> {
-    const methodArgs = {
-    };
+    const methodArgs = {};
 
     return (await this.invokeOrReadFromContract(
       methods.share_id,
@@ -81,8 +79,7 @@ export class PoolClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
     invoke?: boolean;
   }): Promise<string> {
-    const methodArgs = {
-    };
+    const methodArgs = {};
 
     return (await this.invokeOrReadFromContract(
       methods.get_reserves,
@@ -96,8 +93,7 @@ export class PoolClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
     invoke?: boolean;
   }): Promise<string> {
-    const methodArgs = {
-    };
+    const methodArgs = {};
 
     return (await this.invokeOrReadFromContract(
       methods.get_fee_fraction,
@@ -111,8 +107,7 @@ export class PoolClient extends StellarPlus.ContractEngine {
     txInvocation: TransactionInvocation;
     invoke?: boolean;
   }): Promise<string> {
-    const methodArgs = {
-    };
+    const methodArgs = {};
 
     return (await this.invokeOrReadFromContract(
       methods.get_tokens,
@@ -152,7 +147,7 @@ export class PoolClient extends StellarPlus.ContractEngine {
       in_idx: args.in_idx,
       out_idx: args.out_idx,
       in_amount: args.in_amount,
-      out_min: args.out_min
+      out_min: args.out_min,
     };
 
     await this.invokeContract({
@@ -168,7 +163,7 @@ export class PoolClient extends StellarPlus.ContractEngine {
     out_idx: number;
     in_amount: BigInt;
     txInvocation: TransactionInvocation;
-    invoke?: boolean
+    invoke?: boolean;
   }): Promise<BigInt> {
     const methodArgs = {
       user: args.user,
@@ -243,7 +238,7 @@ export class PoolClient extends StellarPlus.ContractEngine {
   async get_rewards_info(args: {
     user: string;
     txInvocation: TransactionInvocation;
-    invoke?: boolean
+    invoke?: boolean;
   }): Promise<any> {
     const methodArgs = {
       user: args.user,
@@ -260,7 +255,7 @@ export class PoolClient extends StellarPlus.ContractEngine {
   async get_user_reward(args: {
     user: string;
     txInvocation: TransactionInvocation;
-    invoke?: boolean
+    invoke?: boolean;
   }): Promise<BigInt> {
     const methodArgs = {
       user: args.user,
@@ -304,7 +299,6 @@ export class PoolClient extends StellarPlus.ContractEngine {
     });
   }
 
-
   async version(args: {
     txInvocation: TransactionInvocation;
     invoke?: boolean;
@@ -323,20 +317,19 @@ export class PoolClient extends StellarPlus.ContractEngine {
     method: string,
     methodArgs: object,
     txInvocation: TransactionInvocation,
-    invoke: boolean,
+    invoke: boolean
   ): Promise<any> {
     if (invoke) {
-      return (await this.invokeContract({
+      return await this.invokeContract({
         method: method,
         methodArgs: methodArgs,
         ...txInvocation,
-      }));
+      });
     }
-    return (await this.readFromContract({
+    return await this.readFromContract({
       method: method,
       methodArgs: methodArgs,
       header: txInvocation.header,
-    }));
+    });
   }
-
 }

@@ -1,8 +1,7 @@
 import { StellarPlus } from "stellar-plus";
-import { TransactionInvocation } from "../../utils/lib-types";
-import { randomBytes } from "crypto";
+import { TransactionInvocation } from "../../utils/simulation/types";
 import { ContractEngineConstructorArgs } from "stellar-plus/lib/stellar-plus/core/contract-engine/types";
-import { hexStringToBytes32 } from "../../utils/converters";
+import { hexStringToBytes32, numberToBytes32 } from "../../utils/converters";
 
 enum methods {
   pool_type = "pool_type",
@@ -41,12 +40,12 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
 
   async pool_type(args: {
     tokens: string[];
-    poolIndex: number;
+    pool_index: Buffer;
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
       tokens: args.tokens,
-      poolIndex: args.poolIndex,
+      pool_index: args.pool_index,
     };
 
     await this.invokeContract({
@@ -58,13 +57,13 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
 
   async get_pool(args: {
     tokens: string[];
-    pool_index: number;
+    pool_index: Buffer;
     txInvocation: TransactionInvocation;
     invoke?: boolean;
   }): Promise<string> {
     const methodArgs = {
       tokens: args.tokens,
-      pool_index: args.pool_index
+      pool_index: args.pool_index,
     };
 
     return (await this.invokeOrReadFromContract(
@@ -77,13 +76,13 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
 
   async share_id(args: {
     tokens: string[];
-    pool_index: number;
+    pool_index: Buffer;
     txInvocation: TransactionInvocation;
     invoke?: boolean;
   }): Promise<string> {
     const methodArgs = {
       tokens: args.tokens,
-      pool_index: args.pool_index
+      pool_index: args.pool_index,
     };
 
     return (await this.invokeOrReadFromContract(
@@ -96,13 +95,13 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
 
   async get_reserves(args: {
     tokens: string[];
-    pool_index: number;
+    pool_index: Buffer;
     txInvocation: TransactionInvocation;
     invoke?: boolean;
   }): Promise<string> {
     const methodArgs = {
       tokens: args.tokens,
-      pool_index: args.pool_index
+      pool_index: args.pool_index,
     };
 
     return (await this.invokeOrReadFromContract(
@@ -115,13 +114,13 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
 
   async get_tokens(args: {
     tokens: string[];
-    pool_index: number;
+    pool_index: Buffer;
     txInvocation: TransactionInvocation;
     invoke?: boolean;
   }): Promise<string> {
     const methodArgs = {
       tokens: args.tokens,
-      pool_index: args.pool_index
+      pool_index: args.pool_index,
     };
 
     return (await this.invokeOrReadFromContract(
@@ -135,8 +134,8 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
   async deposit(args: {
     user: string;
     tokens: string[];
-    pool_index: number;
-    desired_amounts: BigInt[],
+    pool_index: Buffer;
+    desired_amounts: BigInt[];
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
@@ -158,7 +157,7 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
     tokens: string[];
     token_in: string;
     token_out: string;
-    pool_index: number;
+    pool_index: Buffer;
     in_amount: BigInt;
     out_min: BigInt;
     txInvocation: TransactionInvocation;
@@ -185,10 +184,10 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
     tokens: string[];
     token_in: string;
     token_out: string;
-    pool_index: number;
+    pool_index: Buffer;
     in_amount: BigInt;
     txInvocation: TransactionInvocation;
-    invoke?: boolean
+    invoke?: boolean;
   }): Promise<BigInt> {
     const methodArgs = {
       user: args.user,
@@ -210,7 +209,7 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
   async withdraw(args: {
     user: string;
     tokens: string[];
-    pool_index: number;
+    pool_index: Buffer;
     share_amount: BigInt;
     min_amounts: BigInt[];
     txInvocation: TransactionInvocation;
@@ -233,7 +232,7 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
   async set_rewards_config(args: {
     admin: string;
     tokens: string[];
-    pool_index: number;
+    pool_index: Buffer;
     expired_at: BigInt;
     tps: BigInt;
     txInvocation: TransactionInvocation;
@@ -256,9 +255,9 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
   async get_rewards_info(args: {
     user: string;
     tokens: string[];
-    pool_index: number;
+    pool_index: Buffer;
     txInvocation: TransactionInvocation;
-    invoke?: boolean
+    invoke?: boolean;
   }): Promise<any> {
     const methodArgs = {
       user: args.user,
@@ -277,9 +276,9 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
   async get_user_reward(args: {
     user: string;
     tokens: string[];
-    pool_index: number;
+    pool_index: Buffer;
     txInvocation: TransactionInvocation;
-    invoke?: boolean
+    invoke?: boolean;
   }): Promise<BigInt> {
     const methodArgs = {
       user: args.user,
@@ -298,7 +297,7 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
   async claim(args: {
     user: string;
     tokens: string[];
-    pool_index: number;
+    pool_index: Buffer;
     txInvocation: TransactionInvocation;
   }): Promise<void> {
     const methodArgs = {
@@ -317,16 +316,16 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
   async init_pool(args: {
     tokens: string[];
     txInvocation: TransactionInvocation;
-  }): Promise<void> {
+  }): Promise<[Buffer, string]> {
     const methodArgs = {
       tokens: args.tokens,
     };
 
-    await this.invokeContract({
+    return (await this.invokeContract({
       method: methods.init_pool,
       methodArgs: methodArgs,
       ...args.txInvocation,
-    });
+    })) as [Buffer, string];
   }
 
   async init_standard_pool(args: {
@@ -374,7 +373,7 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
   async get_pools(args: {
     tokens: string[];
     txInvocation: TransactionInvocation;
-    invoke?: boolean
+    invoke?: boolean;
   }): Promise<any> {
     const methodArgs = {
       tokens: args.tokens,
@@ -539,7 +538,6 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
     });
   }
 
-
   async version(args: {
     txInvocation: TransactionInvocation;
     invoke?: boolean;
@@ -558,20 +556,19 @@ export class PoolRouterClient extends StellarPlus.ContractEngine {
     method: string,
     methodArgs: object,
     txInvocation: TransactionInvocation,
-    invoke: boolean,
+    invoke: boolean
   ): Promise<any> {
     if (invoke) {
-      return (await this.invokeContract({
+      return await this.invokeContract({
         method: method,
         methodArgs: methodArgs,
         ...txInvocation,
-      }));
+      });
     }
-    return (await this.readFromContract({
+    return await this.readFromContract({
       method: method,
       methodArgs: methodArgs,
       header: txInvocation.header,
-    }));
+    });
   }
-
 }

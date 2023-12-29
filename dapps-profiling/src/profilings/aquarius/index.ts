@@ -7,7 +7,6 @@ import {
 } from "./setup";
 import { exportArrayToCSV } from "../../utils/export-to-csv";
 
-
 export type aquariusProfilingConfigType = {
   nUsers: number;
   network: typeof StellarPlus.Constants.testnet;
@@ -19,7 +18,11 @@ export const aquariusProfiling = async (args: aquariusProfilingConfigType) => {
   console.log("====================================");
   console.log("Initiating Aquarius Profiling!");
   console.log("====================================");
-  const { opex, admin } = await initializeBaseAccounts(network, "SDDAOPC6BLNJQ43NGWDIH433XHV4JOBPNFXVFDW6FD5GYO2O4RLTP33Y", "SDDAOPC6BLNJQ43NGWDIH433XHV4JOBPNFXVFDW6FD5GYO2O4RLTP33Y");
+  const { opex, admin } = await initializeBaseAccounts(
+    network,
+    "SB53N7UZ3ZGHZXIZVALUG7Z3LTBD2QH6LGPVNUKTO3COC2F6RVPQMAH2",
+    "SB53N7UZ3ZGHZXIZVALUG7Z3LTBD2QH6LGPVNUKTO3COC2F6RVPQMAH2"
+  );
 
   const opexTxInvocation = {
     header: {
@@ -42,10 +45,13 @@ export const aquariusProfiling = async (args: aquariusProfilingConfigType) => {
   console.log("====================================");
   console.log("Creating Core Contracts...");
   console.log("====================================");
-  const { poolRouterClient, poolClient, poolRouterProfiler, poolProfiler } = await deployContracts(
-    network,
-    opexTxInvocation
-  );
+  const { poolRouterClient, poolClient, poolRouterProfiler, poolProfiler } =
+    await deployContracts(
+      network,
+      opexTxInvocation,
+      "CCLXJ2Y6DVXJZ5FR3TOPBHDJND2GJGRFC7BR63NXA7TY4ZYCEWUMIE32",
+      "CCNKAM3GP42H4WRFVFVYBQ73ZFFSXX2K3RSHYITAQNSQM33A4HG2THOT"
+    );
 
   console.log("Factory Id", poolRouterClient.getContractId());
   console.log("Contracts Id", poolClient.getContractId());
@@ -53,7 +59,9 @@ export const aquariusProfiling = async (args: aquariusProfilingConfigType) => {
   console.log("====================================");
   console.log("Creating users...");
   console.log("====================================");
-  const users = await createUsers(nUsers, network, opexTxInvocation, ["SA4WTTZ4VEMC62TR27FECUDDQ7OAK3G4BUYEQQA3O75W4NZXPGXLOFVY"]);
+  const users = await createUsers(nUsers, network, opexTxInvocation, [
+    "SA4WTTZ4VEMC62TR27FECUDDQ7OAK3G4BUYEQQA3O75W4NZXPGXLOFVY",
+  ]);
 
   const user1TxInvocation = {
     header: {
@@ -74,62 +82,300 @@ export const aquariusProfiling = async (args: aquariusProfilingConfigType) => {
     network,
     admin,
     adminTxInvocation,
-    mintingForUsers,
+    [],
+    "CBSYFESVRLAWH6SIYXFE45ZJK54OL2NYHEHLBV5TXAXSVIGMCZRUXERX",
+    "CDCO4NXE55CRV6LRDBIBD7TYTGP3VE3EDHTGSFUNL5HNGHDLBLT2RETJ"
   );
 
-  assetA.approve({
-    from: users[0].getPublicKey(),
-    spender: poolClient.getContractId() as string,
-    amount: 100000000000,
-    live_until_ledger: 362428,
-    txInvocation: user1TxInvocation,
-  })
+  //await new Promise((f) => setTimeout(f, 60000));
 
-  assetB.approve({
-    from: users[0].getPublicKey(),
-    spender: poolClient.getContractId() as string,
-    amount: 100000000000,
-    live_until_ledger: 362428,
-    txInvocation: user1TxInvocation,
-  })
+  // soroban contract invoke --network testnet --id CDCO4NXE55CRV6LRDBIBD7TYTGP3VE3EDHTGSFUNL5HNGHDLBLT2RETJ --source SA4WTTZ4VEMC62TR27FECUDDQ7OAK3G4BUYEQQA3O75W4NZXPGXLOFVY -- approve --from GAE3W6IGHMPXJKMC6M3SOTBU3LDOJUQ2W35HV6LDBHM72KJDRJMJBTWO --spender CCLXJ2Y6DVXJZ5FR3TOPBHDJND2GJGRFC7BR63NXA7TY4ZYCEWUMIE32 --amount 100000000000 --live_until_ledger 409782
+
+  // assetA.approve({
+  //   from: users[0].getPublicKey(),
+  //   spender: poolClient.getContractId() as string,
+  //   amount: 100000000000,
+  //   live_until_ledger: 362428,
+  //   txInvocation: user1TxInvocation,
+  // })
+
+  // assetB.approve({
+  //   from: users[0].getPublicKey(),
+  //   spender: poolClient.getContractId() as string,
+  //   amount: 100000000000,
+  //   expiration_ledger: 362428,
+  //   txInvocation: user1TxInvocation,
+  // })
 
   // console.log("====================================");
-  // console.log("Profiling factory");
+  // console.log("Profiling pool router");
   // console.log("====================================");
-  // console.log("init");
-  // await poolRouterClient.init({
-  //   user: admin.getPublicKey(),
-  //   poolWasmHash: poolClient.getWasmHash() as string,
+  // console.log("init_admin");
+  // await poolRouterClient.init_admin({
+  //   account: admin.getPublicKey(),
   //   txInvocation: adminTxInvocation,
   // });
 
-  // console.log("set_c_admin");
-  // await poolRouterClient.set_c_admin({
-  //   user: admin.getPublicKey(),
-  //   caller: admin.getPublicKey(),
-  //   admin: admin.getPublicKey(),
-  //   txInvocation: adminTxInvocation
-  // })
-
-  // console.log("get_c_admin");
-  // await poolRouterClient.get_c_admin({ txInvocation: adminTxInvocation, invoke: true })
-
-  // console.log("new_c_pool");
-  // const factoryPoolId = await (
-  //   await poolRouterClient.new_c_pool({
-  //     user: admin.getPublicKey(),
-  //     txInvocation: adminTxInvocation
-  //   })
-  // ).toString();
-  // console.log("is_c_pool");
-  // await poolRouterClient.is_c_pool({
-  //   addr: factoryPoolId,
+  // console.log("set_token_hash");
+  // await poolRouterClient.set_token_hash({
+  //   new_hash: assetA.getWasmHash() as string,
   //   txInvocation: adminTxInvocation,
-  //   invoke: true
-  // })
+  // });
 
-  // console.log("collect");
+  // console.log("set_pool_hash");
+  // await poolRouterClient.set_pool_hash({
+  //   new_hash: poolClient.getWasmHash() as string,
+  //   txInvocation: adminTxInvocation,
+  // });
 
+  // console.log("set_stableswap_pool_hash");
+  // await poolRouterClient.set_stableswap_pool_hash({
+  //   new_hash: poolClient.getWasmHash() as string,
+  //   num_tokens: 2,
+  //   txInvocation: adminTxInvocation,
+  // });
+
+  // console.log("configure_init_pool_payment");
+  // await poolRouterClient.configure_init_pool_payment({
+  //   token: assetA.getContractId() as string,
+  //   amount: BigInt(10),
+  //   txInvocation: adminTxInvocation,
+  // });
+
+  // console.log("set_reward_token");
+  // await poolRouterClient.set_reward_token({
+  //   reward_token: assetA.getContractId() as string,
+  //   txInvocation: adminTxInvocation,
+  // });
+
+  // console.log("init_pool");
+  // const poolInfo = await poolRouterClient.init_pool({
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   txInvocation: adminTxInvocation,
+  // });
+
+  // console.log("init_standard_pool");
+  // await poolRouterClient.init_standard_pool({
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   fee_fraction: 10,
+  //   user: admin.getPublicKey(),
+  //   txInvocation: adminTxInvocation,
+  // });
+
+  // // console.log("init_stableswap_pool");
+  // // await poolRouterClient.init_stableswap_pool({
+  // //   tokens: [
+  // //     assetA.getContractId() as string,
+  // //     assetB.getContractId() as string,
+  // //   ],
+  // //   fee_fraction: 10,
+  // //   a: BigInt(10),
+  // //   admin_fee: 10,
+  // //   user: admin.getPublicKey(),
+  // //   txInvocation: adminTxInvocation,
+  // // });
+
+  // console.log("get_pools");
+  // await poolRouterClient.get_pools({
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   txInvocation: adminTxInvocation,
+  // });
+
+  // console.log("set_rewards_config");
+  // await poolRouterClient.set_rewards_config({
+  //   admin: admin.getPublicKey(),
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   pool_index: poolInfo[0],
+  //   expired_at: BigInt(1703946764),
+  //   tps: BigInt(10),
+  //   txInvocation: adminTxInvocation,
+  // });
+
+  // console.log("get_rewards_info");
+  // await poolRouterClient.get_rewards_info({
+  //   user: admin.getPublicKey(),
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   pool_index: poolInfo[0],
+  //   txInvocation: adminTxInvocation,
+  // });
+
+  // console.log("pool_type");
+  // await poolRouterClient.pool_type({
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   pool_index: poolInfo[0],
+  //   txInvocation: adminTxInvocation,
+  // });
+
+  // console.log("get_pool");
+  // await poolRouterClient.get_pool({
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   pool_index: poolInfo[0],
+  //   txInvocation: adminTxInvocation,
+  // });
+
+  // console.log("share_id");
+  // await poolRouterClient.share_id({
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   pool_index: poolInfo[0],
+  //   txInvocation: adminTxInvocation,
+  // });
+
+  // console.log("get_reserves");
+  // await poolRouterClient.get_reserves({
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   pool_index: poolInfo[0],
+  //   txInvocation: adminTxInvocation,
+  // });
+
+  // console.log("get_tokens");
+  // await poolRouterClient.get_tokens({
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   pool_index: poolInfo[0],
+  //   txInvocation: adminTxInvocation,
+  // });
+
+  // console.log("deposit");
+  // await poolRouterClient.deposit({
+  //   user: users[0].getPublicKey(),
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   pool_index: poolInfo[0],
+  //   desired_amounts: [BigInt(100000), BigInt(100000)],
+  //   txInvocation: user1TxInvocation,
+  // });
+
+  // console.log("get_rewards_info");
+  // await poolRouterClient.get_rewards_info({
+  //   user: users[0].getPublicKey(),
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   pool_index: poolInfo[0],
+  //   invoke: true,
+  //   txInvocation: adminTxInvocation,
+  // });
+
+  // console.log("get_user_reward");
+  // await poolRouterClient.get_user_reward({
+  //   user: users[0].getPublicKey(),
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   pool_index: poolInfo[0],
+  //   invoke: true,
+  //   txInvocation: user1TxInvocation,
+  // });
+
+  // console.log("estimate_swap");
+  // await poolRouterClient.estimate_swap({
+  //   user: users[0].getPublicKey(),
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   pool_index: poolInfo[0],
+  //   token_in: assetA.getContractId() as string,
+  //   token_out: assetB.getContractId() as string,
+  //   in_amount: BigInt(1000),
+  //   txInvocation: user1TxInvocation,
+  // });
+
+  // console.log("swap");
+  // await poolRouterClient.swap({
+  //   user: users[0].getPublicKey(),
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   pool_index: poolInfo[0],
+  //   token_in: assetA.getContractId() as string,
+  //   token_out: assetB.getContractId() as string,
+  //   in_amount: BigInt(10),
+  //   out_min: BigInt(9),
+  //   txInvocation: user1TxInvocation,
+  // });
+
+  // console.log("withdraw");
+  // await poolRouterClient.withdraw({
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   pool_index: poolInfo[0],
+  //   user: users[0].getPublicKey(),
+  //   share_amount: BigInt(50000),
+  //   min_amounts: [BigInt(1), BigInt(1)],
+  //   txInvocation: user1TxInvocation,
+  // });
+
+  // console.log("claim");
+  // await poolRouterClient.claim({
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   pool_index: poolInfo[0],
+  //   user: users[0].getPublicKey(),
+  //   txInvocation: user1TxInvocation,
+  // });
+
+  // console.log("remove_pool");
+  // await poolRouterClient.remove_pool({
+  //   user: admin.getPublicKey(),
+  //   tokens: [
+  //     assetA.getContractId() as string,
+  //     assetB.getContractId() as string,
+  //   ],
+  //   pool_hash: poolClient.getWasmHash() as string,
+  //   txInvocation: adminTxInvocation,
+  // });
+
+  // // console.log("add_custom_pool");
+  // // await poolRouterClient.add_custom_pool({
+  // //   user: admin.getPublicKey(),
+  // //   tokens: [
+  // //     assetA.getContractId() as string,
+  // //     assetB.getContractId() as string,
+  // //   ],
+  // //   pool_address: poolClient.getContractId() as string,
+  // //   pool_type: "",
+  // //   init_args: [],
+  // //   txInvocation: adminTxInvocation,
+  // // });
 
   // const logDataPoolRouter = poolRouterProfiler.getLog({ formatOutput: "csv" });
   // const columnsPoolRouter = Object.keys(
@@ -142,13 +388,17 @@ export const aquariusProfiling = async (args: aquariusProfilingConfigType) => {
   //   columnsPoolRouter
   // );
 
+  //return;
   console.log("====================================");
   console.log("Profiling pool");
   console.log("====================================");
   console.log("initialize");
   await poolClient.initialize({
     lp_token_wasm_hash: share.getWasmHash() as string,
-    tokens: [assetA.getContractId() as string, assetB.getContractId() as string],
+    tokens: [
+      assetA.getContractId() as string,
+      assetB.getContractId() as string,
+    ],
     fee_fraction: 10,
     admin: admin.getPublicKey(),
     txInvocation: adminTxInvocation,
@@ -181,13 +431,13 @@ export const aquariusProfiling = async (args: aquariusProfilingConfigType) => {
     network: network,
   });
 
-  shareWithId.approve({
-    from: users[0].getPublicKey(),
-    spender: poolClient.getContractId() as string,
-    amount: 100000000000,
-    live_until_ledger: 362428,
-    txInvocation: user1TxInvocation,
-  })
+  // shareWithId.approve({
+  //   from: users[0].getPublicKey(),
+  //   spender: poolClient.getContractId() as string,
+  //   amount: 100000000000,
+  //   live_until_ledger: 362428,
+  //   txInvocation: user1TxInvocation,
+  // });
 
   console.log("get_tokens");
   await poolClient.get_tokens({
@@ -247,19 +497,19 @@ export const aquariusProfiling = async (args: aquariusProfilingConfigType) => {
     txInvocation: user1TxInvocation,
   });
 
-  console.log("withdraw");
-  await poolClient.withdraw({
-    user: users[0].getPublicKey(),
-    share_amount: BigInt(50000),
-    min_amounts: [BigInt(1), BigInt(1)],
-    txInvocation: user1TxInvocation,
-  });
+  // console.log("withdraw");
+  // await poolClient.withdraw({
+  //   user: users[0].getPublicKey(),
+  //   share_amount: BigInt(50000),
+  //   min_amounts: [BigInt(1), BigInt(1)],
+  //   txInvocation: user1TxInvocation,
+  // });
 
-  console.log("claim");
-  await poolClient.claim({
-    user: users[0].getPublicKey(),
-    txInvocation: user1TxInvocation,
-  });
+  // console.log("claim");
+  // await poolClient.claim({
+  //   user: users[0].getPublicKey(),
+  //   txInvocation: user1TxInvocation,
+  // });
 
   // console.log("upgrade");
   // await poolClient.upgrade({
