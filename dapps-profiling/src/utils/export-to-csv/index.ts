@@ -1,5 +1,5 @@
 import fs from "fs";
-
+import * as path from 'path';
 /**
  * Exports an array of objects or a CSV-formatted string to a CSV file.
  *
@@ -48,6 +48,12 @@ export const exportArrayToCSV = <T extends object>(
     csvContent = `${headerRow}${dataRows}`;
   } else {
     throw new Error("Data is invalid or empty.");
+  }
+
+  const directory = path.dirname(filePath);
+  // create the directory if it doesn't exist
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory, { recursive: true });
   }
 
   fs.writeFileSync(filePath, csvContent, "utf8");
