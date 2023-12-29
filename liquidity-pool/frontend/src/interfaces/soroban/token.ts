@@ -1,3 +1,5 @@
+import { Address } from 'token-a-contract';
+
 interface IToken {
     symbol: string;
     decimals: number;
@@ -5,7 +7,7 @@ interface IToken {
 }
 
 interface IMintParams {
-    to: string;
+    to: Address;
     amount: bigint;
 }
 
@@ -16,7 +18,7 @@ interface IMintOptions {
 
 
 interface IMintFunction {
-    (params: IMintParams, options?: IMintOptions): Promise<void>;
+    (params: IMintParams): Promise<void>;
 }
 
 
