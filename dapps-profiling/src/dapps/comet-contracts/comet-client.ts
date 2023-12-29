@@ -1,6 +1,6 @@
 import { StellarPlus } from "stellar-plus";
 import { Address } from "@stellar/stellar-base";
-import { TransactionInvocation, Network } from "../../utils/lib-types";
+import { TransactionInvocation, Network } from "../../utils/simulation/types";
 import { randomBytes } from "crypto";
 import { ContractEngineConstructorArgs } from "stellar-plus/lib/stellar-plus/core/contract-engine/types";
 import { hexStringToBytes32 } from "../../utils/converters";

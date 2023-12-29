@@ -6,7 +6,10 @@ import {
 } from "../../dapps/comet-contracts/constants";
 import { FactoryClient } from "../../dapps/comet-contracts/factory-client";
 import { ContractClient } from "../../dapps/comet-contracts/comet-client";
-import { AccountHandler, TransactionInvocation } from "../../utils/lib-types";
+import {
+  AccountHandler,
+  TransactionInvocation,
+} from "../../utils/simulation/types";
 import { Network } from "stellar-plus/lib/stellar-plus/types";
 import { TransactionCosts } from "stellar-plus/lib/stellar-plus/core/contract-engine/types";
 import { Profiler } from "stellar-plus/lib/stellar-plus/utils/profiler/soroban";
