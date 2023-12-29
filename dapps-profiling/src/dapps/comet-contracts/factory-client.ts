@@ -1,5 +1,5 @@
 import { StellarPlus } from "stellar-plus";
-import { TransactionInvocation } from "../../utils/lib-types";
+import { TransactionInvocation } from "../../utils/simulation/types";
 import { randomBytes } from "crypto";
 import { ContractEngineConstructorArgs } from "stellar-plus/lib/stellar-plus/core/contract-engine/types";
 import { hexStringToBytes32 } from "../../utils/converters";
@@ -115,27 +115,25 @@ export class FactoryClient extends StellarPlus.ContractEngine {
       args.txInvocation,
       args.invoke as boolean
     )) as string;
-
   }
 
   private async invokeOrReadFromContract(
     method: string,
     methodArgs: object,
     txInvocation: TransactionInvocation,
-    invoke: boolean,
+    invoke: boolean
   ): Promise<any> {
     if (invoke) {
-      return (await this.invokeContract({
+      return await this.invokeContract({
         method: method,
         methodArgs: methodArgs,
         ...txInvocation,
-      }));
+      });
     }
-    return (await this.readFromContract({
+    return await this.readFromContract({
       method: method,
       methodArgs: methodArgs,
       header: txInvocation.header,
-    }));
+    });
   }
-
 }
