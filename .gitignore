@@ -1,6 +1,7 @@
 *.csv
 .soroban
 .accounts
+.bindings
 node_modules
 
 # misc
