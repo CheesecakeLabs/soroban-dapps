@@ -1,6 +1,7 @@
 *.csv
 .soroban
 .accounts
+.bindings
 node_modules
 
 # misc
@@ -13,6 +14,15 @@ node_modules
 
 # Rust
 target
+
+
+
+# CD
+asset-deploy-out
+cod-deploy-out
+cod-wasm-out
+dep-deploy-out
+
 
 amm-deploy-out
 asset-a-deploy-out
