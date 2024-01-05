@@ -1,10 +1,10 @@
 import { ContractEngine } from "stellar-plus/lib/stellar-plus";
 import { ContractEngineConstructorArgs } from "stellar-plus/lib/stellar-plus/core/contract-engine/types";
-import { TransactionInvocation } from "../../utils/lib-types";
+import { TransactionInvocation, Network } from "../../utils/simulation/types";
 import { hexStringToBytes32 } from "../../utils/converters";
 import { Address } from "@stellar/stellar-base";
 
-enum methods {
+export enum liquidityPoolTransactions {
     initialize = "initialize",
     deposit = "deposit",
     get_rsrvs = "get_rsrvs",
@@ -19,7 +19,7 @@ type initializeArgs = {
     txInvocation: TransactionInvocation,
 }
 
-type depositArgs = {
+export type depositArgs = {
     to: string,
     desiredA: number,
     minA: number,
@@ -45,7 +45,7 @@ export class LiquidityPoolContract extends ContractEngine {
         };
 
         await this.invokeContract({
-            method: methods.initialize,
+            method: liquidityPoolTransactions.initialize,
             methodArgs: methodArgs,
             ...txInvocation,
         });
@@ -62,7 +62,7 @@ export class LiquidityPoolContract extends ContractEngine {
             min_b: minB
         }
         await this.invokeContract({
-            method: methods.initialize,
+            method: liquidityPoolTransactions.deposit,
             methodArgs: methodArgs,
             ...txInvocation,
         });
@@ -71,7 +71,7 @@ export class LiquidityPoolContract extends ContractEngine {
     async getReserves(txInvocation: TransactionInvocation): Promise<any> {
         const methodArgs = {}
         return await this.invokeContract({
-            method: methods.get_rsrvs,
+            method: liquidityPoolTransactions.get_rsrvs,
             methodArgs: methodArgs,
             ...txInvocation,
         });

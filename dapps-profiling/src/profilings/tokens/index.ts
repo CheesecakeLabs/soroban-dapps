@@ -3,7 +3,7 @@ import { createBaseAccounts, setupAssets } from "./setup";
 
 import {
   mintSorobanTokensToUsers,
-  setupDemuUsers,
+  setupDemoUsers,
 } from "../../utils/simulation/functions";
 import { DemoUser } from "../../utils/simulation-types";
 import {
@@ -64,7 +64,7 @@ export const tokensProfiling = async (args: tokensProfilingConfigType) => {
       validationCloudApiKey
     );
 
-  const users: DemoUser[] = await setupDemuUsers({
+  const users: DemoUser[] = await setupDemoUsers({
     nOfUsers: nUsers,
     network,
     feeBump: opex.transactionInvocation,

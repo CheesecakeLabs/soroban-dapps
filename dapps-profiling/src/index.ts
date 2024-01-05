@@ -6,9 +6,21 @@ import {
     cometDexProfiling,
     cometDexProfilingConfigType,
 } from "./profilings/comet-dex";
+import { liquidityPoolProfiling } from "./profilings/liquidity-pool";
+import { liquidityPoolTransactions } from "./dapps/liquidity-pool/liquidity-pool-contract";
 
 
-// executeLiquidityPool({ network: Constants.testnet })
+liquidityPoolProfiling({
+    nUsers: 3,
+    nTransactions: 10,
+    transactions: [
+        liquidityPoolTransactions.deposit,
+        liquidityPoolTransactions.swap,
+        liquidityPoolTransactions.withdraw,
+        liquidityPoolTransactions.get_rsrvs
+    ],
+    network: Constants.testnet
+})
 
 // const cometDexProfilingConfig: cometDexProfilingConfigType = {
 //     nUsers: 3,
@@ -16,14 +28,13 @@ import {
 // };
 // cometDexProfiling(cometDexProfilingConfig);
 
-
-tokensProfiling({
-    nUsers: 5,
-    nTransactions: 10,
-    network: StellarPlus.Constants.testnet,
-    transactions: [
-        tokenTransactions.burn,
-        tokenTransactions.mint,
-        tokenTransactions.transfer,
-    ],
-});
+// tokensProfiling({
+//     nUsers: 5,
+//     nTransactions: 10,
+//     network: StellarPlus.Constants.testnet,
+//     transactions: [
+//         tokenTransactions.burn,
+//         tokenTransactions.mint,
+//         tokenTransactions.transfer,
+//     ],
+// });

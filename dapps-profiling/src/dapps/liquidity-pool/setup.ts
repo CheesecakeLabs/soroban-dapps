@@ -1,12 +1,12 @@
 import { StellarPlus } from "stellar-plus";
 import { loadWasmFile } from "../../utils/load-wasm";
 import { Network } from "stellar-plus/lib/stellar-plus/types";
-import { TransactionInvocation } from "../../utils/lib-types";
 import { DefaultAccountHandler } from "stellar-plus/lib/stellar-plus/account";
 import { SorobanTokenHandler } from "stellar-plus/lib/stellar-plus/asset";
 import { LiquidityPoolContract } from "./liquidity-pool-contract";
 import { Constants } from "stellar-plus/lib/stellar-plus";
 import { liquidityPoolSpec } from "./constants";
+import { TransactionInvocation } from "../../utils/simulation/types";
 
 export type CreateAssetsArgs = {
   network: Network,
