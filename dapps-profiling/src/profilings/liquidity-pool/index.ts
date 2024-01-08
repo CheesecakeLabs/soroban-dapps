@@ -9,7 +9,7 @@ import { DemoUser } from "../../utils/simulation-types";
 import { exportArrayToCSV } from "../../utils/export-to-csv";
 import { Console } from "console";
 import { liquidityPoolTransactions } from "../../dapps/liquidity-pool/liquidity-pool-contract";
-import { profileDeposit } from "./profiling-simulations";
+import { profileDeposit, profileGetResources, profileSwap, profileWithdraw } from "./profiling-simulations";
 
 export type liquidityPoolProfilingType = {
   nUsers: number;
@@ -43,7 +43,6 @@ export const liquidityPoolProfiling = async ({
 }: liquidityPoolProfilingType) => {
 
   const { opex, issuer } = await createBaseAccounts(network);
-
   const { assetA, assetB } = await createAbundanceAsset({
     network: network,
     txInvocation: issuer.transactionInvocation,
@@ -97,13 +96,31 @@ export const liquidityPoolProfiling = async ({
     await profileDeposit({
       liquidityPoolContract: liquidityPoolContract,
       nTransactions: nTransactions,
-      users: users,
-      depositArgs: {
-        desiredA: 1000000,
-        desiredB: 1000000,
-        minA: 1000000,
-        minB: 1000000
-      }
+      users: users
+    })
+  }
+
+  if (transactions?.includes(liquidityPoolTransactions.swap)) {
+    await profileSwap({
+      liquidityPoolContract: liquidityPoolContract,
+      nTransactions: nTransactions,
+      users: users
+    })
+  }
+
+  if (transactions?.includes(liquidityPoolTransactions.withdraw)) {
+    await profileWithdraw({
+      liquidityPoolContract: liquidityPoolContract,
+      nTransactions: nTransactions,
+      users: users
+    })
+  }
+
+  if (transactions?.includes(liquidityPoolTransactions.get_rsrvs)) {
+    await profileGetResources({
+      liquidityPoolContract: liquidityPoolContract,
+      nTransactions: nTransactions,
+      users: users
     })
   }
 

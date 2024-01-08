@@ -45,10 +45,10 @@ This use case extensively utilizes the StellarPlus library, developed by Cheesec
 
 ## Usage
 
-To execute the profiling, call the `tokensProfiling` function with the desired configuration:
+To execute the profiling, call the `liquidityPoolProfiling` function with the desired configuration:
 
 ```javascript
-tokensProfiling({
+liquidityPoolProfiling({
   nUsers: 5,
   nTransactions: 100,
   network: StellarPlus.Constants.testnet,

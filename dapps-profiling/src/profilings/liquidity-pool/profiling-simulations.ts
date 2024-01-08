@@ -1,156 +1,189 @@
-import { StellarPlus } from "stellar-plus";
 import { DemoUser } from "../../utils/simulation-types";
 import {
   getRandomAmount,
-  getRandomEntryFromArray,
 } from "../../utils/simulation/functions";
-import { LiquidityPoolContract, depositArgs, liquidityPoolTransactions } from "../../dapps/liquidity-pool/liquidity-pool-contract";
-import { DepositArgs } from "stellar-plus/lib/stellar-plus/soroban/contracts/certificate-of-deposit/types";
+import { LiquidityPoolContract } from "../../dapps/liquidity-pool/liquidity-pool-contract";
 
-export type ProfileDepositArgs = {
+export type ProfileArgs = {
   nTransactions: number;
   users: DemoUser[];
   liquidityPoolContract: LiquidityPoolContract;
-  depositArgs: {
-    desiredA: number,
-    minA: number,
-    desiredB: number,
-    minB: number,
-  }
 };
 
-liquidityPoolTransactions.deposit
+type depositArgs = {
+  desiredA: number,
+  minA: number,
+  desiredB: number,
+  minB: number,
+}
 
 export const profileDeposit = async ({
   liquidityPoolContract,
   users,
-  nTransactions,
-  depositArgs
-}: ProfileDepositArgs) => {
+  nTransactions
+}: ProfileArgs) => {
 
   console.log(`
     ====================================
     | Triggering ${nTransactions} deposit transactions in liquidity pool...
     | 
+    |      (Parallel execution)
+    ====================================
+    `);
+
+  const depositArgs: depositArgs = {
+    desiredA: 1000000,
+    desiredB: 1000000,
+    minA: 1000000,
+    minB: 1000000
+  }
+
+  let transaction = 0;
+  while (transaction < nTransactions) {
+    const promises = users.map((user) => {
+
+      console.log(
+        ` ${transaction + 1}/${nTransactions
+        } - depositing A: ${depositArgs.desiredA}, B: ${depositArgs.desiredA} to user ${user.account.getPublicKey()} `
+      );
+
+      const newDepositArgs = {
+        to: user.account.getPublicKey(),
+        txInvocation: user.transactionInvocation,
+        ...depositArgs,
+      }
+      transaction++
+      return liquidityPoolContract.deposit(newDepositArgs);
+    })
+    await Promise.all(promises);
+  }
+  console.log("====================================");
+};
+
+type swapArgs = {
+  buyA: boolean,
+  out: number,
+  inMax: number,
+}
+
+export const profileSwap = async ({
+  liquidityPoolContract,
+  users,
+  nTransactions,
+}: ProfileArgs) => {
+
+  console.log(`
+    ====================================
+    | Triggering ${nTransactions} swaps transactions in liquidity pool...
+    | 
     |      (Sequential execution)
     ====================================
     `);
 
-  for (let i = 0; i < nTransactions; i++) {
-    const user = getRandomEntryFromArray(users);
+  let transaction = 0;
+  while (transaction < nTransactions) {
+    const promises = users.map((user) => {
+      const amount = Number(getRandomAmount(1, 10000))
 
-    console.log(
-      ` ${i + 1}/${nTransactions
-      } - depositing A: ${depositArgs.desiredA}, B: ${depositArgs.desiredA} to user ${user.account.getPublicKey()} `
-    );
+      const swapArgs: swapArgs = {
+        buyA: true,
+        out: amount,
+        inMax: 9999999999999999,
+      }
+      console.log(
+        ` ${transaction + 1}/${nTransactions
+        } - swap buy A: ${swapArgs.buyA}, in max: ${swapArgs.inMax} to user ${user.account.getPublicKey()} `
+      );
 
-    const newDepositArgs = {
-      to: user.account.getPublicKey(),
-      txInvocation: user.transactionInvocation,
-      ...depositArgs,
+      const newSwapArgs = {
+        to: user.account.getPublicKey(),
+        txInvocation: user.transactionInvocation,
+        ...swapArgs,
 
-    }
-    await liquidityPoolContract.deposit(newDepositArgs);
+      }
+      transaction++
+      return liquidityPoolContract.swap(newSwapArgs);
+    })
+    await Promise.all(promises);
   }
-
   console.log("====================================");
 };
 
-export type ProfilePaymentsArgs = {
-  nTransactions: number;
-  users: DemoUser[];
-  issuer: DemoUser;
-  sorobanToken: StellarPlus.Asset.SorobanTokenHandler;
-};
+type withdrawArgs = {
+  shareAmount: number,
+  minA: number,
+  minB: number,
+}
 
-export const profilePayments = async (args: ProfilePaymentsArgs) => {
-  const { sorobanToken, issuer, users, nTransactions } = args;
+export const profileWithdraw = async ({
+  liquidityPoolContract,
+  users,
+  nTransactions,
+}: ProfileArgs) => {
 
   console.log(`
     ====================================
-    | Triggering ${nTransactions} payment transactions with Soroban...
-    | Token ${await sorobanToken.symbol(issuer.transactionInvocation)}
+    | Triggering ${nTransactions} withdraw transactions in liquidity pool...
     | 
     |      (Parallel execution)
     ====================================
     `);
 
-  const sorobanTokenDecimals = await sorobanToken.decimals(
-    issuer.transactionInvocation
-  );
-  let i = 0;
-  while (i < nTransactions) {
+  let transaction = 0;
+  while (transaction < nTransactions) {
     const promises = users.map((user) => {
-      const amount = BigInt(getRandomAmount(1, 500, sorobanTokenDecimals));
 
-      // select another user to receive the payment
-      const receiver = getRandomEntryFromArray(users.filter((u) => u !== user));
+      const withdrawArgs: withdrawArgs = {
+        shareAmount: (10 * 10000000),
+        minA: 10000000,
+        minB: 10000000,
+      }
 
       console.log(
-        `${i + 1}/${args.nTransactions} 
-Sender ${user.account.getPublicKey()} is paying ${amount} tokens to 
-Receiver ${receiver.account.getPublicKey()}`
+        ` ${transaction + 1}/${nTransactions} 
+        - Withdraw share amount: ${withdrawArgs.shareAmount}, min A: ${withdrawArgs.minA}, min B: ${withdrawArgs.minB} to user ${user.account.getPublicKey()} `
       );
 
-      i++;
+      const newWithdrawArgs = {
+        to: user.account.getPublicKey(),
+        txInvocation: user.transactionInvocation,
+        ...withdrawArgs,
 
-      return sorobanToken.transfer({
-        ...user.transactionInvocation,
-        from: user.account.getPublicKey(),
-        to: receiver.account.getPublicKey(),
-        amount: amount,
-      });
-    });
-
+      }
+      transaction++
+      return liquidityPoolContract.withdraw(newWithdrawArgs);
+    })
     await Promise.all(promises);
   }
-
   console.log("====================================");
 };
 
-export type BurnProfileArgs = {
-  nTransactions: number;
-  users: DemoUser[];
-  issuer: DemoUser;
-  sorobanToken: StellarPlus.Asset.SorobanTokenHandler;
-};
-
-export const profileBurn = async (args: BurnProfileArgs) => {
-  const { sorobanToken, issuer, users, nTransactions } = args;
+export const profileGetResources = async ({
+  liquidityPoolContract,
+  users,
+  nTransactions,
+}: ProfileArgs) => {
 
   console.log(`
     ====================================
-    | Triggering ${nTransactions} burn transactions with Soroban...
-    | Token ${await sorobanToken.symbol(issuer.transactionInvocation)}
+    | Triggering ${nTransactions} get resources transaction in liquidity pool...
     | 
     |      (Parallel execution)
     ====================================
     `);
 
-  const sorobanTokenDecimals = await sorobanToken.decimals(
-    issuer.transactionInvocation
-  );
-  let i = 0;
-  while (i < nTransactions) {
+  let transaction = 0;
+  while (transaction < nTransactions) {
     const promises = users.map((user) => {
-      const amount = BigInt(getRandomAmount(1, 500, sorobanTokenDecimals));
 
       console.log(
-        `${i + 1}/${args.nTransactions} 
-User ${user.account.getPublicKey()} is burning ${amount} tokens`
+        ` ${transaction + 1}/${nTransactions} 
+        - Get Resources of liquidity pool`
       );
-
-      i++;
-
-      return sorobanToken.burn({
-        ...user.transactionInvocation,
-        from: user.account.getPublicKey(),
-        amount: amount,
-      });
-    });
-
+      transaction++
+      return liquidityPoolContract.getReserves(user.transactionInvocation);
+    })
     await Promise.all(promises);
   }
-
   console.log("====================================");
 };

@@ -1,6 +1,5 @@
 import { Network } from "stellar-plus/lib/stellar-plus/types";
 import {
-  AccountHandler,
   TransactionInvocation,
 } from "../../utils/simulation/types";
 import { StellarPlus } from "stellar-plus";
@@ -8,7 +7,6 @@ import { loadWasmFile } from "../../utils/load-wasm";
 import { Profiler } from "stellar-plus/lib/stellar-plus/utils/profiler/soroban";
 import { DemoUser } from "../../utils/simulation-types";
 import { SorobanTokenHandler } from "stellar-plus/lib/stellar-plus/asset";
-import { DefaultAccountHandler } from "stellar-plus/lib/stellar-plus/account";
 import { Constants } from "stellar-plus/lib/stellar-plus";
 import { LiquidityPoolContract } from "../../dapps/liquidity-pool/liquidity-pool-contract";
 import { liquidityPoolSpec } from "../../dapps/liquidity-pool/constants";

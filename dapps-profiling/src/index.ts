@@ -1,6 +1,4 @@
-import { StellarPlus } from "stellar-plus";
 import { Constants } from "stellar-plus/lib/stellar-plus";
-import { executeLiquidityPool } from "./dapps/liquidity-pool";
 import { tokensProfiling, tokenTransactions } from "./profilings/tokens";
 import {
     cometDexProfiling,
@@ -11,8 +9,8 @@ import { liquidityPoolTransactions } from "./dapps/liquidity-pool/liquidity-pool
 
 
 liquidityPoolProfiling({
-    nUsers: 3,
-    nTransactions: 10,
+    nUsers: 1,
+    nTransactions: 2,
     transactions: [
         liquidityPoolTransactions.deposit,
         liquidityPoolTransactions.swap,

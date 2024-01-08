@@ -27,6 +27,23 @@ export type depositArgs = {
     minB: number,
     txInvocation: TransactionInvocation
 }
+
+export type swapArgs = {
+    to: string,
+    buyA: boolean,
+    out: number,
+    inMax: number,
+    txInvocation: TransactionInvocation
+}
+
+export type withdrawArgs = {
+    to: string,
+    shareAmount: number,
+    minA: number,
+    minB: number,
+    txInvocation: TransactionInvocation
+}
+
 export class LiquidityPoolContract extends ContractEngine {
     constructor(args: ContractEngineConstructorArgs) {
         super(args);
@@ -46,6 +63,38 @@ export class LiquidityPoolContract extends ContractEngine {
 
         await this.invokeContract({
             method: liquidityPoolTransactions.initialize,
+            methodArgs: methodArgs,
+            ...txInvocation,
+        });
+    }
+
+    async swap({
+        to, buyA, out, inMax, txInvocation
+    }: swapArgs): Promise<void> {
+        const methodArgs = {
+            to: to,
+            buy_a: buyA,
+            out: out,
+            in_max: inMax,
+        }
+        await this.invokeContract({
+            method: liquidityPoolTransactions.swap,
+            methodArgs: methodArgs,
+            ...txInvocation,
+        });
+    }
+
+    async withdraw({
+        to, shareAmount, minA, minB, txInvocation
+    }: withdrawArgs): Promise<void> {
+        const methodArgs = {
+            to: to,
+            share_amount: shareAmount,
+            min_a: minA,
+            min_b: minB
+        }
+        await this.invokeContract({
+            method: liquidityPoolTransactions.withdraw,
             methodArgs: methodArgs,
             ...txInvocation,
         });
