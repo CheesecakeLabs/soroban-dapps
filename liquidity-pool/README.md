@@ -13,7 +13,7 @@ Getting Started
 Install Dependencies
 --------------------
 
-1. `soroban-cli 20.1.1`. See https://soroban.stellar.org/docs/getting-started/setup#install-the-soroban-cli
+1. `soroban-cli 20.0.2`. See https://soroban.stellar.org/docs/getting-started/setup#install-the-soroban-cli
 2. If you want to run the Soroban RPC locally: `docker` (you can run both Standalone and Futurenet backends with it)
 3. `Node.js v16`
 4. [Freighter Wallet](https://www.freighter.app/) ≥[v5.0.2](https://github.com/stellar/freighter/releases/tag/2.9.1). Or from the Firefox / Chrome extension store. Once installed, enable "Experimental Mode" in the settings (gear icon).

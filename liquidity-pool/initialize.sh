@@ -141,7 +141,7 @@ soroban contract invoke \
 echo "Installing token wasm contract"
 TOKEN_WASM_HASH="$(soroban contract install \
     $ARGS \
-    --wasm $ABUNDANCE_WASM
+    --wasm $TOKEN_WASM
 )"
 
 
