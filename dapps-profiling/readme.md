@@ -1,4 +1,4 @@
-# DApps Profiling Project README
+# DApps Profiling
 
 ## Overview
 
@@ -54,3 +54,51 @@ tokensProfiling({
   // Add Validation Cloud API Key if desired
 });
 ```
+
+2. **Comet Profiling**:
+   - **Path**: `./src/profilings/comet-dex`
+   - **Function**: `cometDexProfiling`
+   - **Description**: Compares the performance all Comet method transactions.
+
+To run a use case, import its entry function in the main index file (`./src/index.ts`) and execute it with the required arguments.
+
+### Example: Running the Assets Profiling Use Case
+
+```javascript
+import { StellarPlus } from "stellar-plus";
+import { cometDexProfiling } from "./profilings/comet-dex";
+
+cometDexProfiling({
+  nUsers: 5,
+  network: StellarPlus.Constants.testnet,
+});
+```
+
+3. **Liquidity Pool Profiling**:
+   - **Path**: `./src/profilings/liquidity-pool`
+   - **Function**: `liquidityPoolProfiling`
+   - **Description**: Compares the performance all Comet method transactions.
+   - [Readme for Assets Profiling](./src/profilings/tokens/readme.md)
+
+To run a use case, import its entry function in the main index file (`./src/index.ts`) and execute it with the required arguments.
+
+### Example: Running the Assets Profiling Use Case
+
+```javascript
+import { StellarPlus } from "stellar-plus";
+import { cometDexProfiling } from "./profilings/liquidity-pool";
+
+liquidityPoolProfiling({
+  nUsers: 5,
+  nTransactions: 100,
+  network: StellarPlus.Constants.testnet,
+  transactions: [
+      liquidityPoolTransactions.deposit,
+      liquidityPoolTransactions.swap,
+      liquidityPoolTransactions.get_rsrvs,
+      liquidityPoolTransactions.withdraw
+  ],
+  // Add Validation Cloud API Key if desired
+});
+```
+
