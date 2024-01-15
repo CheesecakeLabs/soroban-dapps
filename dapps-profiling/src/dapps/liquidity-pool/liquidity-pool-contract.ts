@@ -21,26 +21,26 @@ type initializeArgs = {
 
 export type depositArgs = {
     to: string,
-    desiredA: number,
-    minA: number,
-    desiredB: number,
-    minB: number,
+    desiredA: BigInt,
+    minA: BigInt,
+    desiredB: BigInt,
+    minB: BigInt,
     txInvocation: TransactionInvocation
 }
 
 export type swapArgs = {
     to: string,
     buyA: boolean,
-    out: number,
-    inMax: number,
+    out: BigInt,
+    inMax: BigInt,
     txInvocation: TransactionInvocation
 }
 
 export type withdrawArgs = {
     to: string,
-    shareAmount: number,
-    minA: number,
-    minB: number,
+    shareAmount: BigInt,
+    minA: BigInt,
+    minB: BigInt,
     txInvocation: TransactionInvocation
 }
 

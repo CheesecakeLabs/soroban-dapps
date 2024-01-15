@@ -7,7 +7,6 @@ import { loadWasmFile } from "../../utils/load-wasm";
 import { Profiler } from "stellar-plus/lib/stellar-plus/utils/profiler/soroban";
 import { DemoUser } from "../../utils/simulation-types";
 import { SorobanTokenHandler } from "stellar-plus/lib/stellar-plus/asset";
-import { Constants } from "stellar-plus/lib/stellar-plus";
 import { LiquidityPoolContract } from "../../dapps/liquidity-pool/liquidity-pool-contract";
 import { liquidityPoolSpec } from "../../dapps/liquidity-pool/constants";
 
@@ -82,9 +81,9 @@ export type CreateAssetsResult = {
   assetB: SorobanTokenHandler,
 }
 
-export async function createAbundanceAsset({ network, txInvocation, validationCloudApiKey }: CreateAssetsArgs): Promise<CreateAssetsResult> {
+export async function createAsset({ network, txInvocation, validationCloudApiKey }: CreateAssetsArgs): Promise<CreateAssetsResult> {
 
-  const abundanceAssetWasm = await loadWasmFile(
+  const assetWasm = await loadWasmFile(
     "./src/dapps/soroban-token/wasm/soroban_token_contract.wasm"
   );
 
@@ -97,7 +96,7 @@ export async function createAbundanceAsset({ network, txInvocation, validationCl
 
   const sorobanTokenA = new SorobanTokenHandler({
     network,
-    wasm: abundanceAssetWasm,
+    wasm: assetWasm,
     rpcHandler: vcRpc,
   });
 
@@ -116,7 +115,7 @@ export async function createAbundanceAsset({ network, txInvocation, validationCl
 
   const sorobanTokenB = new SorobanTokenHandler({
     network,
-    wasm: abundanceAssetWasm,
+    wasm: assetWasm,
     rpcHandler: vcRpc,
   });
 
@@ -135,13 +134,18 @@ export async function createAbundanceAsset({ network, txInvocation, validationCl
     ...txInvocation
   })
 
+  if ((sorobanTokenA.getContractId()) >= (sorobanTokenB.getContractId())) {
+    return { assetA: sorobanTokenB, assetB: sorobanTokenA }
+  }
+
   return { assetA: sorobanTokenA, assetB: sorobanTokenB }
 }
 
 export type CreateContractArgs = {
   assetA: SorobanTokenHandler,
   assetB: SorobanTokenHandler,
-  txInvocation: TransactionInvocation
+  txInvocation: TransactionInvocation,
+  network: Network
 }
 
 export type CreateContractResponse = {
@@ -150,7 +154,7 @@ export type CreateContractResponse = {
 }
 
 export async function createLiquidityPoolContract({
-  assetA, assetB, txInvocation
+  assetA, assetB, txInvocation, network
 }: CreateContractArgs): Promise<CreateContractResponse> {
 
   console.log("====================================");
@@ -164,7 +168,7 @@ export async function createLiquidityPoolContract({
   const liquidityPoolProfiler = new StellarPlus.Utils.SorobanProfiler();
 
   const liquidityPoolContract = new LiquidityPoolContract({
-    network: Constants.testnet,
+    network: network,
     spec: liquidityPoolSpec,
     wasm: liquidityPoolWasm,
     options: liquidityPoolProfiler?.getOptionsArgs(),
@@ -200,8 +204,6 @@ export async function createLiquidityPoolContract({
     tokenB: assetBId,
     txInvocation: txInvocation
   })
-
-  console.log("liquidityPoolContract reserves:", await liquidityPoolContract.getReserves(txInvocation))
 
   return { liquidityPoolContract, liquidityPoolProfiler }
 }

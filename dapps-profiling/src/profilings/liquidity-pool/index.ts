@@ -1,5 +1,5 @@
 import { Network } from "stellar-plus/lib/stellar-plus/types";
-import { createAbundanceAsset, createBaseAccounts, createLiquidityPoolContract } from "./setup";
+import { createAsset, createBaseAccounts, createLiquidityPoolContract } from "./setup";
 
 import {
   mintSorobanTokensToUsers,
@@ -7,7 +7,6 @@ import {
 } from "../../utils/simulation/functions";
 import { DemoUser } from "../../utils/simulation-types";
 import { exportArrayToCSV } from "../../utils/export-to-csv";
-import { Console } from "console";
 import { liquidityPoolTransactions } from "../../dapps/liquidity-pool/liquidity-pool-contract";
 import { profileDeposit, profileGetResources, profileSwap, profileWithdraw } from "./profiling-simulations";
 
@@ -43,9 +42,10 @@ export const liquidityPoolProfiling = async ({
 }: liquidityPoolProfilingType) => {
 
   const { opex, issuer } = await createBaseAccounts(network);
-  const { assetA, assetB } = await createAbundanceAsset({
+  const { assetA, assetB } = await createAsset({
     network: network,
     txInvocation: issuer.transactionInvocation,
+    validationCloudApiKey
   }
   );
 
@@ -85,7 +85,8 @@ export const liquidityPoolProfiling = async ({
   const { liquidityPoolContract, liquidityPoolProfiler } = await createLiquidityPoolContract({
     assetA,
     assetB,
-    txInvocation: issuer.transactionInvocation
+    txInvocation: issuer.transactionInvocation,
+    network
   })
 
   console.log("====================================");
@@ -124,8 +125,18 @@ export const liquidityPoolProfiling = async ({
     })
   }
 
-  const log = liquidityPoolProfiler.getLog()
-  console.log("LOG: ", log)
+  const logLiquidityPool = liquidityPoolProfiler.getLog({ formatOutput: "csv" });
+  const columnsLog = Object.keys(
+    logLiquidityPool[0]
+  ) as (keyof (typeof logLiquidityPool)[0])[];
+
+  console.log("Exporting SAC profiling data to file assets_profiling_sac.csv");
+
+  exportArrayToCSV(
+    logLiquidityPool,
+    "./src/export/liquidity_pool_profiling_sac.csv",
+    columnsLog
+  );
 
   console.log("====================================");
   console.log("Finished profiling Liquidity Pool!");

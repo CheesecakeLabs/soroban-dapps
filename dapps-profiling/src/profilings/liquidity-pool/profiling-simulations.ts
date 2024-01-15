@@ -11,10 +11,10 @@ export type ProfileArgs = {
 };
 
 type depositArgs = {
-  desiredA: number,
-  minA: number,
-  desiredB: number,
-  minB: number,
+  desiredA: BigInt,
+  minA: BigInt,
+  desiredB: BigInt,
+  minB: BigInt,
 }
 
 export const profileDeposit = async ({
@@ -32,10 +32,10 @@ export const profileDeposit = async ({
     `);
 
   const depositArgs: depositArgs = {
-    desiredA: 1000000,
-    desiredB: 1000000,
-    minA: 1000000,
-    minB: 1000000
+    desiredA: BigInt(1000000),
+    desiredB: BigInt(1000000),
+    minA: BigInt(1000000),
+    minB: BigInt(1000000)
   }
 
   let transaction = 0;
@@ -62,8 +62,8 @@ export const profileDeposit = async ({
 
 type swapArgs = {
   buyA: boolean,
-  out: number,
-  inMax: number,
+  out: BigInt,
+  inMax: BigInt,
 }
 
 export const profileSwap = async ({
@@ -87,8 +87,8 @@ export const profileSwap = async ({
 
       const swapArgs: swapArgs = {
         buyA: true,
-        out: amount,
-        inMax: 9999999999999999,
+        out: BigInt(amount),
+        inMax: BigInt(9999999999999999),
       }
       console.log(
         ` ${transaction + 1}/${nTransactions
@@ -110,9 +110,9 @@ export const profileSwap = async ({
 };
 
 type withdrawArgs = {
-  shareAmount: number,
-  minA: number,
-  minB: number,
+  shareAmount: BigInt,
+  minA: BigInt,
+  minB: BigInt,
 }
 
 export const profileWithdraw = async ({
@@ -134,9 +134,9 @@ export const profileWithdraw = async ({
     const promises = users.map((user) => {
 
       const withdrawArgs: withdrawArgs = {
-        shareAmount: (10 * 10000000),
-        minA: 10000000,
-        minB: 10000000,
+        shareAmount: BigInt(10 * 10000000),
+        minA: BigInt(10000000),
+        minB: BigInt(10000000),
       }
 
       console.log(
@@ -148,7 +148,6 @@ export const profileWithdraw = async ({
         to: user.account.getPublicKey(),
         txInvocation: user.transactionInvocation,
         ...withdrawArgs,
-
       }
       transaction++
       return liquidityPoolContract.withdraw(newWithdrawArgs);

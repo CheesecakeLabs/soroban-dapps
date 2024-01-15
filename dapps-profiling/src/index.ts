@@ -14,7 +14,6 @@ liquidityPoolProfiling({
     transactions: [
         liquidityPoolTransactions.deposit,
         liquidityPoolTransactions.swap,
-        liquidityPoolTransactions.withdraw,
         liquidityPoolTransactions.get_rsrvs
     ],
     network: Constants.testnet
