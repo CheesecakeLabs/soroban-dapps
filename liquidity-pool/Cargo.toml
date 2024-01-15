@@ -5,8 +5,8 @@ members = [
 resolver = "2"
 
 [workspace.dependencies]
-soroban-sdk = {version = "20.0.0-rc2"}
-soroban-token-sdk = {version = "20.0.0-rc2"}
+soroban-sdk = {version = "20.0.2"}
+soroban-token-sdk = {version = "20.0.2"}
 
 [profile.release]
 codegen-units = 1

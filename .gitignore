@@ -9,6 +9,7 @@ node_modules
 *.pem
 .envrc
 
+dist
 
 */build
 

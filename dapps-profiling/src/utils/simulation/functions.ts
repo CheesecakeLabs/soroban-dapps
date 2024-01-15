@@ -26,7 +26,7 @@ export type SetupDemoUsersArgs = {
  *
  * @description Creates demo users and initializes their accounts using friendbot. When addTrustline is provided, it adds the trustline to the users and mints the amount specified in mintAmount.
  */
-export const setupDemuUsers = async (
+export const setupDemoUsers = async (
   args: SetupDemoUsersArgs
 ): Promise<DemoUser[]> => {
   const users: DemoUser[] = [];
@@ -135,15 +135,13 @@ export const mintSorobanTokensToUsers = async (
 ) => {
   const { users, issuer, token, mintAmount } = args;
   console.log(
-    `Minting ${await token.symbol(issuer.transactionInvocation)} tokens to ${
-      users.length
+    `Minting ${await token.symbol(issuer.transactionInvocation)} tokens to ${users.length
     } users...`
   );
   for (let i = 0; i < users.length; i++) {
     const user = users[i];
     console.log(
-      `${i + 1}/${
-        users.length
+      `${i + 1}/${users.length
       } - Minting ${mintAmount} tokens to user: ${user.account.getPublicKey()}`
     );
     await token.mint({
