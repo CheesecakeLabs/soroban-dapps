@@ -58,11 +58,11 @@ tokensProfiling({
 2. **Comet Profiling**:
    - **Path**: `./src/profilings/comet-dex`
    - **Function**: `cometDexProfiling`
-   - **Description**: Compares the performance all Comet method transactions.
+   - **Description**: Logs the performance and resources used in all Comet contracts transactions.
 
 To run a use case, import its entry function in the main index file (`./src/index.ts`) and execute it with the required arguments.
 
-### Example: Running the Assets Profiling Use Case
+### Example: Running the Comet Profiling Use Case
 
 ```javascript
 import { StellarPlus } from "stellar-plus";
@@ -77,12 +77,12 @@ cometDexProfiling({
 3. **Liquidity Pool Profiling**:
    - **Path**: `./src/profilings/liquidity-pool`
    - **Function**: `liquidityPoolProfiling`
-   - **Description**: Compares the performance all Comet method transactions.
-   - [Readme for Assets Profiling](./src/profilings/tokens/readme.md)
+   - **Description**: Compares the performance of all liquidity pool method transactions.
+   - [Readme for Liquidity Pool Profiling](./src/profilings/liquidity-pool/readme.md)
 
 To run a use case, import its entry function in the main index file (`./src/index.ts`) and execute it with the required arguments.
 
-### Example: Running the Assets Profiling Use Case
+### Example: Running the Liquidity Pool Profiling Use Case
 
 ```javascript
 import { StellarPlus } from "stellar-plus";

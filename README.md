@@ -2,12 +2,9 @@
 
 Soroban DApps is a collection of demos and experiments showcasing the capabilities of Soroban smart contracts. Each folder within this repository represents a different DApp, offering a README file with detailed information about its purpose and usage. 
 
-Also have examples of how to use *[Stellar Plus](#stellar-plus-library)* Library, an all-in-one Javascript library for building and interacting with the Stellar network. Stellar Plus bundles the main resources from the community into an easy-to-use set of tools and capabilities.
+Also have examples of how to use **Stellar Plus Library** (take a look in [Stellar Plus Documentation](https://cheesecake-labs.gitbook.io/stellar-plus)), an all-in-one Javascript library for building and interacting with the Stellar network. Stellar Plus bundles the main resources from the community into an easy-to-use set of tools and capabilities.
 
 Please note that the demos and experiments included in this repository are meant for educational and illustrative purposes. They can help developers get started with Soroban and serve as a foundation for building more sophisticated and customized applications.
-
-## Stellar Plus Library
-The stellar-plus library is a powerful tool for interacting with Stellar blockchain. For detailed documentation, refer to the [Stellar Plus Documentation](https://cheesecake-labs.gitbook.io/stellar-plus).
 
 ## Repository Structure
 
@@ -20,13 +17,9 @@ The stellar-plus library is a powerful tool for interacting with Stellar blockch
 
 
 ## DApps Profiling
-These examples are using Stellar Plus lib to create base smart contract resources (like asset, contract and account) and perform profiler.
+Contains examples of how perform profiler using **Stellar Plus** lib. Also have example of how create base smart contract resources (like asset, contract and account).
 
-### Profiling Comet Dex
-Use case to perform Comet contract using Stellar Plus Library (for more information check [Comet Repository](https://github.com/CometDEX/comet-contracts-v1)).
+- [**Profiling Comet Dex**](dapps-profiling/src/profilings/comet-dex/README.md)
+- [**Profiling Tokens**](dapps-profiling/src/profilings/tokens/readme.md)
+- [**Profiling Liquidity Pool**](dapps-profiling/src/profilings/liquidity-pool/README.md)
 
-### Profiling Tokens
-Use case focused on comparing the performance of Classic Stellar tokens wrapped in the Stellar Asset Contract (SAC) versus pure Soroban Tokens.
-
-### Profiling Liquidity Pool
-Use case execute and compare different transaction of Liquidity Pool contract in Stellar ecosystem using Stellar Plus.
