@@ -1,21 +1,28 @@
-# Certificates of Deposit dApp example
+# Certificates of Deposit example
 
-This demo contains a Soroban dApp for managing Certificates of Deposit (CD) using a Stellar Classic asset.
+This demo contains a Soroban smart contract for managing Certificates of Deposit (CD) using a Stellar Classic asset.
 
 **Important**: This is a demo implementation designed to showcase Soroban's capabilities. It should be deployed to futurenet and testnet only.
 
 ## Use Case
 
-The Certificates of Deposit dApp is designed to run a certificate of deposit system for a Stellar Classic asset. It allows users to make deposits, which will accrue interest based on the configured yield rate and term. At the end of the term, users can withdraw their original deposit along with the accrued interest.
+The Certificates of Deposit use case is designed to run a certificate of deposit system for a Stellar Classic asset. It allows users to make deposits, which will accrue interest based on the configured yield rate and term. At the end of the term, users can withdraw their original deposit along with the accrued interest.
+
+You can check in the [stellar-plus](https://www.npmjs.com/package/stellar-plus) library how to interact with this contract using a Typescript client:
+
+- [Client documentation](https://cheesecake-labs.gitbook.io/stellar-plus/reference/contracts/certificate-of-deposit-client)
+- [Demo documentation](https://cheesecake-labs.gitbook.io/stellar-plus/tutorials/e2e-certificate-of-deposit-demo)
+
+This use case can also be used via the [Asset Sandbox](https://stellar.cheesecakelabs.com/sandbox/v2) platform feature. Check the [documentation](https://cheesecake-labs.gitbook.io/stellar-asset-sandbox/core-functionalities/certificate-of-deposit) for detailed information.
 
 ### Initialization
 
 There is a set of configurable parameters during initialization that defines how the contract will behave.
 
-- Yield Rate: The dApp allows setting a yield rate, determining the interest that accrues on deposits during the term.
+- Yield Rate: The contract allows setting a yield rate, determining the interest that accrues on deposits during the term.
 - Term: Defines the period in seconds for how long the deposit will accrue yield. The full yield rate is achieved at the end of the term.
 - Compound Rate: Defines the rate in seconds to which the yield will compound. When set to zero, a flat rate will be applied during the whole term.
-- Minimum Deposit Amount: The dApp enforces a minimum deposit amount, ensuring that only deposits above this threshold are accepted.
+- Minimum Deposit Amount: The contract enforces a minimum deposit amount, ensuring that only deposits above this threshold are accepted.
 - Penalty Rate. This rate applies to users who withdraw before the end of the term. The penalty is applied on the interest accrued until the moment of the withdrawal.
 
 ### Features
@@ -44,17 +51,17 @@ An admin can withdraw the contract funds by performing an `admin_withdraw`. It i
 
 # Getting Started
 
-Follow the steps below to deploy and interact with the Certificates of Deposit dApp:
+Follow the steps below to deploy and interact with the Certificates of Deposit smart contract:
 
 ## Install Dependencies
 
-1. `soroban-cli v0.9.4`. See https://soroban.stellar.org/docs/getting-started/setup#install-the-soroban-cli
+1. `soroban-cli v20.0.3`. See https://soroban.stellar.org/docs/getting-started/setup#install-the-soroban-cli
 
 ## Compile Contract
 
 1. In the project root directory, run the command `soroban contract build`. This will compile the project and generate the wasm files for the contract.
 
-## Deploy on Futurenet
+## Deploy on Futurenet/Testnet
 
 1. Access the folder `/scripts`. There you'll find a collection of helpers scripts to deploy and test this contract.
 2. Set the parameters under `config.sh`. By default, they come set for futurenet with dummy accounts and assets.

@@ -1,4 +1,4 @@
-# Stellar Token Profiling: README
+# Token Profiling
 
 ## Purpose
 
