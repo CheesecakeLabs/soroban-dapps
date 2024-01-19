@@ -2,12 +2,9 @@
 
 ## Table of Contents
 
-- [Liquidity Pool Profiling](#liquidity-pool-profiling)
-  - [Table of Contents](#table-of-contents)
   - [Purpose](#purpose)
   - [StellarPlus Library Integration](#stellarplus-library-integration)
   - [Main Functionality](#main-functionality)
-    - [`liquidityPoolProfiling` Function](#liquiditypoolprofiling-function)
   - [Usage](#usage)
   - [Results achieved](#results-achieved)
 
