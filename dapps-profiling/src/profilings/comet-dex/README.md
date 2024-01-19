@@ -2,12 +2,9 @@
 
 ## Table of Contents
 
-- [Comet DEX Profiling](#comet-dex-profiling)
-  - [Table of Contents](#table-of-contents)
   - [Purpose](#purpose)
   - [StellarPlus Library Integration](#stellarplus-library-integration)
   - [Main Functionality](#main-functionality)
-    - [`cometDexProfiling` Function](#cometdexprofiling-function)
   - [Usage](#usage)
   - [Results achieved](#results-achieved)
 
