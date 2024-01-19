@@ -1,5 +1,16 @@
 # Token Profiling
 
+## Table of Contents
+
+- [Token Profiling](#token-profiling)
+  - [Table of Contents](#table-of-contents)
+  - [Purpose](#purpose)
+  - [StellarPlus Library Integration](#stellarplus-library-integration)
+  - [Main Functionality](#main-functionality)
+    - [`tokensProfiling` Function](#tokensprofiling-function)
+  - [Usage](#usage)
+  - [Results achieved](#results-achieved)
+
 ## Purpose
 
 This profiling use case is focused on comparing the performance of Classic Stellar tokens wrapped in the Stellar Asset Contract (SAC) versus pure Soroban Tokens. It aims to provide insights into efficiency, resource utilization, and performance differences between these token types.
@@ -60,3 +71,9 @@ tokensProfiling({
   validationCloudApiKey: "<Your_ValidationCloud_API_Key>",
 });
 ```
+
+## Results achieved
+
+The full results obtained can be seen at [this link](https://lookerstudio.google.com/reporting/5e685214-ac72-4d7d-bea0-a6940f27bd19/page/5GHmD).
+Based on the test results, SAC tokens demonstrated significant resource efficiency compared to Soroban tokens. For example, in terms of CPU instructions, SAC tokens consumed approximately 2.19% compared to Soroban tokens.
+The chart below shows the difference in fees charged for each contract.

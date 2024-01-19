@@ -4,6 +4,15 @@
 
 This is a Node.js application designed to profile Soroban smart contracts. It focuses on analyzing the performance of various smart contract use cases, offering insights into their efficiency and resource utilization.
 
+_This project is not intended for execution on the Mainnet! Please run it on the Testnet or Futurenet._
+
+## Table of Contents
+
+- [Project Setup](#project-setup)
+- [Use cases](#use-cases)
+- [Results achieved](#results-achieved)
+- [Contributing](#contributing)
+
 ## Project Setup
 
 ### Requirements
@@ -104,3 +113,26 @@ liquidityPoolProfiling({
   ],
 });
 ```
+
+## Results achieved
+
+This project is a preview of a larger study based on profiling different Soroban protocols on Testnet in order to understand the behaviour os transaction costs. An overview os the values obtained can be seen in the table below. The full data can be accessed at [this link](https://docs.google.com/spreadsheets/d/1PA5NoRsK92cPIrDpm64uuxAArrdUF7e41wboQbZxzCY/edit?usp=sharing).
+
+| Resources                  | Average    | Maximum    | Minimum   | Median     |
+| -------------------------- | ---------- | ---------- | --------- | ---------- |
+| CPU Instructions           | 18,076,055 | 66,851,295 | 3,797,619 | 15,607,473 |
+| RAM                        | 3,932,318  | 20,827,168 | 1,214,061 | 2,736,335  |
+| Fees                       | 231,516    | 813,645    | 45,272    | 202,884    |
+| Ledger Read Bytes          | 33,284     | 82,904     | 696       | 34,348     |
+| Ledger Write Bytes         | 473        | 3,116      | 0         | 148        |
+| Ledger Entry Reads         | 3          | 10         | 1         | 2          |
+| Ledger Entry Writes        | 2          | 11         | 0         | 1          |
+| Events & return value size | 158        | 1,360      | 4         | 24         |
+| Transaction size           | 334        | 1,732      | 116       | 192        |
+
+The individual results can be consulted in the Readme for each use case.
+This profiling approach can be useful for understanding the resource utilization of your contract in order to avoid exceeding [network resource limits](https://soroban.stellar.org/docs/soroban-internals/fees-and-metering#resource-limits), as well as obtaining an estimate of the resource fees that will be paid for transactions.
+
+## Contributing
+
+Feel free to open an issue for bug reports, feature requests, general comments or include a profiling of a new contract.
