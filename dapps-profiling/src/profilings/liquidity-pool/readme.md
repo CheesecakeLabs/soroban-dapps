@@ -1,4 +1,12 @@
-# Stellar Liquidity Pool Profiling: README
+# Liquidity Pool Profiling
+
+## Table of Contents
+
+  - [Purpose](#purpose)
+  - [StellarPlus Library Integration](#stellarplus-library-integration)
+  - [Main Functionality](#main-functionality)
+  - [Usage](#usage)
+  - [Results achieved](#results-achieved)
 
 ## Purpose
 
@@ -19,7 +27,7 @@ This use case extensively utilizes the StellarPlus library, developed by Cheesec
 ### `liquidityPoolProfiling` Function
 
 - **Purpose**:
-  To execute a most used transactions in liquidity pool,  profiling the performance between all contract methods.
+  To execute a most used transactions in liquidity pool, profiling the performance between all contract methods.
 
 - **Arguments**:
 
@@ -33,8 +41,8 @@ This use case extensively utilizes the StellarPlus library, developed by Cheesec
 
   1. Setup Phase: Create 'opex' and 'issuer' accounts to control fees and the assets.
   2. Setup two Soroban Tokens from scratch to initialize Liquidity Pool contract.
-  3. Setup user accounts and trustlines for the SAC token.
-  4. Mint initial amounts of both tokens to each user. Here the whole minting process if done through Soroban invocations and is included in the profiling logs.
+  3. Setup user accounts.
+  4. Mint initial amounts of both tokens to each user.
   5. Perform the profiling simulation for each one of the specified transactions.
   6. Export profiling data to CSV files.
 
@@ -55,8 +63,23 @@ liquidityPoolProfiling({
     liquidityPoolTransactions.deposit,
     liquidityPoolTransactions.swap,
     liquidityPoolTransactions.withdraw,
-    liquidityPoolTransactions.get_rsrvs
+    liquidityPoolTransactions.get_rsrvs,
   ],
   validationCloudApiKey: "<Your_ValidationCloud_API_Key>",
 });
 ```
+
+## Results achieved
+
+The results for each resource cost per method can be seen in the table below.
+
+| Method     | CPU Instructions | Memory (bytes) | Resource Fee (Stroops) | Read (bytes) | Write (bytes) | Ledger Reads | Ledger Writes | Event & return value size (bytes) | Transaction size (bytes) |
+| ---------- | ---------------- | -------------- | ---------------------- | ------------ | ------------- | ------------ | ------------- | --------------------------------- | ------------------------ |
+| initialize | 8,115,183        | 3,345,027      | 149,509                | 19,132       | 628           | 2            | 2             | 4                                 | 200                      |
+| share_id   | 4,723,482        | 1,751,828      | 95,354                 | 11,856       | 0             | 2            | 0             | 40                                | 116                      |
+| deposit    | 21,699,746       | 9,644,244      | 333,484                | 20,520       | 1,068         | 5            | 6             | 528                               | 868                      |
+| swap       | 18,374,952       | 8,079,149      | 276,289                | 20,516       | 920           | 4            | 5             | 356                               | 704                      |
+| withdraw   | 28,464,766       | 12,769,320     | 412,318                | 20,956       | 1,212         | 5            | 7             | 708                               | 980                      |
+| get_rsrvs  | 4,733,393        | 1,752,068      | 95,483                 | 11,856       | 0             | 2            | 0             | 52                                | 116                      |
+
+TODO: Add parallel execution and runtime results.
