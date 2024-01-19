@@ -130,7 +130,12 @@ This project is a preview of a larger study based on profiling different Soroban
 | Events & return value size | 158        | 1,360      | 4         | 24         |
 | Transaction size           | 334        | 1,732      | 116       | 192        |
 
-The individual results can be consulted in the Readme for each use case.
+The individual results can be consulted in the Readme for each use case:
+
+- [Tokens profiling results](src/profilings/tokens/readme.md#results-achieved)
+- [Comet DEX profiling results](src/profilings/comet-dex/README.md#results-achieved)
+- [Liquidity Pool profiling results](src/profilings/liquidity-pool/README.md#results-achieved)
+
 This profiling approach can be useful for understanding the resource utilization of your contract in order to avoid exceeding [network resource limits](https://soroban.stellar.org/docs/soroban-internals/fees-and-metering#resource-limits), as well as obtaining an estimate of the resource fees that will be paid for transactions.
 
 ## Contributing
