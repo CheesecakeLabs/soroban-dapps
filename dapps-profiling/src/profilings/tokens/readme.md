@@ -2,12 +2,9 @@
 
 ## Table of Contents
 
-- [Token Profiling](#token-profiling)
-  - [Table of Contents](#table-of-contents)
   - [Purpose](#purpose)
   - [StellarPlus Library Integration](#stellarplus-library-integration)
   - [Main Functionality](#main-functionality)
-    - [`tokensProfiling` Function](#tokensprofiling-function)
   - [Usage](#usage)
   - [Results achieved](#results-achieved)
 
@@ -77,3 +74,5 @@ tokensProfiling({
 The full results obtained can be seen at [this link](https://lookerstudio.google.com/reporting/5e685214-ac72-4d7d-bea0-a6940f27bd19/page/5GHmD).
 Based on the test results, SAC tokens demonstrated significant resource efficiency compared to Soroban tokens. For example, in terms of CPU instructions, SAC tokens consumed approximately 2.19% compared to Soroban tokens.
 The chart below shows the difference in fees charged for each contract.
+![profiling-tokens-avg-fee](https://github.com/CheesecakeLabs/soroban-dapps/assets/31604209/7bc93db0-1b86-4a53-a813-8db027b273fb)
+
