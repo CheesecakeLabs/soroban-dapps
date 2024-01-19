@@ -1,11 +1,11 @@
 
 <p align="center">
   <a href="https://cheesecakelabs.com/en/">
-    <img src="image/cheesecake-labs-logo.png" width="51%" alt="Logo">
+    <img src="images/cheesecake-labs-logo.png" width="51%" alt="Logo">
   </a>
-  <img src="image/plus_icon.png" width="10%">
+  <img src="images/blue_plus_icon.png" width="9%">
   <a href="https://www.stellar.org/learn/intro-to-stellar">
-    <img src="image/stellar-logo.png" width="29%" title="Stellar">
+    <img src="images/stellar-logo.png" width="29%" title="Stellar">
   </a>
 </p>
 
