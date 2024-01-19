@@ -1,5 +1,9 @@
 import { Network } from "stellar-plus/lib/stellar-plus/types";
-import { createAsset, createBaseAccounts, createLiquidityPoolContract } from "./setup";
+import {
+  createAsset,
+  createBaseAccounts,
+  createLiquidityPoolContract,
+} from "./setup";
 
 import {
   mintSorobanTokensToUsers,
@@ -8,7 +12,12 @@ import {
 import { DemoUser } from "../../utils/simulation-types";
 import { exportArrayToCSV } from "../../utils/export-to-csv";
 import { liquidityPoolTransactions } from "../../dapps/liquidity-pool/liquidity-pool-contract";
-import { profileDeposit, profileGetResources, profileSwap, profileWithdraw } from "./profiling-simulations";
+import {
+  profileDeposit,
+  profileGetResources,
+  profileSwap,
+  profileWithdraw,
+} from "./profiling-simulations";
 
 export type liquidityPoolProfilingType = {
   nUsers: number;
@@ -40,14 +49,12 @@ export const liquidityPoolProfiling = async ({
   transactions,
   validationCloudApiKey,
 }: liquidityPoolProfilingType) => {
-
   const { opex, issuer } = await createBaseAccounts(network);
   const { assetA, assetB } = await createAsset({
     network: network,
     txInvocation: issuer.transactionInvocation,
-    validationCloudApiKey
-  }
-  );
+    validationCloudApiKey,
+  });
 
   const users: DemoUser[] = await setupDemoUsers({
     nOfUsers: nUsers,
@@ -82,12 +89,13 @@ export const liquidityPoolProfiling = async ({
   console.log("Create Liquidity Pool Contract!");
   console.log("====================================");
 
-  const { liquidityPoolContract, liquidityPoolProfiler } = await createLiquidityPoolContract({
-    assetA,
-    assetB,
-    txInvocation: issuer.transactionInvocation,
-    network
-  })
+  const { liquidityPoolContract, liquidityPoolProfiler } =
+    await createLiquidityPoolContract({
+      assetA,
+      assetB,
+      txInvocation: issuer.transactionInvocation,
+      network,
+    });
 
   console.log("====================================");
   console.log("Profiling Deposit!");
@@ -97,44 +105,48 @@ export const liquidityPoolProfiling = async ({
     await profileDeposit({
       liquidityPoolContract: liquidityPoolContract,
       nTransactions: nTransactions,
-      users: users
-    })
+      users: users,
+    });
   }
 
   if (transactions?.includes(liquidityPoolTransactions.swap)) {
     await profileSwap({
       liquidityPoolContract: liquidityPoolContract,
       nTransactions: nTransactions,
-      users: users
-    })
+      users: users,
+    });
   }
 
   if (transactions?.includes(liquidityPoolTransactions.withdraw)) {
     await profileWithdraw({
       liquidityPoolContract: liquidityPoolContract,
       nTransactions: nTransactions,
-      users: users
-    })
+      users: users,
+    });
   }
 
   if (transactions?.includes(liquidityPoolTransactions.get_rsrvs)) {
     await profileGetResources({
       liquidityPoolContract: liquidityPoolContract,
       nTransactions: nTransactions,
-      users: users
-    })
+      users: users,
+    });
   }
 
-  const logLiquidityPool = liquidityPoolProfiler.getLog({ formatOutput: "csv" });
+  const logLiquidityPool = liquidityPoolProfiler.getLog({
+    formatOutput: "csv",
+  });
   const columnsLog = Object.keys(
     logLiquidityPool[0]
   ) as (keyof (typeof logLiquidityPool)[0])[];
 
-  console.log("Exporting SAC profiling data to file assets_profiling_sac.csv");
+  console.log(
+    "Exporting Liquidity Pool data to file liquidity_pool_profiling.csv"
+  );
 
   exportArrayToCSV(
     logLiquidityPool,
-    "./src/export/liquidity_pool_profiling_sac.csv",
+    "./src/export/liquidity_pool_profiling.csv",
     columnsLog
   );
 
