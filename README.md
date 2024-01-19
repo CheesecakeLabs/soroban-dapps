@@ -1,3 +1,14 @@
+
+<p align="center">
+  <a href="https://cheesecakelabs.com/en/">
+    <img src="images/cheesecake-labs-logo.png" width="51%" alt="Logo">
+  </a>
+  <img src="images/blue_plus_icon.png" width="9%">
+  <a href="https://www.stellar.org/learn/intro-to-stellar">
+    <img src="images/stellar-logo.png" width="29%" title="Stellar">
+  </a>
+</p>
+
 # Soroban Dapps
 
 ## Overview
@@ -30,3 +41,16 @@ Feel free to open an issue for bug reports, feature requests, or general feedbac
 2. Create a branch from `main`.
 3. Make your changes.
 4. Open a pull request, describing the purpose and changes made.
+
+# Learn more:
+- [About Stellar](https://www.stellar.org/learn/intro-to-stellar)  
+- [Stellar docs](https://developers.stellar.org/docs/)  
+- [About Soroban](https://soroban.stellar.org/)  
+- [Soroban docs](https://soroban.stellar.org/docs)  
+
+# Get involved:
+- [Protocol proposals](https://github.com/stellar/stellar-protocol)
+- [Developer Discord](https://discord.gg/stellardev)
+
+# Need Help?
+- [Cheesecake Labs](https://cheesecakelabs.com/contact/)
