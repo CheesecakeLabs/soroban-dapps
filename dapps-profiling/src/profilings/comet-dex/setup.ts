@@ -11,7 +11,6 @@ import {
   TransactionInvocation,
 } from "../../utils/simulation/types";
 import { Network } from "stellar-plus/lib/stellar-plus/types";
-import { TransactionCosts } from "stellar-plus/lib/stellar-plus/core/contract-engine/types";
 import { Profiler } from "stellar-plus/lib/stellar-plus/utils/profiler/soroban";
 
 export const initializeBaseAccounts = async (

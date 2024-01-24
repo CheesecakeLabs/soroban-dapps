@@ -9,7 +9,8 @@ export enum liquidityPoolTransactions {
     deposit = "deposit",
     get_rsrvs = "get_rsrvs",
     swap = "swap",
-    withdraw = "withdraw"
+    withdraw = "withdraw",
+    get_shares = "get_shares"
 }
 
 type initializeArgs = {
@@ -77,11 +78,16 @@ export class LiquidityPoolContract extends ContractEngine {
             out: out,
             in_max: inMax,
         }
-        await this.invokeContract({
-            method: liquidityPoolTransactions.swap,
-            methodArgs: methodArgs,
-            ...txInvocation,
-        });
+        try {
+            await this.invokeContract({
+                method: liquidityPoolTransactions.swap,
+                methodArgs: methodArgs,
+                ...txInvocation,
+            });
+        } catch (error) {
+            console.log("Swap Fail")
+        }
+
     }
 
     async withdraw({
@@ -93,11 +99,16 @@ export class LiquidityPoolContract extends ContractEngine {
             min_a: minA,
             min_b: minB
         }
-        await this.invokeContract({
-            method: liquidityPoolTransactions.withdraw,
-            methodArgs: methodArgs,
-            ...txInvocation,
-        });
+        try {
+            await this.invokeContract({
+                method: liquidityPoolTransactions.withdraw,
+                methodArgs: methodArgs,
+                ...txInvocation,
+            });
+        } catch (error) {
+            console.log("Withdraw Fail")
+        }
+
     }
 
     async deposit({
@@ -110,17 +121,31 @@ export class LiquidityPoolContract extends ContractEngine {
             desired_b: desiredB,
             min_b: minB
         }
-        await this.invokeContract({
-            method: liquidityPoolTransactions.deposit,
-            methodArgs: methodArgs,
-            ...txInvocation,
-        });
+        try {
+            await this.invokeContract({
+                method: liquidityPoolTransactions.deposit,
+                methodArgs: methodArgs,
+                ...txInvocation,
+            });
+        } catch (error) {
+            console.log("Deposit Fail")
+        }
+
     }
 
     async getReserves(txInvocation: TransactionInvocation): Promise<any> {
         const methodArgs = {}
         return await this.invokeContract({
             method: liquidityPoolTransactions.get_rsrvs,
+            methodArgs: methodArgs,
+            ...txInvocation,
+        });
+    }
+
+    async getShares(txInvocation: TransactionInvocation): Promise<any> {
+        const methodArgs = {}
+        return await this.invokeContract({
+            method: liquidityPoolTransactions.get_shares,
             methodArgs: methodArgs,
             ...txInvocation,
         });

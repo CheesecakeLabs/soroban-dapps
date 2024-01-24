@@ -9,8 +9,8 @@ import { liquidityPoolTransactions } from "./dapps/liquidity-pool/liquidity-pool
 
 
 // liquidityPoolProfiling({
-//     nUsers: 1,
-//     nTransactions: 2,
+//     nUsers: 3,
+//     nTransactions: 100,
 //     transactions: [
 //         liquidityPoolTransactions.deposit,
 //         liquidityPoolTransactions.swap,
