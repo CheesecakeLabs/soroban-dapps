@@ -37,10 +37,22 @@ Feel free to open an issue for bug reports, feature requests, or general feedbac
 
 ### Pull Requests
 
-1. Fork the repository.
+1. [Fork](https://github.com/CheesecakeLabs/soroban-dapps/fork) the repository.
 2. Create a branch from `main`.
+   ```
+   git checkout main
+   git pull origin main
+   git checkout -b your-feature-branch
+   ```
 3. Make your changes.
-4. Open a pull request, describing the purpose and changes made.
+4. Commit and push your changes to your forked repository.
+   ```
+   git add .
+   git commit -m "Your commit message"
+   git push origin your-feature-branch
+   ```
+5. Visit your forked repository on GitHub and create a pull request from your feature branch to the original repository's `main` branch.
+
 
 # Learn more:
 - [About Stellar](https://www.stellar.org/learn/intro-to-stellar)  
