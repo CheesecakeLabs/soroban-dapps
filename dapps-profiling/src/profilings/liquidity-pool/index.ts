@@ -93,7 +93,7 @@ export const liquidityPoolProfiling = async ({
     await createLiquidityPoolContract({
       assetA,
       assetB,
-      txInvocation: issuer.transactionInvocation,
+      txInvocation: opex.transactionInvocation,
       network,
     });
 

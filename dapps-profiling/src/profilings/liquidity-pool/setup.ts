@@ -41,7 +41,7 @@ export const createBaseAccounts = async (
   const opexTxInvocation = {
     header: {
       source: opexAccount.getPublicKey(),
-      fee: "10000000", //1 XLM as maximum fee
+      fee: "100000000", //10 XLM as maximum fee
       timeout: 30,
     },
     signers: [opexAccount],

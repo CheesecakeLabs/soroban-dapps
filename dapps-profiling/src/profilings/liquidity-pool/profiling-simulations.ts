@@ -31,16 +31,17 @@ export const profileDeposit = async ({
     ====================================
     `);
 
-  const depositArgs: depositArgs = {
-    desiredA: BigInt(1000000),
-    desiredB: BigInt(1000000),
-    minA: BigInt(1000000),
-    minB: BigInt(1000000)
-  }
-
   let transaction = 0;
   while (transaction < nTransactions) {
     const promises = users.map((user) => {
+
+      const desired = Number(getRandomAmount(100, 1000000))
+      const depositArgs: depositArgs = {
+        desiredA: BigInt(desired),
+        desiredB: BigInt(desired),
+        minA: BigInt(1),
+        minB: BigInt(1)
+      }
 
       console.log(
         ` ${transaction + 1}/${nTransactions
@@ -83,10 +84,10 @@ export const profileSwap = async ({
   let transaction = 0;
   while (transaction < nTransactions) {
     const promises = users.map((user) => {
-      const amount = Number(getRandomAmount(1, 10000))
+      const amount = Number(getRandomAmount(1, 100))
 
       const swapArgs: swapArgs = {
-        buyA: true,
+        buyA: (Math.random() < 0.5),
         out: BigInt(amount),
         inMax: BigInt(9999999999999999),
       }
@@ -130,13 +131,17 @@ export const profileWithdraw = async ({
     `);
 
   let transaction = 0;
+
   while (transaction < nTransactions) {
-    const promises = users.map((user) => {
+    const promises = users.map(async (user) => {
+
+      const shares = await liquidityPoolContract.getShares(user.transactionInvocation);
+      const amountToWithdraw = BigInt(BigInt(shares) / BigInt(nTransactions))
 
       const withdrawArgs: withdrawArgs = {
-        shareAmount: BigInt(10 * 10000000),
-        minA: BigInt(10000000),
-        minB: BigInt(10000000),
+        shareAmount: amountToWithdraw,
+        minA: BigInt(1),
+        minB: BigInt(1),
       }
 
       console.log(
