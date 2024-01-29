@@ -4,6 +4,7 @@
 
   - [Purpose](#purpose)
   - [StellarPlus Library Integration](#stellarplus-library-integration)
+  - [Overview](#overview)
   - [Main Functionality](#main-functionality)
   - [Usage](#usage)
   - [Results achieved](#results-achieved)
@@ -22,6 +23,121 @@ This use case extensively utilizes the StellarPlus library, developed by Cheesec
 - **Soroban Token Handler**: A ready-to-use asset handler for deploying, instantiating, and invoking Soroban tokens. [Soroban Token Handler Documentation](https://cheesecake-labs.gitbook.io/stellar-plus/reference/asset/stellar-asset-contract-handler)
 - **SAC Token Handler**: Manages Stellar Classic tokens with the Stellar Asset Contract, providing functions to wrap and invoke these assets. [SAC Token Handler Documentation](https://cheesecake-labs.gitbook.io/stellar-plus/reference/asset/soroban-token-handler)
 
+## Overview
+Here are diagram showing the process of **setup** and **profiling** inside this example, each of these steps will be described below.
+
+### Setup
+
+<p align="center">
+  <img src="../../../images/liquidity-pool-setup.png" width="100%">
+</p>
+
+- **Initialize Base Accounts:**
+  Creation and initialization of the Opex and Asset Issuer accounts.
+
+```javascript
+const { opex, issuer } = await createBaseAccounts(network);
+```
+
+**Opex** is responsible to Fee Bump the transactions of Liquidity Pool.
+**Issuer** is responsible to issue the Token A and Token B.
+
+- **Create Assets:**
+  Issuer creates Token A and Token B.
+
+```javascript
+const { assetA, assetB } = await createAsset({
+    network: network,
+    txInvocation: issuer.transactionInvocation,
+    validationCloudApiKey,
+  });
+```
+- **Create Users:**
+    Opex creates demo users that will execute Liquidity Pool transactions.
+
+```javascript
+  const users: DemoUser[] = await setupDemoUsers({
+    nOfUsers: nUsers,
+    network,
+    feeBump: opex.transactionInvocation,
+  });
+```
+- **Mint Tokens To Users:**
+Mints Tokens A and Tokens B to demo users, witch these, users will be able to perform deposits in Liquidity Pool.
+
+```javascript
+  await mintSorobanTokensToUsers({
+    users,
+    issuer,
+    token: assetA,
+    mintAmount: mintAmountSorobanToken,
+  });
+```
+
+- **Create Liquidity Pool:**
+With the necessary wasm, Opex, and Profiler in place, the liquidity pool setup progresses to the creation of the actual liquidity pool itself.
+
+```javascript
+  const liquidityPoolProfiler = new StellarPlus.Utils.SorobanProfiler();
+  const liquidityPoolContract = new LiquidityPoolContract({
+    network: network,
+    spec: liquidityPoolSpec,
+    wasm: liquidityPoolWasm,
+    options: liquidityPoolProfiler?.getOptionsArgs(),
+  })
+```
+
+- **Initialize Liquidity Pool:**
+After create, is initialize Liquidity Pool with assets that will be the pair and Opex, responsible to fee bump the transactions.
+
+```javascript
+await liquidityPoolContract.initialize({
+  tokenWasmHash: tokenWasmHash,
+  tokenA: assetAId,
+  tokenB: assetBId,
+  txInvocation: txInvocation
+})
+```
+
+### Profiling
+
+<p align="center">
+  <img src="../../../images/liquidity-pool-profiling.png" width="100%">
+</p>
+
+- **Deposit:**
+Adding funds or assets into the liquidity pool. Users contribute their assets to the pool to increase its overall liquidity, which enables trading and other activities within the ecosystem.
+
+```javascript
+  await profileDeposit({
+      liquidityPoolContract: liquidityPoolContract,
+      nTransactions: nTransactions,
+      users: users,
+    });
+```
+
+- **Swap:**
+Swapping, also known as trading or exchanging, involves the exchange of one asset for another within the liquidity pool. Users can initiate swaps to trade their assets against the available liquidity in the pool.
+
+```javascript
+  await profileSwap({
+      liquidityPoolContract: liquidityPoolContract,
+      nTransactions: nTransactions,
+      users: users,
+    });
+```
+
+- **Withdraw:**
+efers to the action of removing funds or assets from the liquidity pool. Users may choose to withdraw their assets from the pool for various reasons, such as realizing profits, rebalancing their portfolios, or exiting their positions.
+
+```javascript
+  await profileWithdraw({
+      liquidityPoolContract: liquidityPoolContract,
+      nTransactions: nTransactions,
+      users: users,
+    });
+```
+
 ## Main Functionality
 
 ### `liquidityPoolProfiling` Function
@@ -36,15 +152,6 @@ This use case extensively utilizes the StellarPlus library, developed by Cheesec
   - `network`: Stellar network configuration (e.g. testnet).
   - `transactions`: Types of transactions to be profiled (transfer, mint, burn).
   - `validationCloudApiKey`: API key to use your custom Validation Cloud RPC isntead of the default one.
-
-- **Steps**:
-
-  1. Setup Phase: Create 'opex' and 'issuer' accounts to control fees and the assets.
-  2. Setup two Soroban Tokens from scratch to initialize Liquidity Pool contract.
-  3. Setup user accounts.
-  4. Mint initial amounts of both tokens to each user.
-  5. Perform the profiling simulation for each one of the specified transactions.
-  6. Export profiling data to CSV files.
 
 - **Output**:
   By default, all data collected can be found under `./src/export`

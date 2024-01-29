@@ -4,6 +4,7 @@
 
   - [Purpose](#purpose)
   - [StellarPlus Library Integration](#stellarplus-library-integration)
+  - [Overview](#overview)
   - [Main Functionality](#main-functionality)
   - [Usage](#usage)
   - [Results achieved](#results-achieved)
@@ -22,6 +23,109 @@ This use case extensively utilizes the StellarPlus library, developed by Cheesec
 - **Soroban Token Handler**: A ready-to-use asset handler for deploying, instantiating, and invoking Soroban tokens. [Soroban Token Handler Documentation](https://cheesecake-labs.gitbook.io/stellar-plus/reference/asset/stellar-asset-contract-handler)
 - **SAC Token Handler**: Manages Stellar Classic tokens with the Stellar Asset Contract, providing functions to wrap and invoke these assets. [SAC Token Handler Documentation](https://cheesecake-labs.gitbook.io/stellar-plus/reference/asset/soroban-token-handler)
 
+
+## Overview
+Here are diagram showing the process of **setup** and **profiling** inside this example, each of these steps will be described below.
+
+### Setup
+
+<p align="center">
+  <img src="../../../images/token-setup.png" width="100%">
+</p>
+
+- **Initialize Base Accounts:**
+  Creation and initialization of the Opex and Asset Issuer accounts.
+
+```javascript
+const { opex, issuer } = await createBaseAccounts(network);
+```
+
+**Opex** is responsible to Fee Bump the transactions of Tokens.
+**Issuer** is responsible to issue the Token A and Token B.
+
+- **Create Assets:**
+  Issuer creates sorobanToken, sacToken and tokenProfiler.
+
+```javascript
+  const { sorobanToken, sacToken, tokenProfiler, sacProfiler } =
+    await setupAssets(
+      network,
+      issuer.account,
+      issuer.transactionInvocation,
+      validationCloudApiKey
+    );
+```
+- **Create Users:**
+    Opex creates demo users that will execute tokens transactions.
+
+```javascript
+  const users: DemoUser[] = await setupDemoUsers({
+    nOfUsers: nUsers,
+    network,
+    feeBump: opex.transactionInvocation,
+    addTrustline: [
+      {
+        asset: sacToken.classicHandler,
+        mintAmount: "1",
+      },
+    ],
+  });
+```
+- **Mint Tokens To Users:**
+Mints sorobanToken and sacToken to demo users, witch these, users will be able to perform payments and burn in example.
+
+```javascript
+  await mintSorobanTokensToUsers({
+    users,
+    issuer,
+    token: sorobanToken,
+    mintAmount: mintAmountSorobanToken,
+  });
+```
+
+### Profiling
+
+<p align="center">
+  <img src="../../../images/token-profiling.png" width="100%">
+</p>
+
+- **Mint:**
+Same as mint in setup, creates sorobanToken and sacToken for demo users.
+
+```javascript
+  await profileMinting({
+      nTransactions,
+      users,
+      issuer,
+      sorobanToken,
+    });
+```
+
+- **Payments:**
+Perform transfer asset from one user to another.
+
+```javascript
+  await profilePayments({
+      nTransactions,
+      users,
+      issuer,
+      sorobanToken,
+    });
+```
+
+- **Burn:**
+Removing sorobanToken and sacToken asset from circulation.
+
+```javascript
+  await profileBurn({
+      nTransactions,
+      users,
+      issuer,
+      sorobanToken,
+    });
+```
+
+
 ## Main Functionality
 
 ### `tokensProfiling` Function
@@ -36,15 +140,6 @@ This use case extensively utilizes the StellarPlus library, developed by Cheesec
   - `network`: Stellar network configuration (e.g. testnet).
   - `transactions`: Types of transactions to be profiled (transfer, mint, burn).
   - `validationCloudApiKey`: API key to use your custom Validation Cloud RPC isntead of the default one.
-
-- **Steps**:
-
-  1. Setup Phase: Create 'opex' and 'issuer' accounts to control fees and the assets.
-  2. Setup SAC and Soroban Tokens from scratch.
-  3. Setup user accounts and trustlines for the SAC token.
-  4. Mint initial amounts of both tokens to each user. Here the whole minting process if done through Soroban invocations and is included in the profiling logs.
-  5. Perform the profiling simulation for each one of the specified transactions.
-  6. Export profiling data to CSV files.
 
 - **Output**:
   By default, all data collected can be found under `./src/export`
