@@ -166,7 +166,6 @@ export async function createLiquidityPoolContract({
   );
 
   const liquidityPoolProfiler = new StellarPlus.Utils.SorobanProfiler();
-
   const liquidityPoolContract = new LiquidityPoolContract({
     network: network,
     spec: liquidityPoolSpec,

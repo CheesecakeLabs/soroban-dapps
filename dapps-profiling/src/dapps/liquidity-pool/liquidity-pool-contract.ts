@@ -135,19 +135,27 @@ export class LiquidityPoolContract extends ContractEngine {
 
     async getReserves(txInvocation: TransactionInvocation): Promise<any> {
         const methodArgs = {}
-        return await this.invokeContract({
-            method: liquidityPoolTransactions.get_rsrvs,
-            methodArgs: methodArgs,
-            ...txInvocation,
-        });
+        try {
+            return await this.invokeContract({
+                method: liquidityPoolTransactions.get_rsrvs,
+                methodArgs: methodArgs,
+                ...txInvocation,
+            });
+        } catch (error) {
+            console.log("Fail to get reserves")
+        }
     }
 
     async getShares(txInvocation: TransactionInvocation): Promise<any> {
         const methodArgs = {}
-        return await this.invokeContract({
-            method: liquidityPoolTransactions.get_shares,
-            methodArgs: methodArgs,
-            ...txInvocation,
-        });
+        try {
+            return await this.invokeContract({
+                method: liquidityPoolTransactions.get_shares,
+                methodArgs: methodArgs,
+                ...txInvocation,
+            });
+        } catch (error) {
+            console.log("Fail to get shares")
+        }
     }
 }

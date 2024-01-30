@@ -4,6 +4,7 @@
 
   - [Purpose](#purpose)
   - [StellarPlus Library Integration](#stellarplus-library-integration)
+  - [Overview](#overview)
   - [Main Functionality](#main-functionality)
   - [Usage](#usage)
   - [Results achieved](#results-achieved)
@@ -18,6 +19,125 @@ This use case extensively utilizes the StellarPlus library, developed by Cheesec
 
 - **Soroban Profiler**: Used for collecting, filtering, and formatting resource utilization data of all Soroban transactions. [Soroban Profiler Documentation](https://cheesecake-labs.gitbook.io/stellar-plus/reference/utils/soroban-profiler)
 
+## Overview
+Here are diagram showing the process of **setup** and **profiling** inside this example, each of these steps will be described below.
+
+### Setup
+
+<p align="center">
+  <img src="../../../images/comet-setup.png" width="100%">
+</p>
+
+- **Initialize Base Accounts:**
+  Creation and initialization of the Opex and Admin Issuer accounts.
+
+```javascript
+const { opex, admin } = await initializeBaseAccounts(network);
+```
+
+**Opex** is responsible to Fee Bump the transactions of Comet and Factory contracts.
+**Admin** is responsible to issue the Token A and Token B.
+
+- **Setup Factory and Comet:**
+  Create Factory and Comet contracts.
+
+```javascript
+const factoryProfiler = new StellarPlus.Utils.SorobanProfiler();
+  const factoryClient = new FactoryClient({
+    network,
+    wasm: factoryWasm,
+    spec: factorySpec,
+    contractId: factoryId,
+    options: factoryProfiler.getOptionsArgs()
+  });
+
+  const cometProfiler = new StellarPlus.Utils.SorobanProfiler();
+  const cometClient = new ContractClient({
+    network,
+    wasm: cometWasm,
+    spec: contractsSpec,
+    contractId: cometId,
+    options: cometProfiler.getOptionsArgs()
+  });
+```
+
+- **Create Users:**
+    Opex creates demo users that will execute Comet transactions.
+
+```javascript
+  const users = await createUsers(nUsers, network, opexTxInvocation, ["SA4WTTZ4VEMC62TR27FECUDDQ7OAK3G4BUYEQQA3O75W4NZXPGXLOFVY"]);
+```
+
+- **Create Assets:**
+  Admin creates Token A and Token B.
+
+```javascript
+  const { assetA, assetB } = await setupAssets(
+    network,
+    admin,
+    adminTxInvocation,
+    mintingForUsers,
+  );
+```
+
+- **Mint Tokens To Users:**
+Mints Tokens A and Tokens B to demo users, witch these, users will be able to perform deposits in Comet contract.
+
+```javascript
+  for (let user of mintingForUsers) {
+    for (let asset of [assetA, assetB]) {
+      await asset.mint({
+        to: user.getPublicKey(),
+        amount: BigInt(1000000000000000),
+        ...txInvocation,
+      })
+    }
+  }
+```
+
+### Profiling
+Was made profiling in each of these functions:
+- approve
+- allowance
+- balanceOf
+- bundleBind
+- burnFrom
+- init
+- bind
+- unbind
+- rebind
+- finalize
+- joinPool
+- exitPool
+- depositLPTokenAmountOutGetTokenIn
+- depositTokenAmountInGetLPTokensOut
+- withdrawTokenAmountInGetLPTokensOut
+- withdrawTokenAmountOutGetLPTokensIn
+- swapExactAmountIn
+- swapExactAmountOut
+- gulp
+- setFreezeStatus
+- setController
+- setSwapFee
+- setPublicSwap
+- transfer
+- transferFrom
+- name
+- symbol
+- decimal
+- isFinalized
+- isPublicSwap
+- isBound
+- getController
+- getDenormalizedWeight
+- getTotalDenormalizedWeight
+- getTotalSupply
+- getSpotPrice
+- getSpotPriceSansFee
+- getSwapFee
+- getDenormalizedWeight
+- getBalance
+
 ## Main Functionality
 
 ### `cometDexProfiling` Function
@@ -29,16 +149,6 @@ This use case extensively utilizes the StellarPlus library, developed by Cheesec
 
   - `nUsers`: Number of users for the profiling test. For now it only supports 1 user.
   - `network`: Stellar network configuration (e.g. testnet).
-
-- **Steps**:
-
-  1. Setup Phase: Create 'opex' and 'issuer' accounts to control fees and the assets.
-  2. Setup Factory and Comet contracts.
-  3. Setup user accounts.
-  4. Setup two Soroban tokens.
-  5. Mint initial amounts of both tokens to each user and admin.
-  6. Perform the profiling simulation for each transaction present in each contract.
-  7. Export profiling data to CSV files.
 
 - **Output**:
   By default, all data collected can be found under `./src/export/comet`
