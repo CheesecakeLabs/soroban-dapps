@@ -36,7 +36,7 @@ Here are diagram showing the process of **setup** and **profiling** inside this 
   Creation and initialization of the Opex and Asset Issuer accounts.
 
 ```javascript
-const { opex, issuer } = await createBaseAccounts(network);
+const { opex, issuer } = await createBaseAccounts(networkConfig);
 ```
 
 **Opex** is responsible to Fee Bump the transactions of Liquidity Pool.
@@ -47,7 +47,7 @@ const { opex, issuer } = await createBaseAccounts(network);
 
 ```javascript
 const { assetA, assetB } = await createAsset({
-    network: network,
+    networkConfig: networkConfig,
     txInvocation: issuer.transactionInvocation,
     validationCloudApiKey,
   });
@@ -58,7 +58,7 @@ const { assetA, assetB } = await createAsset({
 ```javascript
   const users: DemoUser[] = await setupDemoUsers({
     nOfUsers: nUsers,
-    network,
+    networkConfig,
     feeBump: opex.transactionInvocation,
   });
 ```
@@ -75,15 +75,23 @@ Mints Tokens A and Tokens B to demo users, witch these, users will be able to pe
 ```
 
 - **Create Liquidity Pool:**
-With the necessary wasm, Opex, and Profiler in place, the liquidity pool setup progresses to the creation of the actual liquidity pool itself.
+With the necessary wasm and Opex, is create two plugins to add in contract: **ProfilerPlugin** (responsible to analyze costs), **AutoRestorePlugin** (responsible to restore contract case is expired).
 
 ```javascript
-  const liquidityPoolProfiler = new StellarPlus.Utils.SorobanProfiler();
+  const liquidityPoolProfiler = new ProfilerPlugin();
+  const autoRestorePlugin = new AutoRestorePlugin(txInvocation, networkConfig)
+
   const liquidityPoolContract = new LiquidityPoolContract({
-    network: network,
-    spec: liquidityPoolSpec,
-    wasm: liquidityPoolWasm,
-    options: liquidityPoolProfiler?.getOptionsArgs(),
+    networkConfig: networkConfig,
+    contractParameters: {
+      spec: liquidityPoolSpec,
+      wasm: liquidityPoolWasm,
+    },
+    options: {
+      sorobanTransactionPipeline: {
+        plugins: [liquidityPoolProfiler, autoRestorePlugin]
+      },
+    }
   })
 ```
 

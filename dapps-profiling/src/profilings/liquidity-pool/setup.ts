@@ -1,17 +1,20 @@
-import { Network } from "stellar-plus/lib/stellar-plus/types";
+import { NetworkConfig } from "stellar-plus/lib/stellar-plus/types";
 import {
   TransactionInvocation,
 } from "../../utils/simulation/types";
 import { StellarPlus } from "stellar-plus";
 import { loadWasmFile } from "../../utils/load-wasm";
-import { Profiler } from "stellar-plus/lib/stellar-plus/utils/profiler/soroban";
 import { DemoUser } from "../../utils/simulation-types";
 import { SorobanTokenHandler } from "stellar-plus/lib/stellar-plus/asset";
 import { LiquidityPoolContract } from "../../dapps/liquidity-pool/liquidity-pool-contract";
 import { liquidityPoolSpec } from "../../dapps/liquidity-pool/constants";
+import { ProfilerPlugin } from "stellar-plus/lib/stellar-plus/utils/pipeline/plugins/soroban-transaction/profiler";
+import { DebugPlugin } from "stellar-plus/lib/stellar-plus/utils/pipeline/plugins/generic/debug";
+import { SorobanTransactionPipelinePlugin } from "stellar-plus/lib/stellar-plus/core/pipelines/soroban-transaction/types";
+import { AutoRestorePlugin } from "stellar-plus/lib/stellar-plus/utils/pipeline/plugins/simulate-transaction/auto-restore";
 
 export const createBaseAccounts = async (
-  network: Network
+  networkConfig: NetworkConfig
 ): Promise<{
   opex: DemoUser;
   issuer: DemoUser;
@@ -19,11 +22,11 @@ export const createBaseAccounts = async (
   console.log("Initializing base accounts... ");
 
   const opexAccount = new StellarPlus.Account.DefaultAccountHandler({
-    network,
+    networkConfig,
   });
 
   const issuerAccount = new StellarPlus.Account.DefaultAccountHandler({
-    network,
+    networkConfig,
   });
 
   console.log("Opex: ", opexAccount.getPublicKey());
@@ -71,7 +74,7 @@ export const createBaseAccounts = async (
 };
 
 export type CreateAssetsArgs = {
-  network: Network,
+  networkConfig: NetworkConfig,
   txInvocation: TransactionInvocation,
   validationCloudApiKey?: string
 }
@@ -81,7 +84,7 @@ export type CreateAssetsResult = {
   assetB: SorobanTokenHandler,
 }
 
-export async function createAsset({ network, txInvocation, validationCloudApiKey }: CreateAssetsArgs): Promise<CreateAssetsResult> {
+export async function createAsset({ networkConfig, txInvocation, validationCloudApiKey }: CreateAssetsArgs): Promise<CreateAssetsResult> {
 
   const assetWasm = await loadWasmFile(
     "./src/dapps/soroban-token/wasm/soroban_token_contract.wasm"
@@ -89,15 +92,16 @@ export async function createAsset({ network, txInvocation, validationCloudApiKey
 
   const vcRpc = validationCloudApiKey
     ? new StellarPlus.RPC.ValidationCloudRpcHandler(
-      network,
+      networkConfig,
       validationCloudApiKey
     )
     : undefined;
 
   const sorobanTokenA = new SorobanTokenHandler({
-    network,
-    wasm: assetWasm,
-    rpcHandler: vcRpc,
+    networkConfig,
+    contractParameters: {
+      wasm: assetWasm,
+    },
   });
 
   console.log("Uploading Soroban Token A WASM Files...");
@@ -114,9 +118,15 @@ export async function createAsset({ network, txInvocation, validationCloudApiKey
   })
 
   const sorobanTokenB = new SorobanTokenHandler({
-    network,
-    wasm: assetWasm,
-    rpcHandler: vcRpc,
+    networkConfig,
+    contractParameters: {
+      wasm: assetWasm
+    },
+    options: {
+      sorobanTransactionPipeline: {
+        customRpcHandler: vcRpc
+      }
+    }
   });
 
   console.log("Uploading Soroban Token B WASM Files...");
@@ -134,7 +144,14 @@ export async function createAsset({ network, txInvocation, validationCloudApiKey
     ...txInvocation
   })
 
-  if ((sorobanTokenA.getContractId()) >= (sorobanTokenB.getContractId())) {
+  if (!sorobanTokenA.getContractId()) {
+    throw "assetAId not found"
+  }
+  if (!sorobanTokenB.getContractId()) {
+    throw "assetAId not found"
+  }
+
+  if ((Number(sorobanTokenA.getContractId())) >= (Number(sorobanTokenB.getContractId()))) {
     return { assetA: sorobanTokenB, assetB: sorobanTokenA }
   }
 
@@ -145,16 +162,16 @@ export type CreateContractArgs = {
   assetA: SorobanTokenHandler,
   assetB: SorobanTokenHandler,
   txInvocation: TransactionInvocation,
-  network: Network
+  networkConfig: NetworkConfig
 }
 
 export type CreateContractResponse = {
   liquidityPoolContract: LiquidityPoolContract,
-  liquidityPoolProfiler: Profiler
+  liquidityPoolProfiler: ProfilerPlugin
 }
 
 export async function createLiquidityPoolContract({
-  assetA, assetB, txInvocation, network
+  assetA, assetB, txInvocation, networkConfig
 }: CreateContractArgs): Promise<CreateContractResponse> {
 
   console.log("====================================");
@@ -165,12 +182,20 @@ export async function createLiquidityPoolContract({
     "./src/dapps/liquidity-pool/wasm/soroban_liquidity_pool_contract.optimized.wasm"
   );
 
-  const liquidityPoolProfiler = new StellarPlus.Utils.SorobanProfiler();
+  const liquidityPoolProfiler = new ProfilerPlugin();
+  const autoRestorePlugin = new AutoRestorePlugin(txInvocation, networkConfig)
+
   const liquidityPoolContract = new LiquidityPoolContract({
-    network: network,
-    spec: liquidityPoolSpec,
-    wasm: liquidityPoolWasm,
-    options: liquidityPoolProfiler?.getOptionsArgs(),
+    networkConfig: networkConfig,
+    contractParameters: {
+      spec: liquidityPoolSpec,
+      wasm: liquidityPoolWasm,
+    },
+    options: {
+      sorobanTransactionPipeline: {
+        plugins: [liquidityPoolProfiler, autoRestorePlugin]
+      },
+    }
   })
 
   await liquidityPoolContract.uploadWasm(txInvocation)
