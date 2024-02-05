@@ -148,7 +148,6 @@ TOKEN_WASM_HASH="$(soroban contract install \
 echo "Initialize the liquidity pool contract"
 soroban contract invoke \
   $ARGS \
-  --wasm $LIQUIDITY_POOL_WASM \
   --id "$LIQUIDITY_POOL_ID" \
   -- \
   initialize \
@@ -160,7 +159,6 @@ soroban contract invoke \
 echo "Getting the share id"
 SHARE_ID="$(soroban contract invoke \
   $ARGS \
-  --wasm $LIQUIDITY_POOL_WASM \
   --id "$LIQUIDITY_POOL_ID" \
   -- \
   share_id
@@ -172,6 +170,7 @@ echo "Share ID: $SHARE_ID"
 echo "Generating bindings"
 soroban contract bindings typescript --wasm $ABUNDANCE_WASM --network $NETWORK --contract-id $ABUNDANCE_A_ID --output-dir ".soroban/contracts/token-a" --overwrite
 soroban contract bindings typescript --wasm $ABUNDANCE_WASM  --network $NETWORK --contract-id $ABUNDANCE_B_ID --output-dir ".soroban/contracts/token-b" --overwrite
+soroban contract bindings typescript --wasm $TOKEN_WASM  --network $NETWORK --contract-id $SHARE_ID --output-dir ".soroban/contracts/share-token" --overwrite
 soroban contract bindings typescript --wasm $LIQUIDITY_POOL_WASM --network $NETWORK --contract-id $LIQUIDITY_POOL_ID --output-dir ".soroban/contracts/liquidity-pool" --overwrite
 
 echo "Done"
