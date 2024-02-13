@@ -6,11 +6,11 @@ import styles from './styles.module.scss'
 import { Utils } from 'shared/utils'
 import { IToken } from "interfaces/soroban/token"
 import { MintButton } from 'components/atoms';
-import { Address } from 'token-a-contract';
+
 
 
 interface IBalance {
-    account: Address;
+    account: string;
     token: IToken;
     balance: bigint;
     icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
@@ -19,7 +19,7 @@ interface IBalance {
     onUpdate: () => void;
 }
 
-const Balance: FunctionComponent<IBalance> = ({ account, tokenA, balance, mint, icon, token, onUpdate }) => {
+const Balance: FunctionComponent<IBalance> = ({ account, tokenA, balance, mint, icon, token, onUpdate }:IBalance) => {
     const Icon = icon;
 
     return (
