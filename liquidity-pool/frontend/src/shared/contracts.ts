@@ -1,11 +1,14 @@
-
 import * as TokenA from 'token-a-contract'
 import * as TokenB from 'token-b-contract'
 import * as LiquidityPool from 'liquidity-pool-contract'
 import * as ShareToken from 'share-token-contract'
-import { Server } from 'soroban-client'
+
+
 import config from './config.json'
+import { Server } from 'stellar-sdk/lib/soroban'
 const { network, rpcUrl } = config
+
+
 
 
 export const contractTokenA = new TokenA.Contract({

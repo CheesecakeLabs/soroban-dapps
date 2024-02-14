@@ -17,8 +17,14 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
-      "app/*": ["app/*"]
-    }
+      "app/*": ["app/*"],
+      "token-a-contract": ["../../.soroban/contracts/token-a/src"],
+      "token-b-contract": ["../../.soroban/contracts/token-b/src"],
+      "liquidity-pool-contract": ["../../.soroban/contracts/liquidity-pool/src"],
+      "share-token-contract": ["../../.soroban/contracts/share-token/src"]
+      
+    },
+    "typeRoots": ["./node_modules/@types"],
   },
-  "include": ["src"]
+  "include": ["src/**/*"]
 }

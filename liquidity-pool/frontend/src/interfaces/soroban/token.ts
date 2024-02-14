@@ -1,4 +1,5 @@
-import { Address } from 'token-a-contract';
+import { Address } from "stellar-sdk";
+
 
 interface IToken {
     symbol: string;

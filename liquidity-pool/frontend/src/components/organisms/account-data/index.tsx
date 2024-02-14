@@ -8,7 +8,7 @@ import { ConnectButton } from "components/atoms"
 import { Balance } from "components/molecules"
 import { IToken } from "interfaces/soroban/token"
 import { TokenAIcon, TokenBIcon, TokenLPIcon } from 'components/icons';
-import { Address } from 'token-a-contract';
+
 
 interface IAccountData {
     sorobanContext: SorobanContextType;
@@ -25,7 +25,7 @@ const AccountData: FunctionComponent<IAccountData> = ({ sorobanContext, tokenA, 
             <h3>Account balance</h3>
             {account ? (
                 <BalanceData
-                    account={new Address(account)}
+                    account={account}
                     tokenA={tokenA}
                     tokenB={tokenB}
                     shareToken={shareToken}
@@ -42,7 +42,7 @@ interface IBalanceData {
     tokenA: IToken;
     tokenB: IToken;
     shareToken: IToken;
-    account: Address;
+    account: string;
     onUpdate: () => void;
 }
 

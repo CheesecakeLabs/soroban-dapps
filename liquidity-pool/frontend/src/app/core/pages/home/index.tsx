@@ -11,16 +11,16 @@ import { LiquidityActions, AccountData } from 'components/organisms'
 
 import { Utils } from 'shared/utils'
 import { TokenAIcon, TokenBIcon } from "components/icons"
-import { Address } from 'token-a-contract'
 
 import { IToken } from 'interfaces/soroban/token';
 import { IReserves } from 'interfaces/soroban/liquidityPool';
 import { contractLiquidityPool, contractShareToken, contractTokenA, contractTokenB } from 'shared/contracts';
+import { AssembledTransaction, i128, u32 } from 'liquidity-pool-contract';
 
 
 const Home = (): JSX.Element => {
   const sorobanContext = useSorobanReact()
-  const account = sorobanContext.address ? new Address(sorobanContext.address) : ""
+  const account = sorobanContext.address ? sorobanContext.address : ""
 
   const [updatedAt, setUpdatedAt] = React.useState<number>(Date.now())
   const [tokenA, setTokenA] = React.useState<IToken>({ symbol: "", decimals: 7 })
@@ -38,20 +38,28 @@ const Home = (): JSX.Element => {
       contractShareToken.symbol(),
       contractShareToken.decimals()
     ]).then(fetched => {
+
+      const tokenASymbol = fetched[0].result;
+      const tokenADecimals = fetched[1].result;
+      const tokenBSymbol = fetched[2].result;
+      const tokenBDecimals = fetched[3].result;
+      const shareTokenSymbol = fetched[4].result;
+      const shareTokenDecimals = fetched[5].result;
+
       setTokenA(prevTokenA => ({
         ...prevTokenA,
-        symbol: fetched[0],
-        decimals: fetched[1],
+        symbol: tokenASymbol,
+        decimals: tokenADecimals,
       }));
       setTokenB(prevTokenB => ({
         ...prevTokenB,
-        symbol: fetched[2],
-        decimals: fetched[3],
+        symbol: tokenBSymbol,
+        decimals: tokenBDecimals,
       }));
       setShareToken(prevShareToken => ({
         ...prevShareToken,
-        symbol: fetched[4],
-        decimals: fetched[5],
+        symbol: shareTokenSymbol,
+        decimals: shareTokenDecimals,
       }));
     });
   }, []);
@@ -60,12 +68,14 @@ const Home = (): JSX.Element => {
     Promise.all([
       contractLiquidityPool.getRsrvs(),
       contractLiquidityPool.getShares()
-    ]).then(fetched => {
+    ]).then((fetched: [AssembledTransaction<readonly [bigint, bigint]>, AssembledTransaction<bigint>]) => { 
+      const reserves = fetched[0].result;
+      const shares = fetched[1].result;
       setReserves({
-        reservesA: fetched[0][0],
-        reservesB: fetched[0][1],
+        reservesA: reserves[0],
+        reservesB: reserves[1],
       });
-      setTotalShares(fetched[1]);
+      setTotalShares(shares);
     });
     if (account) {
       Promise.all([
@@ -73,17 +83,22 @@ const Home = (): JSX.Element => {
         contractTokenB.balance({ id: account }),
         contractShareToken.balance({ id: account })
       ]).then(fetched => {
+
+        const balanceA = fetched[0].result as i128;
+        const balanceB = fetched[1].result  as i128;
+        const balanceShare = fetched[2].result  as i128;
+
         setTokenA(prevTokenA => ({
           ...prevTokenA,
-          balance: fetched[0],
+          balance: balanceA,
         }));
         setTokenB(prevTokenB => ({
           ...prevTokenB,
-          balance: fetched[1]
+          balance: balanceB
         }));
         setShareToken(prevShareToken => ({
           ...prevShareToken,
-          balance: fetched[2]
+          balance: balanceShare
         }));
       });
     }
@@ -102,7 +117,10 @@ const Home = (): JSX.Element => {
           tokenA={tokenA}
           tokenB={tokenB}
           shareToken={shareToken}
-          onUpdate={() => setUpdatedAt(Date.now())}
+          onUpdate={() => {
+            setUpdatedAt(Date.now())
+            console.log("AccountData onUpdate")
+          }}
         />
         <div className={styles.poolContent}>
           {sorobanContext.activeChain &&
