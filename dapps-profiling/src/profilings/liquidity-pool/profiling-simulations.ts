@@ -136,7 +136,7 @@ export const profileWithdraw = async ({
     const promises = users.map(async (user) => {
 
       const shares = await liquidityPoolContract.getShares(user.transactionInvocation);
-      const amountToWithdraw = BigInt(BigInt(shares) / BigInt(nTransactions))
+      const amountToWithdraw = BigInt(BigInt(shares.value) / BigInt(nTransactions))
 
       const withdrawArgs: withdrawArgs = {
         shareAmount: amountToWithdraw,

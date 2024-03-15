@@ -1,4 +1,4 @@
-import { Network } from "stellar-plus/lib/stellar-plus/types";
+import { NetworkConfig } from "stellar-plus/lib/stellar-plus/types";
 import {
   createAsset,
   createBaseAccounts,
@@ -22,7 +22,7 @@ import {
 export type liquidityPoolProfilingType = {
   nUsers: number;
   nTransactions: number;
-  network: Network;
+  networkConfig: NetworkConfig;
   transactions: liquidityPoolTransactions[];
   validationCloudApiKey?: string;
 };
@@ -45,20 +45,20 @@ export type liquidityPoolProfilingType = {
 export const liquidityPoolProfiling = async ({
   nUsers,
   nTransactions,
-  network,
+  networkConfig,
   transactions,
   validationCloudApiKey,
 }: liquidityPoolProfilingType) => {
-  const { opex, issuer } = await createBaseAccounts(network);
+  const { opex, issuer } = await createBaseAccounts(networkConfig);
   const { assetA, assetB } = await createAsset({
-    network: network,
+    networkConfig: networkConfig,
     txInvocation: issuer.transactionInvocation,
     validationCloudApiKey,
   });
 
   const users: DemoUser[] = await setupDemoUsers({
     nOfUsers: nUsers,
-    network,
+    networkConfig,
     feeBump: opex.transactionInvocation,
   });
 
@@ -66,10 +66,10 @@ export const liquidityPoolProfiling = async ({
     issuer.transactionInvocation
   );
 
-  const mintAmountSorobanToken = (
+  const mintAmountSorobanToken = BigInt(
     1000000 *
     10 ** sorobanTokenDecimals
-  ).toString();
+  );
 
   await mintSorobanTokensToUsers({
     users,
@@ -94,7 +94,7 @@ export const liquidityPoolProfiling = async ({
       assetA,
       assetB,
       txInvocation: opex.transactionInvocation,
-      network,
+      networkConfig,
     });
 
   console.log("====================================");
@@ -133,7 +133,7 @@ export const liquidityPoolProfiling = async ({
     });
   }
 
-  const logLiquidityPool = liquidityPoolProfiler.getLog({
+  const logLiquidityPool = liquidityPoolProfiler.data.getLog({
     formatOutput: "csv",
   });
   const columnsLog = Object.keys(
