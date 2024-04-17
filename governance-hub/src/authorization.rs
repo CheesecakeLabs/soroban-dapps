@@ -1,6 +1,6 @@
 use soroban_sdk::{contracttype, Address, Env};
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[contracttype]
 pub enum Roles {
     NotAuthorized = 0,
