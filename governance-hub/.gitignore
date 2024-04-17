@@ -1,6 +1,8 @@
 target
 .soroban
 
+test_snapshots
+
 # environment variables
 .env
 .env.production
