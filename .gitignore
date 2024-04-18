@@ -3,6 +3,8 @@
 .accounts
 .bindings
 node_modules
+test_snapshots
+
 
 # misc
 *.DS_Store

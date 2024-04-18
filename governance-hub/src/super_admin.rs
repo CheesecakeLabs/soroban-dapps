@@ -2,7 +2,7 @@ use soroban_sdk::{contracttype, Address, Env};
 
 #[derive(Clone)]
 #[contracttype]
-pub enum DataKey {
+pub enum SuperDataKey {
     SuperAdmin,
 }
 
@@ -11,14 +11,14 @@ pub fn set_super_admin(env: &Env, super_admin: Address) {
 
     env.storage()
         .instance()
-        .set(&DataKey::SuperAdmin, &super_admin);
+        .set(&SuperDataKey::SuperAdmin, &super_admin);
 }
 
 pub fn get_super_admin(env: &Env) -> Address {
     return env
         .storage()
         .instance()
-        .get::<_, Address>(&DataKey::SuperAdmin)
+        .get::<_, Address>(&SuperDataKey::SuperAdmin)
         .expect("Super admin not initialized");
 }
 
@@ -39,5 +39,5 @@ pub fn update_super_admin(env: &Env, new_super_admin: Address) {
 
     env.storage()
         .instance()
-        .set(&DataKey::SuperAdmin, &new_super_admin);
+        .set(&SuperDataKey::SuperAdmin, &new_super_admin);
 }

@@ -10,27 +10,28 @@ pub enum Roles {
 
 #[derive(Clone)]
 #[contracttype]
-pub enum DataKey {
+pub enum AuthDataKey {
     AuthorizationLevel(Address),
 }
 
 pub fn set_account_authorization_level(env: &Env, address: Address, authorization_level: Roles) {
-    env.storage()
-        .instance()
-        .set(&DataKey::AuthorizationLevel(address), &authorization_level);
+    env.storage().instance().set(
+        &AuthDataKey::AuthorizationLevel(address),
+        &authorization_level,
+    );
 }
 
 pub fn remove_account_authorization_level(env: &Env, address: Address) {
     return env
         .storage()
         .instance()
-        .remove(&DataKey::AuthorizationLevel(address));
+        .remove(&AuthDataKey::AuthorizationLevel(address));
 }
 
 pub fn get_account_authorization_level(env: &Env, address: Address) -> Roles {
     return env
         .storage()
         .instance()
-        .get::<_, Roles>(&DataKey::AuthorizationLevel(address))
+        .get::<_, Roles>(&AuthDataKey::AuthorizationLevel(address))
         .unwrap_or(Roles::NotAuthorized);
 }

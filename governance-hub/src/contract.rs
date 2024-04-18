@@ -14,7 +14,6 @@ pub trait GovernanceHubTrait {
     // =========================================
     fn initialize(env: Env, super_admin: Address);
     fn update_super_admin(env: Env, new_super_admin: Address);
-
     fn add_admin(env: Env, admin: Address);
     fn remove_admin(env: Env, admin: Address);
 
