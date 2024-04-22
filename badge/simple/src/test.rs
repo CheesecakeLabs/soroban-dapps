@@ -5,7 +5,10 @@ extern crate std;
 
 use super::*;
 
-use crate::{contract::SimpleBadgeClient, metadata::BadgeMetadata};
+use crate::{
+    contract::SimpleBadgeClient, metadata::BadgeMetadata,
+    test::certification_hub_contract::BadgeStatus,
+};
 
 use soroban_sdk::{
     testutils::{Address as _, MockAuth, MockAuthInvoke},
@@ -22,10 +25,23 @@ mod governance_hub_contract {
     );
 }
 
+mod certification_hub_contract {
+    soroban_sdk::contractimport!(
+        file = "../../target/wasm32-unknown-unknown/release/certification_hub.wasm"
+    );
+}
+
 fn create_governance_hub_contract<'a>(e: &Env) -> governance_hub_contract::Client<'a> {
     governance_hub_contract::Client::new(
         e,
         &e.register_contract_wasm(None, governance_hub_contract::WASM),
+    )
+}
+
+fn create_certification_hub_contract<'a>(e: &Env) -> certification_hub_contract::Client<'a> {
+    certification_hub_contract::Client::new(
+        e,
+        &e.register_contract_wasm(None, certification_hub_contract::WASM),
     )
 }
 
@@ -38,6 +54,7 @@ fn is_initialized_by_super_admin() {
     let env = Env::default();
     let gh_super_admin = Address::generate(&env);
     let gh_client = create_governance_hub_contract(&env);
+    let ch_client = create_certification_hub_contract(&env);
     let badge_client = create_simple_badge_contract(&env);
     env.mock_all_auths();
     gh_client.initialize(&gh_super_admin);
@@ -51,12 +68,12 @@ fn is_initialized_by_super_admin() {
     badge_client.initialize(
         &gh_super_admin,
         &gh_client.address,
-        &gh_client.address, // TODO: update with CH later
+        &ch_client.address,
         badge_metadata,
     );
 
     assert_eq!(badge_client.governance_hub(), gh_client.address);
-    assert_eq!(badge_client.certification_hub(), gh_client.address);
+    assert_eq!(badge_client.certification_hub(), ch_client.address);
     assert_eq!(badge_client.metadata().name, badge_metadata.name);
     assert_eq!(badge_client.metadata().symbol, badge_metadata.symbol);
     assert_eq!(badge_client.metadata().uri, badge_metadata.uri);
@@ -68,6 +85,7 @@ fn is_initialized_by_admin() {
     let gh_super_admin = Address::generate(&env);
     let gh_admin = Address::generate(&env);
     let gh_client = create_governance_hub_contract(&env);
+    let ch_client = create_certification_hub_contract(&env);
     let badge_client = create_simple_badge_contract(&env);
     env.mock_all_auths();
     gh_client.initialize(&gh_super_admin);
@@ -82,12 +100,12 @@ fn is_initialized_by_admin() {
     badge_client.initialize(
         &gh_admin,
         &gh_client.address,
-        &gh_client.address, // TODO: update with CH later
+        &ch_client.address,
         badge_metadata,
     );
 
     assert_eq!(badge_client.governance_hub(), gh_client.address);
-    assert_eq!(badge_client.certification_hub(), gh_client.address);
+    assert_eq!(badge_client.certification_hub(), ch_client.address);
     assert_eq!(badge_client.metadata().name, badge_metadata.name);
     assert_eq!(badge_client.metadata().symbol, badge_metadata.symbol);
     assert_eq!(badge_client.metadata().uri, badge_metadata.uri);
@@ -100,6 +118,7 @@ fn is_not_initialized_without_admin_permission() {
     let gh_super_admin = Address::generate(&env);
     let gh_admin = Address::generate(&env);
     let gh_client = create_governance_hub_contract(&env);
+    let ch_client = create_certification_hub_contract(&env);
     let badge_client = create_simple_badge_contract(&env);
     env.mock_all_auths();
     gh_client.initialize(&gh_super_admin);
@@ -119,7 +138,7 @@ fn is_not_initialized_without_admin_permission() {
             args: (
                 &gh_admin,
                 &gh_client.address,
-                &gh_client.address, // TODO: update with CH later
+                &ch_client.address,
                 badge_metadata.clone(),
             )
                 .into_val(&env),
@@ -130,7 +149,7 @@ fn is_not_initialized_without_admin_permission() {
     badge_client.initialize(
         &gh_admin,
         &gh_client.address,
-        &gh_client.address, // TODO: update with CH later
+        &ch_client.address,
         badge_metadata,
     );
 }
@@ -142,6 +161,7 @@ fn is_not_initialized_without_admin_role() {
     let gh_super_admin = Address::generate(&env);
     let not_admin = Address::generate(&env);
     let gh_client = create_governance_hub_contract(&env);
+    let ch_client = create_certification_hub_contract(&env);
     let badge_client = create_simple_badge_contract(&env);
     env.mock_all_auths();
     gh_client.initialize(&gh_super_admin);
@@ -155,7 +175,7 @@ fn is_not_initialized_without_admin_role() {
     badge_client.initialize(
         &not_admin,
         &gh_client.address,
-        &gh_client.address, // TODO: update with CH later
+        &ch_client.address,
         badge_metadata,
     );
 }
@@ -167,10 +187,13 @@ fn admin_can_mint_to_user() {
     let gh_admin = Address::generate(&env);
     let user = Address::generate(&env);
     let gh_client = create_governance_hub_contract(&env);
+    let ch_client = create_certification_hub_contract(&env);
     let badge_client = create_simple_badge_contract(&env);
     env.mock_all_auths();
     gh_client.initialize(&gh_super_admin);
     gh_client.add_admin(&gh_admin);
+    ch_client.initialize(&gh_admin, &gh_client.address);
+    ch_client.set_badge_status(&gh_admin, &badge_client.address, &BadgeStatus::Active);
 
     let badge_metadata = &BadgeMetadata {
         name: Symbol::new(&env, "BadgeName"),
@@ -181,7 +204,7 @@ fn admin_can_mint_to_user() {
     badge_client.initialize(
         &gh_admin,
         &gh_client.address,
-        &gh_client.address, // TODO: update with CH later
+        &ch_client.address,
         badge_metadata,
     );
 
@@ -200,10 +223,13 @@ fn admin_can_burn_to_user() {
     let gh_admin = Address::generate(&env);
     let user = Address::generate(&env);
     let gh_client = create_governance_hub_contract(&env);
+    let ch_client = create_certification_hub_contract(&env);
     let badge_client = create_simple_badge_contract(&env);
     env.mock_all_auths();
     gh_client.initialize(&gh_super_admin);
     gh_client.add_admin(&gh_admin);
+    ch_client.initialize(&gh_admin, &gh_client.address);
+    ch_client.set_badge_status(&gh_admin, &badge_client.address, &BadgeStatus::Active);
 
     let badge_metadata = &BadgeMetadata {
         name: Symbol::new(&env, "BadgeName"),
@@ -214,7 +240,7 @@ fn admin_can_burn_to_user() {
     badge_client.initialize(
         &gh_admin,
         &gh_client.address,
-        &gh_client.address, // TODO: update with CH later
+        &ch_client.address,
         badge_metadata,
     );
 
@@ -238,9 +264,12 @@ fn minting_and_burning_multiple_badges() {
     let user_b = Address::generate(&env);
     let user_c = Address::generate(&env);
     let gh_client = create_governance_hub_contract(&env);
+    let ch_client = create_certification_hub_contract(&env);
     let badge_client = create_simple_badge_contract(&env);
     env.mock_all_auths();
     gh_client.initialize(&gh_super_admin);
+    ch_client.initialize(&gh_super_admin, &gh_client.address);
+    ch_client.set_badge_status(&gh_super_admin, &badge_client.address, &BadgeStatus::Active);
 
     let badge_metadata = &BadgeMetadata {
         name: Symbol::new(&env, "BadgeName"),
@@ -251,7 +280,7 @@ fn minting_and_burning_multiple_badges() {
     badge_client.initialize(
         &gh_super_admin,
         &gh_client.address,
-        &gh_client.address, // TODO: update with CH later
+        &ch_client.address,
         badge_metadata,
     );
 
