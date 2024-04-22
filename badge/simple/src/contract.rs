@@ -3,7 +3,10 @@ use soroban_sdk::{contract, contractimpl, Address, Env, Symbol};
 use crate::{
     authorization::{read_governance_hub_address, require_admin, write_governance_hub_address},
     award::{award_new_badge, burn_badge, read_badge, BadgeData},
-    certification_hub::{read_certification_hub_address, write_certification_hub_address},
+    certification_hub::{
+        add_to_collection_in_certification_hub, read_certification_hub_address,
+        remove_from_collection_in_certification_hub, write_certification_hub_address,
+    },
     metadata::{read_metadata, write_metadata, BadgeMetadata},
 };
 
@@ -55,7 +58,8 @@ impl SimpleBadgeTrait for SimpleBadge {
         require_admin(&env, admin.clone(), governance_hub);
         admin.require_auth();
 
-        award_new_badge(&env, recipient, custom_metadata);
+        award_new_badge(&env, recipient.clone(), custom_metadata);
+        add_to_collection_in_certification_hub(&env, recipient);
     }
 
     fn burn_badge(env: Env, admin: Address, recipient: Address, badge_id: i128) {
@@ -63,7 +67,8 @@ impl SimpleBadgeTrait for SimpleBadge {
         require_admin(&env, admin.clone(), governance_hub);
         admin.require_auth();
 
-        burn_badge(&env, recipient, badge_id);
+        burn_badge(&env, recipient.clone(), badge_id);
+        remove_from_collection_in_certification_hub(&env, recipient)
     }
 
     fn governance_hub(env: Env) -> Address {
