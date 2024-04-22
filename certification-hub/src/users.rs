@@ -22,9 +22,14 @@ pub fn read_collection_address(env: &Env, address: Address) -> Vec<Address> {
 
 pub fn remove_from_collection(env: &Env, address: Address, badge_address: Address) {
     let mut collection = read_collection_address(env, address.clone());
+    let mut updated_collection = Vec::new(env);
 
-    let badge_index = collection.binary_search(&badge_address).unwrap();
-    collection.remove(badge_index);
+    while collection.len() > 0 {
+        let badge = collection.pop_back().unwrap();
+        if badge != badge_address {
+            updated_collection.push_front(badge);
+        }
+    }
 
-    write_collection_address(env, address, collection);
+    write_collection_address(env, address, updated_collection);
 }

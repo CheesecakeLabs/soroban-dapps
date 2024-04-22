@@ -18,8 +18,8 @@ pub trait CertificationHubTrait {
     //
     // Contract functions
     // =========================================
-    fn add_to_collection(env: Env, address: Address, badge_caller: Address);
-    fn remove_from_collection(env: Env, address: Address, badge_caller: Address);
+    fn add_to_collection(env: Env, user_address: Address, badge_caller: Address);
+    fn remove_from_collection(env: Env, user_address: Address, badge_caller: Address);
 
     //
     // View functions
@@ -101,12 +101,12 @@ fn add_badge_to_collection_and_clean_up(env: &Env, user_address: Address, badge_
     let mut collection = read_collection_address(&env, user_address.clone());
     let mut updated_collection: Vec<Address> = Vec::new(env);
 
+    if collection.contains(&badge_caller) {
+        panic!("Badge already in collection")
+    }
+
     while collection.len() > 0 {
         let badge = collection.pop_back().unwrap();
-
-        if badge == badge_caller {
-            panic!("Badge already in collection")
-        }
 
         if read_badge(&env, badge.clone()) != BadgeStatus::Invalid {
             updated_collection.push_front(badge);
