@@ -1,8 +1,11 @@
 [workspace]
 resolver = "2"
 members = [
-  "certificate-of-deposit/contracts/*",
-#   "liquidity-pool/contracts/*",
+  # "certificate-of-deposit/contracts/*",
+  # "liquidity-pool/contracts/*",
+    "governance-hub",
+    "badge/simple",
+    "certification-hub"
 ]
 
 
