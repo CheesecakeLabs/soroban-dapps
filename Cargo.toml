@@ -4,7 +4,8 @@ members = [
   # "certificate-of-deposit/contracts/*",
   # "liquidity-pool/contracts/*",
     "governance-hub",
-    "badge/simple"
+    "badge/simple",
+    "certification-hub"
 ]
 
 
