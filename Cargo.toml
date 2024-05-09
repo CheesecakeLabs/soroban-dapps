@@ -3,9 +3,10 @@ resolver = "2"
 members = [
   # "certificate-of-deposit/contracts/*",
   # "liquidity-pool/contracts/*",
-    "governance-hub",
-    "badge/simple",
-    "certification-hub"
+  # "governance-hub",
+  # "badge/simple",
+  # "certification-hub"
+  "satp/*"  
 ]
 
 
