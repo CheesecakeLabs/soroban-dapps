@@ -20,22 +20,22 @@ pub fn get_admin(env: &Env) -> Address {
         .expect("Admin not initialized");
 }
 
-pub fn is_admin(env: &Env, address: Address) -> bool {
-    return get_admin(env) == address;
-}
+// pub fn is_admin(env: &Env, address: Address) -> bool {
+//     return get_admin(env) == address;
+// }
 
-pub fn update_admin(env: &Env, new_admin: Address) {
-    let old_admin = get_admin(env);
+// pub fn update_admin(env: &Env, new_admin: Address) {
+//     let old_admin = get_admin(env);
 
-    //expect old and new to be different
-    assert!(
-        old_admin != new_admin,
-        "Provided account is already the current admin"
-    );
+//     //expect old and new to be different
+//     assert!(
+//         old_admin != new_admin,
+//         "Provided account is already the current admin"
+//     );
 
-    old_admin.require_auth();
+//     old_admin.require_auth();
 
-    env.storage()
-        .instance()
-        .set(&AdminDataKey::Admin, &new_admin);
-}
+//     env.storage()
+//         .instance()
+//         .set(&AdminDataKey::Admin, &new_admin);
+// }
