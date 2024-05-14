@@ -2,12 +2,13 @@ use soroban_sdk::{contract, contractimpl, Address, Env, String, Vec};
 
 use crate::{
     admin::{get_admin, set_admin},
-    asset::{burn, mint, set_asset},
+    asset::{burn, mint, refund, set_asset},
     asset_reference::{
         get_all_asset_references, get_asset_exists, get_asset_reference, remove_asset_reference,
         remove_from_asset_reference_list, reset_all_asset_refs_list, set_asset_reference,
         set_lock_asset_reference, AssetReferenceData,
     },
+    bridge::{decrease_bridged_out_amount, get_bridged_out_amount, increase_bridged_out_amount},
 };
 
 pub trait AssetReferenceTrait {
@@ -18,9 +19,13 @@ pub trait AssetReferenceTrait {
     fn create_asset_reference(env: Env, id: String, amount: i128, recipient: Address);
     fn lock_asset_reference(env: Env, id: String);
     fn unlock_asset_reference(env: Env, id: String);
-    fn delete_asset_refrence(env: Env, id: String);
+    fn delete_asset_reference(env: Env, id: String);
     fn mint(env: Env, amount: i128, account: Address);
     fn burn(env: Env, amount: i128);
+    fn refund(env: Env, amount: i128, account: Address);
+    fn increase_bridged_out_amount(env: Env, amount: i128);
+    fn decrease_bridged_out_amount(env: Env, amount: i128);
+    fn reset_state(env: Env);
 
     //
     // View functions
@@ -29,7 +34,8 @@ pub trait AssetReferenceTrait {
     fn is_asset_locked(env: Env, id: String) -> bool;
     fn get_asset_reference(env: Env, id: String) -> AssetReferenceData;
     fn check_valid_bridge_back(env: Env, id: String, amount: i128, user: Address) -> bool;
-
+    fn check_valid_bridge_out(env: Env, id: String, amount: i128, user: Address) -> bool;
+    fn get_bridged_out_amount(env: Env) -> i128;
     //
     // UI Helpers
     //==========================================
@@ -63,12 +69,12 @@ impl AssetReferenceTrait for AssetReference {
         set_lock_asset_reference(&env, id, false)
     }
 
-    fn delete_asset_refrence(env: Env, id: String) {
+    fn delete_asset_reference(env: Env, id: String) {
         get_admin(&env).require_auth();
 
         let asset_reference = get_asset_reference(&env, id.clone());
         burn(&env, asset_reference.amount);
-
+        increase_bridged_out_amount(&env, asset_reference.amount);
         remove_asset_reference(&env, id)
     }
 
@@ -84,6 +90,10 @@ impl AssetReferenceTrait for AssetReference {
         return get_asset_reference(&env, id);
     }
 
+    fn get_bridged_out_amount(env: Env) -> i128 {
+        return get_bridged_out_amount(&env);
+    }
+
     fn mint(env: Env, amount: i128, account: Address) {
         get_admin(&env).require_auth();
         mint(&env, amount, account)
@@ -95,10 +105,34 @@ impl AssetReferenceTrait for AssetReference {
         burn(&env, amount)
     }
 
+    fn refund(env: Env, amount: i128, account: Address) {
+        get_admin(&env).require_auth();
+
+        refund(&env, amount, account);
+
+        decrease_bridged_out_amount(&env, amount)
+    }
+
+    fn increase_bridged_out_amount(env: Env, amount: i128) {
+        get_admin(&env).require_auth();
+        increase_bridged_out_amount(&env, amount)
+    }
+
+    fn decrease_bridged_out_amount(env: Env, amount: i128) {
+        get_admin(&env).require_auth();
+        decrease_bridged_out_amount(&env, amount)
+    }
+
+    fn check_valid_bridge_out(env: Env, id: String, amount: i128, user: Address) -> bool {
+        let asset_reference = get_asset_reference(&env, id);
+
+        return asset_reference.amount == amount && asset_reference.recipient == user;
+    }
+
     fn check_valid_bridge_back(env: Env, id: String, amount: i128, user: Address) -> bool {
         let asset_reference = get_asset_reference(&env, id);
 
-        return asset_reference.amount >= amount && asset_reference.recipient == user;
+        return asset_reference.amount == amount && asset_reference.recipient == user;
     }
 
     fn remove_item_from_list(env: Env, id: String) {
@@ -113,5 +147,11 @@ impl AssetReferenceTrait for AssetReference {
     fn reset_all_asset_refs_list(env: Env) {
         get_admin(&env).require_auth();
         reset_all_asset_refs_list(&env)
+    }
+
+    fn reset_state(env: Env) {
+        get_admin(&env).require_auth();
+        reset_all_asset_refs_list(&env);
+        decrease_bridged_out_amount(&env, get_bridged_out_amount(&env))
     }
 }

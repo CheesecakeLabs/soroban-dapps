@@ -38,3 +38,10 @@ pub fn burn(env: &Env, amount: i128) {
 
     token_client.burn_from_bridge(&amount);
 }
+
+pub fn refund(env: &Env, amount: i128, account: Address) {
+    let asset_address = get_asset(env);
+
+    let token_client = satp_token_contract::Client::new(&env, &asset_address);
+    token_client.refund(&account, &amount);
+}

@@ -93,6 +93,8 @@ impl Token {
     pub fn escrow(e: Env, from: Address, amount: i128, asset_ref_id: String) {
         check_nonnegative_amount(amount);
         from.require_auth();
+        read_administrator(&e).require_auth();
+
         let bridge = read_bridge_address(&e);
         e.storage()
             .instance()
@@ -119,6 +121,21 @@ impl Token {
 
         write_administrator(&e, &new_admin);
         TokenUtils::new(&e).events().set_admin(admin, new_admin);
+    }
+    pub fn refund(e: Env, to: Address, amount: i128) {
+        check_nonnegative_amount(amount);
+        let admin = read_administrator(&e);
+        admin.require_auth();
+
+        let bridge = read_bridge_address(&e);
+        e.storage()
+            .instance()
+            .extend_ttl(INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT);
+
+        spend_balance(&e, bridge.clone(), amount);
+        receive_balance(&e, to.clone(), amount);
+        // Event not implemented in TokenUtils
+        // TokenUtils::new(&e).events().refund(from, to, amount);
     }
 
     #[cfg(test)]
