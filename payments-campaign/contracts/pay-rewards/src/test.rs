@@ -3,7 +3,7 @@
 use super::*;
 use campaign::CampaignStatus;
 use contract::{PaymentRewards, PaymentRewardsClient};
-use soroban_sdk::{  testutils::Address as _, token::{TokenClient, TokenInterface, StellarAssetClient}, Address, Env};
+use soroban_sdk::{  testutils::{Address as _, Events}, token::{StellarAssetClient, TokenClient, TokenInterface}, Address, Env, Vec};
 
 #[test]
 fn test() {
@@ -72,6 +72,10 @@ fn test() {
     assert_eq!(pay_rewards_client.check_eligibility(&user_a), false);
     assert_eq!(pay_rewards_client.check_eligibility(&user_b), true);
 
+    // verify if reward event was emitted    
+    let reward_events = env.events().all().iter().filter(|e| e.0 == pay_rewards_client.address);
+    assert_eq!(reward_events.count(), 1);
+
     // Pause campaign
     pay_rewards_client.pause();
     assert_eq!(pay_rewards_client.status() , CampaignStatus::Inactive);
@@ -91,9 +95,13 @@ fn test() {
     // Start campaign again
     pay_rewards_client.start();
 
-    // send from user_b to user_a - campaign active
+    // send from user_b to user_a - campaign active and user_b reaches full quota
     pay_rewards_client.send(&user_b, &user_a, &50);
     assert_eq!(pay_rewards_client.get_cumulative_quota(&user_b), 20);
     assert_eq!(asset_client.balance(&user_b), 20);
+    
+    // verify if reward event was emitted    
+    let reward_events = env.events().all().iter().filter(|e| e.0 == pay_rewards_client.address);
+    assert_eq!(reward_events.count(), 2);
 
 }

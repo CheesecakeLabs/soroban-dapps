@@ -1,4 +1,4 @@
-use soroban_sdk::{contracttype, token::TokenClient, Address, Env};
+use soroban_sdk::{contracttype, symbol_short, token::TokenClient, Address, Env};
 
 #[derive(Clone)]
 #[contracttype]
@@ -145,5 +145,10 @@ pub fn send_reward(env: &Env, account: Address) {
         &env.current_contract_address(),
         &account,
         &campaign_parameters.reward,
+    );
+
+    env.events().publish(
+        (symbol_short!("reward"), account),
+        campaign_parameters.reward
     );
 }
