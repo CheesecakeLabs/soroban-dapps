@@ -10,19 +10,19 @@ import { liquidityPoolTransactions } from "./dapps/liquidity-pool/liquidity-pool
 
 liquidityPoolProfiling({
     nUsers: 3,
-    nTransactions: 100,
+    nTransactions: 10,
     transactions: [
         liquidityPoolTransactions.deposit,
         liquidityPoolTransactions.swap,
         liquidityPoolTransactions.get_rsrvs,
         liquidityPoolTransactions.withdraw
     ],
-    network: Constants.testnet
+    networkConfig: Constants.testnet
 })
 
 // const cometDexProfilingConfig: cometDexProfilingConfigType = {
 //     nUsers: 3,
-//     network: StellarPlus.Constants.futurenet,
+//     networkConfig: Constants.testnet
 // };
 // cometDexProfiling(cometDexProfilingConfig);
 

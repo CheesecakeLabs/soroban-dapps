@@ -1,12 +1,12 @@
 import { StellarPlus } from "stellar-plus";
-import { Network } from "stellar-plus/lib/stellar-plus/types";
+import { NetworkConfig } from "stellar-plus/lib/stellar-plus/types";
 import { DemoUser } from "../simulation-types";
 import { FeeBumpHeader } from "./types";
 
 // ======================================================
 export type SetupDemoUsersArgs = {
   nOfUsers: number;
-  network: Network;
+  networkConfig: NetworkConfig;
   addTrustline?: AddTrustlineArgs[];
   fee?: string;
   timeout?: number;
@@ -32,7 +32,7 @@ export const setupDemoUsers = async (
   const users: DemoUser[] = [];
   for (let i = 0; i < args.nOfUsers; i++) {
     const user = new StellarPlus.Account.DefaultAccountHandler({
-      network: args.network,
+      networkConfig: args.networkConfig,
     });
     users.push({
       account: user,
@@ -73,7 +73,7 @@ export const setupDemoUsers = async (
 // ======================================================
 export type AddTrustlineArgs = {
   asset: StellarPlus.Asset.ClassicAssetHandler;
-  mintAmount: string;
+  mintAmount: number;
 };
 
 /**
@@ -114,7 +114,7 @@ export type MintSorobanTokensToUsers = {
   users: DemoUser[];
   issuer: DemoUser;
   token: StellarPlus.Asset.SorobanTokenHandler;
-  mintAmount: string;
+  mintAmount: bigint;
 };
 
 /**
